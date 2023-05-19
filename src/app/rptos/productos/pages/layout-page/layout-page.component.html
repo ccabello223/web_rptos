@@ -41,10 +41,12 @@
         </tr>
       </table>
     
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+      <mat-paginator [pageSizeOptions]="[10, 20, 30, 100]" aria-label="Select page of users"></mat-paginator>
     </div>
   </mat-tab>
   <mat-tab label="Agregar Producto"> <input type="file" class="file-upload" onchange="console.log(event.target.files)"> </mat-tab>
-  <mat-tab label="Productos Mercado Libre"> Contenido 3 </mat-tab>
+  <mat-tab label="Productos Mercado Libre"> 
+    <app-lista-mercadolibre></app-lista-mercadolibre>
+  </mat-tab>
 </mat-tab-group>
 

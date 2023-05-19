@@ -3,7 +3,7 @@ import { AuthResponse, Usuario } from '../interfaces/interfaces';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { environment } from 'src/environments/environments';
+import { environment } from 'src/environments/environments.prod';
 
 
 @Injectable({

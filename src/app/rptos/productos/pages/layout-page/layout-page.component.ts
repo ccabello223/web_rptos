@@ -53,18 +53,13 @@ export class LayoutPageComponent implements OnInit {
   iniciarValor() {
     this.productoService.getProducto().subscribe(resp => {
       this.producto = resp.producto
-      console.log(resp.producto);
+      // console.log(resp.producto);
       const users = Array.from({length: this.producto.length}, (_, k) => this.createNewUser(k));
       this.dataSource = new MatTableDataSource(users);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
   }
-
-  // ngAfterViewInit() {
-  //   this.dataSource.paginator = this.paginator;
-  //   this.dataSource.sort = this.sort;
-  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
