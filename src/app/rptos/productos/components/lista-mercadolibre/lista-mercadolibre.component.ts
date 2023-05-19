@@ -1,55 +1,80 @@
-import { Component } from '@angular/core';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
-
-const ELEMENT_DATA2: PeriodicElement[] = [
-  {position: 1, name: 'Pedro', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Cabaña', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'rodolfo', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'cacatua', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'morbon', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Luffy', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Zoro', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Katakuri', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ProductoService } from '../../services/producto.service';
+import { Producto, Usuario } from '../../interface/interface';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-lista-mercadolibre',
   templateUrl: './lista-mercadolibre.component.html',
   styleUrls: ['./lista-mercadolibre.component.css']
 })
-export class ListaMercadolibreComponent {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
-  clickedRows = new Set<PeriodicElement>();
+export class ListaMercadolibreComponent implements OnInit {
 
-  metodo():void{
-    if (this.clickedRows.size) {
-      this.dataSource = ELEMENT_DATA2;
-      for(let clickedRow of this.clickedRows){
-        console.log(clickedRow.name);
-      }
-      this.clickedRows.clear()
+  id:number = 0;
+  dataSource!: MatTableDataSource<Usuario>;
+
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+  @ViewChild(MatSort)
+  sort!: MatSort;
+
+
+  usersML: string[] = ['id', 'nombre', 'correo'];
+  productsML: string[] = ['id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc']
+  // clickedRows = new Set<Usuario>();
+
+  constructor(private productoService: ProductoService){}
+
+  ngOnInit(): void {
+    this.productoService.getUsuariosML().subscribe(resp => {
+      const users = Array.from({length: resp.usuarios.length}, (_, k) => this.createNewUser(k, resp.usuarios));
+      this.dataSource = new MatTableDataSource(users);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    })
+  }
+
+  metodo(row:Usuario){
+    this.id = row.id;
+    this.productoService.getProductosML(this.id).subscribe(resp => {
+      const products = Array.from({length: resp.productos.length}, (_, k) => this.productOfUserById(k, resp.productos));
+      this.dataSource = new MatTableDataSource(products);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+  }
+
+  searchFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  /** Builds and returns a new User. */
+  createNewUser(id: number, usuarios: Usuario[]): Usuario{
+    return {
+      id: usuarios[id].id,
+      nombre: usuarios[id].nombre,
+      correo: usuarios[id].correo,
+      estado: usuarios[id].estado
+    }
+  }
+
+  productOfUserById(i: number, products: Producto[]): any{
+    return {
+      id: products[i].id,
+      nombre: products[i].nombre,
+      codigo: products[i].codigo,
+      precio1: products[i].precio1,
+      precio2: products[i].precio2,
+      precio1_porc: products[i].precio1_porc,
+      precio2_porc: products[i].precio2_porc,
+      marca: products[i].marca.nombre,
     }
   }
 }
