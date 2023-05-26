@@ -19,7 +19,6 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder, 
     private AuthService:AuthService,
-    private productoService: ProductoService,
     private router: Router){}
 
     login():void{

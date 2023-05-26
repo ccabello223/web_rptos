@@ -29,9 +29,13 @@ export class AuthService {
           this._usuario = {
             email_user: resp.email_user!,
             rol: resp.rol!,
-            distid: resp.distid!
+            distid: resp.distid!,
+            usuario: resp.usuario!
           }
           localStorage.setItem('token', resp.token?.toString() || '')
+          localStorage.setItem('rol', resp.rol?.toString() || '')
+          localStorage.setItem('distid', resp.distid?.toString() || '')
+          localStorage.setItem('usuario', resp.usuario?.toString() || '')
         }
       }),
       map(resp=> resp.ok),
@@ -48,7 +52,8 @@ export class AuthService {
     this._usuario = {
       email_user: '',
       rol: 0,
-      distid: ''
+      distid: '',
+      usuario: 0
     };
     localStorage.clear();
   }

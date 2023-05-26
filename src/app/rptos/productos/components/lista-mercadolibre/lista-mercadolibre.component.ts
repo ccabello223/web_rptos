@@ -4,6 +4,7 @@ import { Producto, Usuario } from '../../interface/interface';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-lista-mercadolibre',
@@ -12,7 +13,12 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class ListaMercadolibreComponent implements OnInit {
 
-  id:number = 0;
+  id: number = 0;
+  products: any[] = [];
+  users: Usuario[] = [];
+  isLoading = false;
+  message: string = '';
+  selectedFile?: File;
   dataSource!: MatTableDataSource<Usuario>;
 
   @ViewChild(MatPaginator)
@@ -23,27 +29,60 @@ export class ListaMercadolibreComponent implements OnInit {
 
   usersML: string[] = ['id', 'nombre', 'correo'];
   productsML: string[] = ['id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc']
-  // clickedRows = new Set<Usuario>();
 
-  constructor(private productoService: ProductoService){}
+  constructor(private productoService: ProductoService) { }
 
   ngOnInit(): void {
+
+    this.dataSource = new MatTableDataSource(this.products);
+
     this.productoService.getUsuariosML().subscribe(resp => {
-      const users = Array.from({length: resp.usuarios.length}, (_, k) => this.createNewUser(k, resp.usuarios));
-      this.dataSource = new MatTableDataSource(users);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.users = Array.from({ length: resp.usuarios.length }, (_, k) => this.createNewUser(k, resp.usuarios));
+      this.dataSource = new MatTableDataSource(this.users);
     })
   }
 
-  metodo(row:Usuario){
-    this.id = row.id;
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  //Cuando el usuario selecciona un empleado entonces se cargar los productos
+  selectedUser(id:number) {
+    this.id = id;
+    this.dataSource = new MatTableDataSource(this.products);
+
     this.productoService.getProductosML(this.id).subscribe(resp => {
-      const products = Array.from({length: resp.productos.length}, (_, k) => this.productOfUserById(k, resp.productos));
-      this.dataSource = new MatTableDataSource(products);
+      this.products = Array.from({ length: resp.productos.length }, (_, k) => this.productOfUserById(k, resp.productos));
+      this.dataSource.data = this.products;
       this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
     });
+  }
+
+  selectUserAgain(): void {
+    this.id = 0;
+    this.dataSource = new MatTableDataSource(this.users);
+  }
+
+
+  onUpload() {
+    if (this.selectedFile == undefined) {
+      Swal.fire('Error', "No ha subido ningún archivo!", 'error')
+    } else {
+      this.isLoading = true;
+      this.message = "Cargando/Actulizando productos. Espere un momento por favor."
+      this.productoService.postExcelProduct(this.id, this.selectedFile)
+        .subscribe(resp => {
+          if (resp["ok"] === true) {
+            this.selectedUser(this.id);
+            Swal.fire('Todo correcto!!', resp["msg"], 'success')
+          }
+          else {
+            Swal.fire('Error', "Sucedió un error. Notificar a administración", 'error')
+          }
+          this.isLoading = false;
+        })
+    }
   }
 
   searchFilter(event: Event) {
@@ -55,8 +94,12 @@ export class ListaMercadolibreComponent implements OnInit {
     }
   }
 
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
   /** Builds and returns a new User. */
-  createNewUser(id: number, usuarios: Usuario[]): Usuario{
+  createNewUser(id: number, usuarios: Usuario[]): Usuario {
     return {
       id: usuarios[id].id,
       nombre: usuarios[id].nombre,
@@ -65,7 +108,7 @@ export class ListaMercadolibreComponent implements OnInit {
     }
   }
 
-  productOfUserById(i: number, products: Producto[]): any{
+  productOfUserById(i: number, products: Producto[]): any {
     return {
       id: products[i].id,
       nombre: products[i].nombre,
