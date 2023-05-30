@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ProductoService } from 'src/app/rptos/productos/services/producto.service';
 import Swal from 'sweetalert2';
 
 @Component({

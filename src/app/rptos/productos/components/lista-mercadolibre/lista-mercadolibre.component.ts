@@ -33,13 +33,19 @@ export class ListaMercadolibreComponent implements OnInit {
   constructor(private productoService: ProductoService) { }
 
   ngOnInit(): void {
-
-    this.dataSource = new MatTableDataSource(this.products);
-
-    this.productoService.getUsuariosML().subscribe(resp => {
-      this.users = Array.from({ length: resp.usuarios.length }, (_, k) => this.createNewUser(k, resp.usuarios));
-      this.dataSource = new MatTableDataSource(this.users);
-    })
+    if(this.productoService.rol == 1 || this.productoService.rol == 6){
+      this.dataSource = new MatTableDataSource(this.products);
+      this.productoService.getUsuariosML().subscribe(resp => {
+        this.users = Array.from({ length: resp.usuarios.length }, (_, k) => this.createNewUser(k, resp.usuarios));
+        this.dataSource = new MatTableDataSource(this.users);
+      })
+    }else if(this.productoService.rol != 3){
+      this.dataSource = new MatTableDataSource(this.products);
+      this.productoService.getUsuariosML(this.productoService.tipoUsuario).subscribe(resp => {
+        this.users = Array.from({ length: resp.usuarios.length }, (_, k) => this.createNewUser(k, resp.usuarios));
+        this.dataSource = new MatTableDataSource(this.users);
+      })
+    }
   }
 
   ngAfterViewInit() {
@@ -57,6 +63,37 @@ export class ListaMercadolibreComponent implements OnInit {
       this.dataSource.data = this.products;
       this.dataSource.paginator = this.paginator;
     });
+  }
+
+  selectedProduct(id:number){
+    Swal.fire({
+      title: '¿Estás seguro de borrar este artículo?',
+      text: "¡Este cambio no podrá ser revertido!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, borrar'
+    }).then((result:any) => {
+      if (result.isConfirmed) {
+        this.productoService.deleteProduct(id).subscribe(resp => {
+          if(resp["ok"] == true){
+            Swal.fire(
+              'Borrado!',
+              resp["msg"],
+              'success'
+            );
+            this.selectedUser(this.id);
+          }else{
+            Swal.fire(
+              'Error!',
+              resp["errorMsg"],
+              'error'
+            );
+          }
+        })
+      }
+    })
   }
 
   selectUserAgain(): void {
@@ -99,10 +136,10 @@ export class ListaMercadolibreComponent implements OnInit {
   }
 
   /** Builds and returns a new User. */
-  createNewUser(id: number, usuarios: Usuario[]): Usuario {
+  createNewUser(id: number, usuarios: Usuario[]): any {
     return {
       id: usuarios[id].id,
-      nombre: usuarios[id].nombre,
+      nombre: usuarios[id].empleado.nombre,
       correo: usuarios[id].correo,
       estado: usuarios[id].estado
     }

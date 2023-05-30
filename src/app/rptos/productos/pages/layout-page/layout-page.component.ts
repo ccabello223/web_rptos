@@ -34,6 +34,7 @@ export interface ProductoTabla {
 export class LayoutPageComponent implements OnInit {
   
   producto!: ProductoElement[];
+  rol:number = this.productoService.rol;
 
   distid?:string = '';
   
@@ -55,7 +56,6 @@ export class LayoutPageComponent implements OnInit {
   iniciarValor() {
     this.productoService.getProducto().subscribe(resp => {
       this.producto = resp.producto
-      // console.log(resp.producto);
       const users = Array.from({length: this.producto.length}, (_, k) => this.createNewUser(k));
       this.dataSource = new MatTableDataSource(users);
       this.dataSource.paginator = this.paginator;

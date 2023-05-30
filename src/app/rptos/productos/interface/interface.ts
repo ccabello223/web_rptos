@@ -24,11 +24,16 @@ export interface UsuariosMercadoLibre {
 }
 
 export interface Usuario {
-    id:     number;
-    nombre: string;
-    correo: string;
-    estado: boolean;
+    id:       number;
+    correo:   string;
+    estado:   boolean;
+    empleado: Empleado;
 }
+
+export interface Empleado {
+    nombre: string;
+}
+
 
 
 export interface ProductoMercadoLibre {

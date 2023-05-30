@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environments';
 import { Producto, ProductoElement, ProductoMercadoLibre, UsuariosMercadoLibre } from '../interface/interface';
 import { Observable, of, tap } from 'rxjs';
-import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +11,28 @@ export class ProductoService {
 
   private baseUrl: string = environment.baseUrl;
   private _producto!: ProductoElement[];
+  private _rolId: number = Number(localStorage.getItem('rol'));
+  private _usuario: number = Number(localStorage.getItem('usuario'));
+  private _distid?: string = localStorage.getItem('distid')?.toString();
 
   get producto(){
     return {...this._producto};
   }
 
+  get rol(){
+    return this._rolId;
+  }
+
+  get tipoUsuario(){
+    return this._usuario;
+  }
+
+  get tipoTienda(){
+    return this._distid;
+  }
+
   constructor(private http: HttpClient) { 
-    // console.log(localStorage.getItem('distid'))
+
   }
 
   getProducto(): Observable<Producto>{
@@ -26,9 +40,15 @@ export class ProductoService {
     return this.http.get<Producto>(url)
   }
 
-  getUsuariosML(): Observable<UsuariosMercadoLibre>{
-    const url = `${this.baseUrl}/productos_ml/getUsuariosML`;
-    return this.http.get<UsuariosMercadoLibre>(url);
+  getUsuariosML(usuario:number = 0): Observable<UsuariosMercadoLibre>{
+    if(usuario == 0){
+      const url = `${this.baseUrl}/productos_ml/getUsuariosML`;
+      return this.http.get<UsuariosMercadoLibre>(url);
+    }else{
+      const url = `${this.baseUrl}/productos_ml/getUsuariosML?usuario=${usuario}`;
+      console.log(usuario);
+      return this.http.get<UsuariosMercadoLibre>(url);
+    }
   }
 
   getProductosML(id:number): Observable<ProductoMercadoLibre>{
@@ -45,6 +65,11 @@ export class ProductoService {
       return this.http.post<any>(url, formData);
     }
     return of("El archivo esta vacio"); 
+  }
+
+  deleteProduct(id:number): Observable<any>{
+    const url = `${this.baseUrl}/productos_ml/deleteProducto?id=${id}`;
+    return this.http.delete<any>(url);
   }
 
 }
