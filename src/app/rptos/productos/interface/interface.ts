@@ -43,6 +43,7 @@ export interface ProductoMercadoLibre {
 
 export interface Producto {
     id:           number;
+    id_producto:  number;
     codigo:       string;
     nombre:       string;
     precio1:      string;

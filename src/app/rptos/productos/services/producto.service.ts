@@ -56,6 +56,16 @@ export class ProductoService {
     return this.http.get<ProductoMercadoLibre>(url);
   }
 
+  getProductosmlTemp(id:number): Observable<ProductoMercadoLibre>{
+    const url = `${this.baseUrl}/productos_ml/getProductosmlTemp?userId=${id}`;
+    return this.http.get<ProductoMercadoLibre>(url);
+  }
+
+  getProductoML(id:number): Observable<any>{
+    const url = `${this.baseUrl}/productos_ml/getProductoML?id=${id}`;
+    return this.http.get<any>(url)
+  }
+
   postExcelProduct(id:number, selectedFile?: File):Observable<any>{
 
     if(selectedFile != null){

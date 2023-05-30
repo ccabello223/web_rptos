@@ -15,16 +15,15 @@ export class ListaMercadolibreComponent implements OnInit {
 
   id: number = 0;
   products: any[] = [];
+  productsTemp: any[] = [];
   users: Usuario[] = [];
   isLoading = false;
   message: string = '';
   selectedFile?: File;
   dataSource!: MatTableDataSource<Usuario>;
+  dataSourceTemp!: MatTableDataSource<Producto>;
 
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
-  @ViewChild(MatSort)
-  sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
 
   usersML: string[] = ['id', 'nombre', 'correo'];
@@ -34,6 +33,7 @@ export class ListaMercadolibreComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.productoService.rol == 1 || this.productoService.rol == 6){
+      console.log(this.productoService.rol);
       this.dataSource = new MatTableDataSource(this.products);
       this.productoService.getUsuariosML().subscribe(resp => {
         this.users = Array.from({ length: resp.usuarios.length }, (_, k) => this.createNewUser(k, resp.usuarios));
@@ -50,18 +50,23 @@ export class ListaMercadolibreComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   //Cuando el usuario selecciona un empleado entonces se cargar los productos
   selectedUser(id:number) {
     this.id = id;
     this.dataSource = new MatTableDataSource(this.products);
+    this.dataSourceTemp = new MatTableDataSource(this.productsTemp);
 
     this.productoService.getProductosML(this.id).subscribe(resp => {
       this.products = Array.from({ length: resp.productos.length }, (_, k) => this.productOfUserById(k, resp.productos));
       this.dataSource.data = this.products;
       this.dataSource.paginator = this.paginator;
+    });
+
+    this.productoService.getProductosmlTemp(this.id).subscribe(resp => {
+      this.productsTemp = Array.from({ length: resp.productos.length }, (_, k) => this.productOfUserById(k, resp.productos));
+      this.dataSourceTemp.data = this.productsTemp;
     });
   }
 
@@ -80,6 +85,38 @@ export class ListaMercadolibreComponent implements OnInit {
           if(resp["ok"] == true){
             Swal.fire(
               'Borrado!',
+              resp["msg"],
+              'success'
+            );
+            this.selectedUser(this.id);
+          }else{
+            Swal.fire(
+              'Error!',
+              resp["errorMsg"],
+              'error'
+            );
+          }
+        })
+      }
+    })
+  }
+
+  selectedProductTemp(id:number){
+    Swal.fire({
+      title: '¿Estás seguro de montar este artículo?',
+      text: "Usted esta realmente consiente que este acto quiere decir que dicho producto que seleccionó\
+            ya fue montado o actualizado el precio en MercadoLibre. ¿Aun así quiere continuar?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, quiero continuar'
+    }).then((result:any) => {
+      if (result.isConfirmed) {
+        this.productoService.getProductoML(id).subscribe(resp => {
+          if(resp["ok"] == true){
+            Swal.fire(
+              'Cargado!',
               resp["msg"],
               'success'
             );
@@ -148,6 +185,7 @@ export class ListaMercadolibreComponent implements OnInit {
   productOfUserById(i: number, products: Producto[]): any {
     return {
       id: products[i].id,
+      id_producto:products[i].id_producto,
       nombre: products[i].nombre,
       codigo: products[i].codigo,
       precio1: products[i].precio1,

@@ -123,10 +123,14 @@
       <button mat-raised-button color="primary" (click)="selectUserAgain()">Escoger otro usuario</button>
     </div>
 
+    <!--  -->
+    <!-- Segunda tabla de productos sin mercado -->
+    <!--  -->
+
     <h3 class="mt-6 ml-3"><b>Articulos a actualizar</b></h3>
 
     <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="dataSource" matSort>
+      <table mat-table [dataSource]="dataSourceTemp" matSort>
 
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
@@ -176,7 +180,7 @@
 
         <tr mat-header-row *matHeaderRowDef="productsML"></tr>
 
-        <tr mat-row (click)="selectedProduct(row.id)" *matRowDef="let row; columns: productsML;"></tr>
+        <tr mat-row (click)="selectedProductTemp(row.id_producto)" *matRowDef="let row; columns: productsML;"></tr>
 
         <!-- Row shown when there is no matching data. -->
         <tr mat-row *matNoDataRow>
@@ -184,9 +188,6 @@
         </tr>
 
       </table>
-
-      <mat-paginator [pageSizeOptions]="[10, 20, 30, 100]"
-        aria-label="Selecciona una opcion para cargar los resultados"></mat-paginator>
     </div>
   </ng-template>
 </div>
