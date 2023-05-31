@@ -66,13 +66,19 @@ export class ProductoService {
     return this.http.get<any>(url)
   }
 
-  postExcelProduct(id:number, selectedFile?: File):Observable<any>{
+  postExcelProduct(id:number, selectedFile?: File, rol:number = 0):Observable<any>{
 
     if(selectedFile != null){
       const formData = new FormData();
       formData.append('files', selectedFile, selectedFile.name);
-      const url = `${this.baseUrl}/productos_ml/uploads?usuario_ml=${id}`;
-      return this.http.post<any>(url, formData);
+
+      if( rol == 1 || rol == 6){
+        const url = `${this.baseUrl}/productos_ml/postActualizarPrecio?usuario_ml=${id}`;
+        return this.http.post<any>(url, formData);
+      }else{
+        const url = `${this.baseUrl}/productos_ml/uploads?usuario_ml=${id}`;
+        return this.http.post<any>(url, formData);
+      }
     }
     return of("El archivo esta vacio"); 
   }

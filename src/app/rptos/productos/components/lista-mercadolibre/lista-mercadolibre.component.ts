@@ -145,7 +145,7 @@ export class ListaMercadolibreComponent implements OnInit {
     } else {
       this.isLoading = true;
       this.message = "Cargando/Actulizando productos. Espere un momento por favor."
-      this.productoService.postExcelProduct(this.id, this.selectedFile)
+      this.productoService.postExcelProduct(this.id, this.selectedFile, this.productoService.rol)
         .subscribe(resp => {
           if (resp["ok"] === true) {
             this.selectedUser(this.id);
