@@ -17,6 +17,7 @@ export class ListaMercadolibreComponent implements OnInit {
   private authService = inject(AuthService)
   private productoService = inject(ProductoService)
 
+  //id del la tabla usuarios_mercadolibre
   id: number = 0;
   products: any[] = [];
   productsTemp: any[] = [];
@@ -117,7 +118,9 @@ export class ListaMercadolibreComponent implements OnInit {
       confirmButtonText: 'Sí, quiero continuar'
     }).then((result:any) => {
       if (result.isConfirmed) {
-        this.productoService.getProductoML(id).subscribe(resp => {
+        // el primer id representa el id en la tabla producto_mercadolibre_temp
+        // el segundo es el id del usuarios_mercadolibre
+        this.productoService.getProductoML(id, this.id).subscribe(resp => {
           if(resp["ok"] == true){
             Swal.fire(
               'Cargado!',

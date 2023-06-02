@@ -51,8 +51,8 @@ export class ProductoService {
     return this.http.get<ProductoMercadoLibre>(url);
   }
 
-  getProductoML(id:number): Observable<any>{
-    const url = `${this.baseUrl}/productos_ml/getProductoML?id=${id}`;
+  getProductoML(id_producto:number, usuario_ml:number): Observable<any>{
+    const url = `${this.baseUrl}/productos_ml/getProductoML?id_producto=${id_producto}&usuario_ml=${usuario_ml}`;
     return this.http.get<any>(url)
   }
 
