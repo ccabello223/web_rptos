@@ -1,60 +1,84 @@
-import { Injectable } from '@angular/core';
-import { AuthResponse, Usuario } from '../interfaces/interfaces';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environments';
+import { AuthResponse, CheckTokenResponse, EstadoUsuario, Usuario } from '../interfaces';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl: string = environment.baseUrl;
+  private readonly baseUrl: string = environment.baseUrl;
+  private http = inject(HttpClient);
   private _usuario!: Usuario;
 
-  get usuario(){
-    return {...this._usuario};
+  private _usuarioActual = signal<Usuario | null>(null);
+  private _estadoDelUsuario = signal<EstadoUsuario>(EstadoUsuario.checking);
+
+  public usuarioActual = computed(() => this._usuarioActual())
+  public estadoDelUsuario = computed(() => this._estadoDelUsuario())
+
+  get usuario() {
+    return { ...this._usuario };
   }
 
-  constructor(private http: HttpClient) { }
+  constructor() { 
+    this.checkEstadoDelUsuario().subscribe()
+  }
 
-  login(email_user: string, password: string){
+  private setAuthentication(resp:AuthResponse): boolean{
+    if (resp.ok) {
+      this._usuario = {
+        email_user: resp.email_user!,
+        rol: resp.rol!,
+        distid: resp.distid!,
+        usuario: resp.usuario!
+      }
+      this._usuarioActual.set(this._usuario)
+      this._estadoDelUsuario.set(EstadoUsuario.authenticated)
+      localStorage.setItem('token', resp.token?.toString() || '')
+      return true;
+    }
+    return false;
+  }
+
+  login(email_user: string, password: string): Observable<boolean> {
     const url = `${this.baseUrl}/auth`;
-    const body = {email_user, password} 
+    const body = { email_user, password }
     return this.http.post<AuthResponse>(url, body)
-    .pipe(
-      tap(resp => {
-        if(resp.ok){
-          this._usuario = {
-            email_user: resp.email_user!,
-            rol: resp.rol!,
-            distid: resp.distid!,
-            usuario: resp.usuario!
-          }
-          localStorage.setItem('token', resp.token?.toString() || '')
-          localStorage.setItem('rol', resp.rol?.toString() || '')
-          localStorage.setItem('distid', resp.distid?.toString() || '')
-          localStorage.setItem('usuario', resp.usuario?.toString() || '')
-        }
-      }),
-      map(resp=> resp.ok),
-      catchError(err => of(err.error.msg))
-    );
+      .pipe(
+        map(resp => this.setAuthentication(resp)),
+        catchError(err => of(err.error.msg))
+      );
   }
 
-  checkAuthentication(): Observable<boolean>{
-    if(!localStorage.getItem('token')) return of(false);
-    return of(true);
+  checkEstadoDelUsuario(): Observable<boolean> {
+    const url = `${this.baseUrl}/auth/renew`;
+    const token = localStorage.getItem('token')
+    if (!token){
+      this.logout()
+      return of(false);
+    } 
+
+    const headers = new HttpHeaders()
+      .set('X-Token', token);
+
+    return this.http.get<CheckTokenResponse>(url, { headers })
+      .pipe(
+        map(resp => this.setAuthentication(resp)),
+        catchError(() => {
+          this._estadoDelUsuario.set(EstadoUsuario.notAuthenticated)
+          return of(false)
+        })
+      )
+
   }
 
-  logout(){
-    this._usuario = {
-      email_user: '',
-      rol: 0,
-      distid: '',
-      usuario: 0
-    };
-    localStorage.clear();
+  logout() {
+    localStorage.removeItem('token');
+    this._usuarioActual.set(null);
+    this._estadoDelUsuario.set( EstadoUsuario.notAuthenticated );
   }
 }

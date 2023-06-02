@@ -34,7 +34,6 @@ export interface ProductoTabla {
 export class LayoutPageComponent implements OnInit {
   
   producto!: ProductoElement[];
-  rol:number = this.productoService.rol;
 
   distid?:string = '';
   

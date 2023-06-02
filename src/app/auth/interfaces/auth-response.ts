@@ -7,10 +7,3 @@ export interface AuthResponse {
     token?: string,
     msg?: string
 }
-
-export interface Usuario{
-    distid: string
-    usuario: number,
-    email_user: string
-    rol: number
-}

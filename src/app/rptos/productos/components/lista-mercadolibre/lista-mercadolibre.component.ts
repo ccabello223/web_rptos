@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, computed, inject } from '@angular/core';
 import { ProductoService } from '../../services/producto.service';
 import { Producto, Usuario } from '../../interface/interface';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-lista-mercadolibre',
@@ -12,6 +13,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./lista-mercadolibre.component.css']
 })
 export class ListaMercadolibreComponent implements OnInit {
+
+  private authService = inject(AuthService)
+  private productoService = inject(ProductoService)
 
   id: number = 0;
   products: any[] = [];
@@ -28,20 +32,20 @@ export class ListaMercadolibreComponent implements OnInit {
 
   usersML: string[] = ['id', 'nombre', 'correo'];
   productsML: string[] = ['id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc']
-
-  constructor(private productoService: ProductoService) { }
+  public user = computed(() => this.authService.usuarioActual());
+  
+  constructor() { }
 
   ngOnInit(): void {
-    if(this.productoService.rol == 1 || this.productoService.rol == 6){
-      console.log(this.productoService.rol);
+    if(this.user()?.rol == 1 || this.user()?.rol == 6){
       this.dataSource = new MatTableDataSource(this.products);
       this.productoService.getUsuariosML().subscribe(resp => {
         this.users = Array.from({ length: resp.usuarios.length }, (_, k) => this.createNewUser(k, resp.usuarios));
         this.dataSource = new MatTableDataSource(this.users);
       })
-    }else if(this.productoService.rol != 3){
+    }else if(this.user()?.rol != 3){
       this.dataSource = new MatTableDataSource(this.products);
-      this.productoService.getUsuariosML(this.productoService.tipoUsuario).subscribe(resp => {
+      this.productoService.getUsuariosML(this.user()?.usuario).subscribe(resp => {
         this.users = Array.from({ length: resp.usuarios.length }, (_, k) => this.createNewUser(k, resp.usuarios));
         this.dataSource = new MatTableDataSource(this.users);
       })
@@ -145,7 +149,7 @@ export class ListaMercadolibreComponent implements OnInit {
     } else {
       this.isLoading = true;
       this.message = "Cargando/Actulizando productos. Espere un momento por favor."
-      this.productoService.postExcelProduct(this.id, this.selectedFile, this.productoService.rol)
+      this.productoService.postExcelProduct(this.id, this.selectedFile, this.user()?.rol)
         .subscribe(resp => {
           if (resp["ok"] === true) {
             this.selectedUser(this.id);

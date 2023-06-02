@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -11,25 +11,35 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent {
 
+  private fb = inject(FormBuilder)
+  private authService = inject(AuthService)
+  private router = inject(Router);
+
   authFormulario: FormGroup = this.fb.group({
     email_user: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
-  constructor(private fb: FormBuilder, 
-    private AuthService:AuthService,
-    private router: Router){}
+  constructor(){}
 
     login():void{
       const {email_user, password} = this.authFormulario.value;
-      this.AuthService.login(email_user, password)
+      this.authService.login(email_user, password)
       .subscribe(ok => {
         if(ok === true){
             this.router.navigateByUrl('/rptos/productos')
         }
         else{
-          Swal.fire('Error', ok, 'error')
+          Swal.fire('Error', ok.toString(), 'error')
         }
       })
   }
+
+  // login():void {
+  //   const {email_user, password} = this.authFormulario.value;
+  //   this.authService.login(email_user, password)
+  //   .subscribe(success => {
+  //     console.log(success);
+  //   })
+  // }
 }

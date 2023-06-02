@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { environment } from 'src/environments/environments';
 import { Producto, ProductoElement, ProductoMercadoLibre, UsuariosMercadoLibre } from '../interface/interface';
 import { Observable, of, tap } from 'rxjs';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,27 +12,17 @@ export class ProductoService {
 
   private baseUrl: string = environment.baseUrl;
   private _producto!: ProductoElement[];
-  private _rolId: number = Number(localStorage.getItem('rol'));
-  private _usuario: number = Number(localStorage.getItem('usuario'));
-  private _distid?: string = localStorage.getItem('distid')?.toString();
+  private authService = inject(AuthService)
+
+
+  public user = computed(() => this.authService.usuarioActual());
 
   get producto(){
     return {...this._producto};
   }
 
-  get rol(){
-    return this._rolId;
-  }
 
-  get tipoUsuario(){
-    return this._usuario;
-  }
-
-  get tipoTienda(){
-    return this._distid;
-  }
-
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
 
   }
 
@@ -46,7 +37,6 @@ export class ProductoService {
       return this.http.get<UsuariosMercadoLibre>(url);
     }else{
       const url = `${this.baseUrl}/productos_ml/getUsuariosML?usuario=${usuario}`;
-      console.log(usuario);
       return this.http.get<UsuariosMercadoLibre>(url);
     }
   }

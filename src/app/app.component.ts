@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
+import { AuthService } from './auth/services/auth.service';
+import { EstadoUsuario } from './auth/interfaces';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,28 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'web_rptos';
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  public finishedAuthCheck = computed<boolean>(() => {
+    if (this.authService.estadoDelUsuario() === EstadoUsuario.checking) {
+      return false;
+    }
+    return true;
+  })
+
+  public authStatusChangedEddect = effect(() => {
+    switch (this.authService.estadoDelUsuario()) {
+      case EstadoUsuario.checking:
+        return;
+      case EstadoUsuario.authenticated:
+        this.router.navigateByUrl('/rptos/productos');
+        return;
+      case EstadoUsuario.notAuthenticated:
+        this.router.navigateByUrl('/auth/login');
+        return;
+      default:
+        break;
+    }
+  })
 }

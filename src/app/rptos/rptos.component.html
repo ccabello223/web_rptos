@@ -23,10 +23,10 @@
             <mat-icon>menu</mat-icon>
         </button>
         <span class="spacer"></span>
-        <span class="mr-3">{{user.email_user}}</span>
-        <!-- <button mat-button (click)="onLogout()">
-            {{user.email_user}}
-        </button> -->
+        <span class="mr-3">{{user()?.email_user}}</span>
+        <button mat-button (click)="onLogout()">
+            Cerrar Sesion
+        </button>
     </mat-toolbar>
 
     <div class="container">
