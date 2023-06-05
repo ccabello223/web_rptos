@@ -2,10 +2,11 @@ import { Component, OnInit, ViewChild, computed, inject } from '@angular/core';
 import { ProductoService } from '../../services/producto.service';
 import { Producto, Usuario } from '../../interface/interface';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogoNotasMlComponent } from '../dialogo-notas-ml/dialogo-notas-ml.component';
 
 @Component({
   selector: 'app-lista-mercadolibre',
@@ -16,9 +17,10 @@ export class ListaMercadolibreComponent implements OnInit {
 
   private authService = inject(AuthService)
   private productoService = inject(ProductoService)
+  public dialog = inject(MatDialog)
 
   //id del la tabla usuarios_mercadolibre
-  id: number = 0;
+  id_usuario_ml: number = 0;
   products: any[] = [];
   productsTemp: any[] = [];
   users: Usuario[] = [];
@@ -32,7 +34,8 @@ export class ListaMercadolibreComponent implements OnInit {
 
 
   usersML: string[] = ['id', 'nombre', 'correo'];
-  productsML: string[] = ['id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc']
+  productsML: string[] = ['id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc', 'notas', 'eliminar']
+  productsMLTemp: string[] = ['id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc']
   public user = computed(() => this.authService.usuarioActual());
   
   constructor() { }
@@ -58,18 +61,18 @@ export class ListaMercadolibreComponent implements OnInit {
   }
 
   //Cuando el usuario selecciona un empleado entonces se cargar los productos
-  selectedUser(id:number) {
-    this.id = id;
+  selectedUser(id_usuario_ml:number) {
+    this.id_usuario_ml = id_usuario_ml;
     this.dataSource = new MatTableDataSource(this.products);
     this.dataSourceTemp = new MatTableDataSource(this.productsTemp);
 
-    this.productoService.getProductosML(this.id).subscribe(resp => {
+    this.productoService.getProductosML(this.id_usuario_ml).subscribe(resp => {
       this.products = Array.from({ length: resp.productos.length }, (_, k) => this.productOfUserById(k, resp.productos));
       this.dataSource.data = this.products;
       this.dataSource.paginator = this.paginator;
     });
 
-    this.productoService.getProductosmlTemp(this.id).subscribe(resp => {
+    this.productoService.getProductosmlTemp(this.id_usuario_ml).subscribe(resp => {
       this.productsTemp = Array.from({ length: resp.productos.length }, (_, k) => this.productOfUserById(k, resp.productos));
       this.dataSourceTemp.data = this.productsTemp;
     });
@@ -93,7 +96,7 @@ export class ListaMercadolibreComponent implements OnInit {
               resp["msg"],
               'success'
             );
-            this.selectedUser(this.id);
+            this.selectedUser(this.id_usuario_ml);
           }else{
             Swal.fire(
               'Error!',
@@ -120,14 +123,14 @@ export class ListaMercadolibreComponent implements OnInit {
       if (result.isConfirmed) {
         // el primer id representa el id en la tabla producto_mercadolibre_temp
         // el segundo es el id del usuarios_mercadolibre
-        this.productoService.getProductoML(id, this.id).subscribe(resp => {
+        this.productoService.getProductoML(id, this.id_usuario_ml).subscribe(resp => {
           if(resp["ok"] == true){
             Swal.fire(
               'Cargado!',
               resp["msg"],
               'success'
             );
-            this.selectedUser(this.id);
+            this.selectedUser(this.id_usuario_ml);
           }else{
             Swal.fire(
               'Error!',
@@ -141,7 +144,7 @@ export class ListaMercadolibreComponent implements OnInit {
   }
 
   selectUserAgain(): void {
-    this.id = 0;
+    this.id_usuario_ml = 0;
     this.dataSource = new MatTableDataSource(this.users);
   }
 
@@ -152,10 +155,10 @@ export class ListaMercadolibreComponent implements OnInit {
     } else {
       this.isLoading = true;
       this.message = "Cargando/Actulizando productos. Espere un momento por favor."
-      this.productoService.postExcelProduct(this.id, this.selectedFile, this.user()?.rol)
+      this.productoService.postExcelProduct(this.id_usuario_ml, this.selectedFile, this.user()?.rol)
         .subscribe(resp => {
           if (resp["ok"] === true) {
-            this.selectedUser(this.id);
+            this.selectedUser(this.id_usuario_ml);
             Swal.fire('Todo correcto!!', resp["msg"], 'success')
           }
           else {
@@ -201,5 +204,14 @@ export class ListaMercadolibreComponent implements OnInit {
       precio2_porc: products[i].precio2_porc,
       marca: products[i].marca.nombre,
     }
+  }
+
+  openDialog(element:Producto){
+    //TODO: mandar este llamado a dialogo-notas-ml.ts pero en data mandar el id y el id_usuario_ml
+    this.productoService.getNotasProductoById(element.id, this.id_usuario_ml).subscribe(resp => {
+      this.dialog.open(DialogoNotasMlComponent, {
+        data: resp.detalles,
+      })
+    })
   }
 }

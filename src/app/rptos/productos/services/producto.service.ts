@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environments';
 import { Producto, ProductoElement, ProductoMercadoLibre, UsuariosMercadoLibre } from '../interface/interface';
 import { Observable, of, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { NotaReponse } from '../interface/notas-response';
 
 @Injectable({
   providedIn: 'root'
@@ -51,8 +52,8 @@ export class ProductoService {
     return this.http.get<ProductoMercadoLibre>(url);
   }
 
-  getProductoML(id_producto:number, usuario_ml:number): Observable<any>{
-    const url = `${this.baseUrl}/productos_ml/getProductoML?id_producto=${id_producto}&usuario_ml=${usuario_ml}`;
+  getProductoML(id_producto:number, id_usuario_ml:number): Observable<any>{
+    const url = `${this.baseUrl}/productos_ml/getProductoML?id_producto=${id_producto}&usuario_ml=${id_usuario_ml}`;
     return this.http.get<any>(url)
   }
 
@@ -78,4 +79,14 @@ export class ProductoService {
     return this.http.delete<any>(url);
   }
 
+  getNotasProductoById(id_producto_ml:number, id_usuario_ml:number): Observable<NotaReponse>{
+    const url = `${this.baseUrl}/notas_ml?id_producto_ml=${id_producto_ml}&id_usuario_ml=${id_usuario_ml}`;
+    return this.http.get<NotaReponse>(url);
+  }
+
+  postNotasProducto(body:any): Observable<any>{
+    console.log(body);
+    const url = `${this.baseUrl}/notas_ml/postNota`;
+    return this.http.post<any>(url, body);
+  }
 }
