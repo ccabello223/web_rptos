@@ -1,9 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, inject} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { ProductoService } from '../../services/producto.service';
 import { ProductoElement } from '../../interface/interface';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogoNotasMlComponent } from '../../components/dialogo-notas/dialogo-notas.component';
 
 export interface ProductoTabla {
   id: number;
@@ -32,12 +34,14 @@ export interface ProductoTabla {
 })
 
 export class LayoutPageComponent implements OnInit {
+
+  public dialog = inject(MatDialog)
   
   producto!: ProductoElement[];
 
   distid?:string = '';
   
-  displayedColumns: string[] = ['id', 'codigo', 'descripción', 'marca'];
+  displayedColumns: string[] = ['id', 'codigo', 'descripción', 'marca', 'notas'];
   dataSource!: MatTableDataSource<ProductoTabla>;
 
   @ViewChild(MatPaginator)
@@ -78,6 +82,12 @@ export class LayoutPageComponent implements OnInit {
       descripcion: this.producto[id].nombre,
       marca: this.producto[id].categorium.nombre,
     }
+  }
+
+  openDialog(element:any){
+    this.dialog.open(DialogoNotasMlComponent, {
+      data: element.id,
+    })
   }
 }
 

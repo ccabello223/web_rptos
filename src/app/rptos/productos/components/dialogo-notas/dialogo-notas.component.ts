@@ -1,14 +1,13 @@
 import { Component, Inject, inject } from '@angular/core';
-import { FormBuilder, FormGroup, MaxLengthValidator, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Detalles } from '../../interface/notas-response';
 import { ProductoService } from '../../services/producto.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-dialogo-notas-ml',
-  templateUrl: './dialogo-notas-ml.component.html',
-  styleUrls: ['./dialogo-notas-ml.component.css']
+  selector: 'app-dialogo-notas',
+  templateUrl: './dialogo-notas.component.html',
+  styleUrls: ['./dialogo-notas.component.css']
 })
 
 
@@ -29,24 +28,23 @@ export class DialogoNotasMlComponent {
     {name:"Largo",dist:"largo"},{name:"Precio Estimado",dist:"precioEstimado"}, {name:"Nota",dist:"nota"},
   ]
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Detalles) {
-    // Hacer la peticion aqui
-    this.notasFormulario.setValue({
-      peso: data.peso || '',
-      alto: data.alto || '',
-      ancho: data.ancho || '',
-      largo: data.largo || '',
-      precioEstimado: data.precioEstimado || '',
-      nota: data.nota || '',
-    });
+  constructor(@Inject(MAT_DIALOG_DATA) public data: number) {
+    this.productoService.getNotasProductoById(data).subscribe(resp => {
+      this.notasFormulario.setValue({
+        peso: resp.detalles.peso || '',
+        alto: resp.detalles.alto || '',
+        ancho: resp.detalles.ancho || '',
+        largo: resp.detalles.largo || '',
+        precioEstimado: resp.detalles.precioEstimado || '',
+        nota: resp.detalles.nota || '',
+      });
+    })
   }
 
   guardarNota(): void {
-    const id_producto_ml = this.data.id_producto_ml;
-    const id_usuario_ml = this.data.id_usuario_ml;
+    const id_producto = this.data
     const { peso, alto, ancho, largo, precioEstimado, nota } = this.notasFormulario.value;
-    const body = {id_producto_ml, peso, alto, ancho, largo, precioEstimado, nota, id_usuario_ml}
-    console.log(id_producto_ml);
+    const body = {id_producto, peso, alto, ancho, largo, precioEstimado, nota}
     this.productoService.postNotasProducto(body)
     .subscribe(resp => {
       if(resp["ok"] === true){

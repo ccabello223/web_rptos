@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogoNotasMlComponent } from '../dialogo-notas-ml/dialogo-notas-ml.component';
+import { DialogoNotasMlComponent } from '../dialogo-notas/dialogo-notas.component';
 
 @Component({
   selector: 'app-lista-mercadolibre',
@@ -207,11 +207,8 @@ export class ListaMercadolibreComponent implements OnInit {
   }
 
   openDialog(element:Producto){
-    //TODO: mandar este llamado a dialogo-notas-ml.ts pero en data mandar el id y el id_usuario_ml
-    this.productoService.getNotasProductoById(element.id, this.id_usuario_ml).subscribe(resp => {
-      this.dialog.open(DialogoNotasMlComponent, {
-        data: resp.detalles,
-      })
+    this.dialog.open(DialogoNotasMlComponent, {
+      data: element.id_producto,
     })
   }
 }

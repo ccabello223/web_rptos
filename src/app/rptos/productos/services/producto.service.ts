@@ -79,14 +79,13 @@ export class ProductoService {
     return this.http.delete<any>(url);
   }
 
-  getNotasProductoById(id_producto_ml:number, id_usuario_ml:number): Observable<NotaReponse>{
-    const url = `${this.baseUrl}/notas_ml?id_producto_ml=${id_producto_ml}&id_usuario_ml=${id_usuario_ml}`;
+  getNotasProductoById(id_producto:number): Observable<NotaReponse>{
+    const url = `${this.baseUrl}/notas?id_producto=${id_producto}`;
     return this.http.get<NotaReponse>(url);
   }
 
   postNotasProducto(body:any): Observable<any>{
-    console.log(body);
-    const url = `${this.baseUrl}/notas_ml/postNota`;
+    const url = `${this.baseUrl}/notas/postNota`;
     return this.http.post<any>(url, body);
   }
 }
