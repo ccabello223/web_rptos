@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject } from '@angular/core';
 import { environment } from 'src/environments/environments';
-import { Producto, ProductoElement, ProductoMercadoLibre, UsuariosMercadoLibre } from '../interface/interface';
-import { Observable, of, tap } from 'rxjs';
+import { ProductoMercadoLibre, UsuariosMercadoLibre } from '../interface/interface';
+import { Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { NotaReponse } from '../interface/notas-response';
+import { Producto, Productos } from '../interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import { NotaReponse } from '../interface/notas-response';
 export class ProductoService {
 
   private baseUrl: string = environment.baseUrl;
-  private _producto!: ProductoElement[];
+  private _producto!: Producto[];
   private authService = inject(AuthService)
 
 
@@ -27,9 +28,9 @@ export class ProductoService {
 
   }
 
-  getProducto(): Observable<Producto>{
+  getProducto(): Observable<Productos>{
     const url = `${this.baseUrl}/productos`;
-    return this.http.get<Producto>(url)
+    return this.http.get<Productos>(url)
   }
 
   getUsuariosML(usuario:number = 0): Observable<UsuariosMercadoLibre>{

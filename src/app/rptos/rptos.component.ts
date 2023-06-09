@@ -15,7 +15,7 @@ export class RptosComponent {
   private _isLogout = false;
 
   public sidebarItems = [
-    { label: 'Productos', icon: 'receipt_long', url: 'rptos/productos' },
+    { label: 'Productos', icon: 'receipt_long', url: '/rptos/productos' },
   ]
 
   public user = computed(() => this.authService.usuarioActual());

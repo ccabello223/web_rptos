@@ -3,16 +3,9 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { ProductoService } from '../../services/producto.service';
-import { ProductoElement } from '../../interface/interface';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogoNotasMlComponent } from '../../components/dialogo-notas/dialogo-notas.component';
-
-export interface ProductoTabla {
-  id: number;
-  codigo: string;
-  descripcion: string;
-  marca: string;
-}
+import { Producto, ProductoTabla } from '../../interface';
 
 @Component({
   selector: 'app-layout-page',
@@ -37,11 +30,11 @@ export class LayoutPageComponent implements OnInit {
 
   public dialog = inject(MatDialog)
   
-  producto!: ProductoElement[];
+  producto!: Producto[];
 
   distid?:string = '';
   
-  displayedColumns: string[] = ['id', 'codigo', 'descripción', 'marca', 'notas'];
+  displayedColumns: string[] = ['id', 'codigo', 'descripción', 'marca', 'precio1', 'precio2', 'notas'];
   dataSource!: MatTableDataSource<ProductoTabla>;
 
   @ViewChild(MatPaginator)
@@ -58,7 +51,7 @@ export class LayoutPageComponent implements OnInit {
 
   iniciarValor() {
     this.productoService.getProducto().subscribe(resp => {
-      this.producto = resp.producto
+      this.producto = resp.productos
       const users = Array.from({length: this.producto.length}, (_, k) => this.createNewUser(k));
       this.dataSource = new MatTableDataSource(users);
       this.dataSource.paginator = this.paginator;
@@ -75,12 +68,14 @@ export class LayoutPageComponent implements OnInit {
     }
   }
   /** Builds and returns a new User. */
-  createNewUser(id: number): ProductoTabla{
+  createNewUser(i: number): ProductoTabla{
     return {
-      id: this.producto[id].idproducto,
-      codigo: this.producto[id].codigo,
-      descripcion: this.producto[id].nombre,
-      marca: this.producto[id].categorium.nombre,
+      id: this.producto[i].idproducto,
+      codigo: this.producto[i].codigo,
+      descripcion: this.producto[i].nombre,
+      marca: this.producto[i].marca.nombre,
+      precio1: this.producto[i].precio1,
+      precio2: this.producto[i].precio2
     }
   }
 
