@@ -23,6 +23,10 @@ export class ProductoService {
     return {...this._producto};
   }
 
+  get getBaseUrl(){
+    return this.baseUrl;
+  }
+
 
   constructor(private http: HttpClient) {
 
@@ -31,6 +35,17 @@ export class ProductoService {
   getProducto(): Observable<Productos>{
     const url = `${this.baseUrl}/productos`;
     return this.http.get<Productos>(url)
+  }
+
+  postExcelProduct(selectedFile?: File):Observable<any>{
+
+    if(selectedFile != null){
+      const formData = new FormData();
+      formData.append('files', selectedFile, selectedFile.name);
+      const url = `${this.baseUrl}/productos/actualizar_producto`;
+      return this.http.post<any>(url, formData);
+    }
+    return of("El archivo esta vacio"); 
   }
 
   getUsuariosML(usuario:number = 0): Observable<UsuariosMercadoLibre>{
@@ -58,7 +73,7 @@ export class ProductoService {
     return this.http.get<any>(url)
   }
 
-  postExcelProduct(id:number, selectedFile?: File, rol:number = 0):Observable<any>{
+  postExcelProductMl(id:number, selectedFile?: File, rol:number = 0):Observable<any>{
 
     if(selectedFile != null){
       const formData = new FormData();
