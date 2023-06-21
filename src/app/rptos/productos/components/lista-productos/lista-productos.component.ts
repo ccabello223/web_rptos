@@ -6,9 +6,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ProductoService } from '../../services/producto.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogoNotasMlComponent } from '../../components/dialogo-notas/dialogo-notas.component';
-import { Producto, ProductoTabla } from '../../interface';
+import { ProductoTabla } from '../../interface';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { Producto } from '../../interface/producto';
 
 @Component({
   selector: 'app-lista-productos',
@@ -16,7 +17,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
   styleUrls: ['./lista-productos.component.css']
 })
 export class ListaProductosComponent {
-  public dialog = inject(MatDialog)
+  public dialog = inject(MatDialog);
   public router = inject(Router);
   public authService = inject(AuthService)
 

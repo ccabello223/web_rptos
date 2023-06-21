@@ -5,7 +5,9 @@ import { ProductoMercadoLibre, UsuariosMercadoLibre } from '../interface/interfa
 import { Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { NotaReponse } from '../interface/notas-response';
-import { Producto, Productos } from '../interface';
+import { Productos } from '../interface';
+import { VentasWebs } from '../interface/ventas-web-response';
+import { Producto } from '../interface/producto';
 
 @Injectable({
   providedIn: 'root'
@@ -103,5 +105,10 @@ export class ProductoService {
   postNotasProducto(body:any): Observable<any>{
     const url = `${this.baseUrl}/notas/postNota`;
     return this.http.post<any>(url, body);
+  }
+
+  getVentas(): Observable<VentasWebs>{
+    const url = `${this.baseUrl}/ventas_web`;
+    return this.http.get<VentasWebs>(url)
   }
 }

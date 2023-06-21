@@ -1,4 +1,6 @@
 import { Component, computed, effect, inject } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
 import { AuthService } from './auth/services/auth.service';
 import { EstadoUsuario } from './auth/interfaces';
 import { Router } from '@angular/router';
@@ -9,6 +11,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  constructor(){
+    registerLocaleData(localeEs);
+  }
+  
   private authService = inject(AuthService);
   private router = inject(Router);
 
