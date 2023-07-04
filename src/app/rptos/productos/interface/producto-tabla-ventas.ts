@@ -7,5 +7,6 @@ export interface ProductoTablaVentas {
     precio2: string;
     cantidad: string;
     vendedor:string;
+    cliente:string;
     fecha:string;
   }

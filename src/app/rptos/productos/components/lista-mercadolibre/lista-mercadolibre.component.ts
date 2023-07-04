@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogoNotasMlComponent } from '../dialogo-notas/dialogo-notas.component';
+import { DialogoAgregarVentaComponent } from '../dialogo-agregar-venta/dialogo-agregar-venta.component';
 
 @Component({
   selector: 'app-lista-mercadolibre',
@@ -34,7 +35,7 @@ export class ListaMercadolibreComponent implements OnInit {
 
 
   usersML: string[] = ['id', 'nombre', 'correo'];
-  productsML: string[] = ['id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc', 'notas', 'eliminar']
+  productsML: string[] = ['id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc', 'notas', 'ventas', 'eliminar']
   productsMLTemp: string[] = ['id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc']
   public user = computed(() => this.authService.usuarioActual());
   
@@ -206,9 +207,20 @@ export class ListaMercadolibreComponent implements OnInit {
     }
   }
 
-  openDialog(element:Producto){
+  openDialogNotas(element:Producto){
     this.dialog.open(DialogoNotasMlComponent, {
       data: element.id_producto,
+    })
+  }
+
+    openDialogVentas(element:Producto){
+      const usuario_ml_id = this.id_usuario_ml;
+      const producto_id = element.id_producto;
+      const tipoProducto = element.nombre;
+      const body = {usuario_ml_id, producto_id, tipoProducto};
+      console.log(body);
+    this.dialog.open(DialogoAgregarVentaComponent, {
+      data: body
     })
   }
 }

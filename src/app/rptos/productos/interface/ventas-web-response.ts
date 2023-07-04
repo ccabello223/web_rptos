@@ -8,6 +8,7 @@ export interface VentasWebs {
 export interface Venta {
     id:                    number;
     cantidad_vendida:      number;
+    nombre_cliente:        string;
     fecha_venta:           Date;
     producto:              Producto;
     usuarios_mercadolibre: UsuariosMercadolibre;

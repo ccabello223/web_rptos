@@ -8,6 +8,7 @@ import { NotaReponse } from '../interface/notas-response';
 import { Productos } from '../interface';
 import { VentasWebs } from '../interface/ventas-web-response';
 import { Producto } from '../interface/producto';
+import { NotasVentasWebResponse } from '../interface/notas-ventas-web';
 
 @Injectable({
   providedIn: 'root'
@@ -107,8 +108,33 @@ export class ProductoService {
     return this.http.post<any>(url, body);
   }
 
-  getVentas(): Observable<VentasWebs>{
-    const url = `${this.baseUrl}/ventas_web`;
-    return this.http.get<VentasWebs>(url)
+  getNotasVentasWebById(id_ventas_web:number): Observable<NotasVentasWebResponse>{
+    const url = `${this.baseUrl}/notas_web?id_ventas_web=${id_ventas_web}`;
+    return this.http.get<NotasVentasWebResponse>(url);
+  }
+
+  postNotasVentasWeb(body:any): Observable<any>{
+    const url = `${this.baseUrl}/notas_web/postNota`;
+    return this.http.post<any>(url, body);
+  }
+
+  getVentas(usuario:number = 0): Observable<VentasWebs>{
+    if(usuario == 0){
+      const url = `${this.baseUrl}/ventas_web`;
+      return this.http.get<VentasWebs>(url)
+    }else{
+      const url = `${this.baseUrl}/ventas_web?usuario=${usuario}`;
+      return this.http.get<VentasWebs>(url)
+    }
+  }
+
+  postVentas(body:any): Observable<any>{
+    const url = `${this.baseUrl}/ventas_web/postVentas`;
+    return this.http.post<any>(url, body);
+  }
+
+  deleteVenta(id:number): Observable<any>{
+    const url = `${this.baseUrl}/ventas_web/deleteVenta?id=${id}`;
+    return this.http.delete<any>(url);
   }
 }

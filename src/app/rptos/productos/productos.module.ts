@@ -8,6 +8,8 @@ import { DialogoNotasMlComponent } from './components/dialogo-notas/dialogo-nota
 import { ReactiveFormsModule } from '@angular/forms';
 import { ListaProductosComponent } from './components/lista-productos/lista-productos.component';
 import { VentasWebComponent } from './components/ventas-web/ventas-web.component';
+import { DialogoNotasVentasComponent } from './components/dialogo-notas-ventas/dialogo-notas-ventas.component';
+import { DialogoAgregarVentaComponent } from './components/dialogo-agregar-venta/dialogo-agregar-venta.component';
 
 
 
@@ -17,7 +19,9 @@ import { VentasWebComponent } from './components/ventas-web/ventas-web.component
     ListaMercadolibreComponent,
     DialogoNotasMlComponent,
     ListaProductosComponent,
-    VentasWebComponent
+    VentasWebComponent,
+    DialogoNotasVentasComponent,
+    DialogoAgregarVentaComponent,
   ],
   
   imports: [

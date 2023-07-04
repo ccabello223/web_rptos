@@ -104,8 +104,17 @@
         <ng-container matColumnDef="notas">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Notas</th>
           <td mat-cell *matCellDef="let element">
-            <button mat-icon-button (click)="openDialog(element)">
+            <button mat-icon-button (click)="openDialogNotas(element)">
               <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ventas">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Ventas</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="openDialogVentas(element)">
+              <mat-icon>sell</mat-icon>
             </button>
           </td>
         </ng-container>
