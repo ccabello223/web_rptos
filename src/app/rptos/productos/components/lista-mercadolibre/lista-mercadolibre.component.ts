@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogoNotasMlComponent } from '../dialogo-notas/dialogo-notas.component';
 import { DialogoAgregarVentaComponent } from '../dialogo-agregar-venta/dialogo-agregar-venta.component';
+import { Productosml } from '../../interface';
 
 @Component({
   selector: 'app-lista-mercadolibre',
@@ -68,13 +69,13 @@ export class ListaMercadolibreComponent implements OnInit {
     this.dataSourceTemp = new MatTableDataSource(this.productsTemp);
 
     this.productoService.getProductosML(this.id_usuario_ml).subscribe(resp => {
-      this.products = Array.from({ length: resp.productos.length }, (_, k) => this.productOfUserById(k, resp.productos));
+      this.products = Array.from({ length: resp.productosml.length }, (_, k) => this.productOfUserById(k, resp.productosml));
       this.dataSource.data = this.products;
       this.dataSource.paginator = this.paginator;
     });
 
     this.productoService.getProductosmlTemp(this.id_usuario_ml).subscribe(resp => {
-      this.productsTemp = Array.from({ length: resp.productos.length }, (_, k) => this.productOfUserById(k, resp.productos));
+      this.productsTemp = Array.from({ length: resp.productosml.length }, (_, k) => this.productOfUserById(k, resp.productosml));
       this.dataSourceTemp.data = this.productsTemp;
     });
   }
@@ -193,17 +194,17 @@ export class ListaMercadolibreComponent implements OnInit {
     }
   }
 
-  productOfUserById(i: number, products: Producto[]): any {
+  productOfUserById(i: number, products: Productosml[]): any {
     return {
       id: products[i].id,
       id_producto:products[i].id_producto,
-      nombre: products[i].nombre,
-      codigo: products[i].codigo,
+      nombre: products[i].producto.nombre,
+      codigo: products[i].producto.codigo,
       precio1: products[i].precio1,
       precio2: products[i].precio2,
       precio1_porc: products[i].precio1_porc,
       precio2_porc: products[i].precio2_porc,
-      marca: products[i].marca.nombre,
+      marca: products[i].producto.marca.nombre,
     }
   }
 

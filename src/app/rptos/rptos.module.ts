@@ -6,7 +6,7 @@ import { RptosComponent } from './rptos.component';
 
 @NgModule({
   declarations: [
-    RptosComponent
+    RptosComponent,
   ],
   imports: [
     CommonModule,

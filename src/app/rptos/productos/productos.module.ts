@@ -10,6 +10,7 @@ import { ListaProductosComponent } from './components/lista-productos/lista-prod
 import { VentasWebComponent } from './components/ventas-web/ventas-web.component';
 import { DialogoNotasVentasComponent } from './components/dialogo-notas-ventas/dialogo-notas-ventas.component';
 import { DialogoAgregarVentaComponent } from './components/dialogo-agregar-venta/dialogo-agregar-venta.component';
+import { DialogoAgregarProductosWebsComponent } from './components/dialogo-agregar-productos-webs/dialogo-agregar-productos-webs.component';
 
 
 
@@ -22,6 +23,7 @@ import { DialogoAgregarVentaComponent } from './components/dialogo-agregar-venta
     VentasWebComponent,
     DialogoNotasVentasComponent,
     DialogoAgregarVentaComponent,
+    DialogoAgregarProductosWebsComponent,
   ],
   
   imports: [

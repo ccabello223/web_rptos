@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject } from '@angular/core';
 import { environment } from 'src/environments/environments';
-import { ProductoMercadoLibre, UsuariosMercadoLibre } from '../interface/interface';
+import { UsuariosMercadoLibre } from '../interface/interface';
 import { Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { NotaReponse } from '../interface/notas-response';
-import { Productos } from '../interface';
+import { Productos, ProductosMercadolibreResponse } from '../interface';
 import { VentasWebs } from '../interface/ventas-web-response';
 import { Producto } from '../interface/producto';
 import { NotasVentasWebResponse } from '../interface/notas-ventas-web';
@@ -61,14 +61,14 @@ export class ProductoService {
     }
   }
 
-  getProductosML(id:number): Observable<ProductoMercadoLibre>{
+  getProductosML(id:number): Observable<ProductosMercadolibreResponse>{
     const url = `${this.baseUrl}/productos_ml/getproductos?userId=${id}`;
-    return this.http.get<ProductoMercadoLibre>(url);
+    return this.http.get<ProductosMercadolibreResponse>(url);
   }
 
-  getProductosmlTemp(id:number): Observable<ProductoMercadoLibre>{
+  getProductosmlTemp(id:number): Observable<ProductosMercadolibreResponse>{
     const url = `${this.baseUrl}/productos_ml/getProductosmlTemp?userId=${id}`;
-    return this.http.get<ProductoMercadoLibre>(url);
+    return this.http.get<ProductosMercadolibreResponse>(url);
   }
 
   getProductoML(id_producto:number, id_usuario_ml:number): Observable<any>{
@@ -91,6 +91,11 @@ export class ProductoService {
       }
     }
     return of("El archivo esta vacio"); 
+  }
+
+  postDesdeListaProducto(body:any): Observable<any>{
+    const url = `${this.baseUrl}/productos_ml/insertarDesdeListaProducto`;
+    return this.http.post<any>(url, body);
   }
 
   deleteProduct(id:number): Observable<any>{

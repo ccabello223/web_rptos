@@ -19,6 +19,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule } from '@angular/forms';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   exports: [
@@ -41,6 +42,7 @@ import { FormsModule } from '@angular/forms';
     MatTabsModule,
     MatToolbarModule,
     FormsModule,
+    MatCheckboxModule
   ]
 })
 export class MaterialModule { }
