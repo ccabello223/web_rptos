@@ -1,24 +1,24 @@
-import { Component, OnInit, ViewChild, computed, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { SelectionModel } from '@angular/cdk/collections';
+import { Component, ViewChild, computed, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ProductoService } from '../../services/producto.service';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogoNotasMlComponent } from '../../components/dialogo-notas/dialogo-notas.component';
-import { ProductoTabla } from '../../interface';
-import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { Producto } from '../../interface/producto';
-import { DialogoAgregarProductosWebsComponent } from '../dialogo-agregar-productos-webs/dialogo-agregar-productos-webs.component';
-import { SelectionModel } from '@angular/cdk/collections';
+import { ProductoTabla } from 'src/app/rptos/productos/interface';
+import { Producto } from 'src/app/rptos/productos/interface/producto';
+import { ProductoService } from 'src/app/rptos/productos/services/producto.service';
+import Swal from 'sweetalert2';
+import { DialogoAgregarProductosWebsComponent } from './components/dialogo-agregar-productos-webs/dialogo-agregar-productos-webs.component';
+import { DialogoNotaProductoComponent } from './components/dialogo-nota-producto/dialogo-nota-producto.component';
 
 @Component({
-  selector: 'app-lista-productos',
-  templateUrl: './lista-productos.component.html',
-  styleUrls: ['./lista-productos.component.css']
+  selector: 'app-lista-producto',
+  templateUrl: './lista-producto.component.html',
+  styleUrls: ['./lista-producto.component.css']
 })
-export class ListaProductosComponent {
+export class ListaProductoComponent {
   public dialog = inject(MatDialog)
   public router = inject(Router);
   public authService = inject(AuthService)
@@ -83,7 +83,7 @@ export class ListaProductosComponent {
   }
 
   openDialog(element: any) {
-    this.dialog.open(DialogoNotasMlComponent, {
+    this.dialog.open(DialogoNotaProductoComponent, {
       data: element.id,
     })
   }
@@ -141,7 +141,7 @@ export class ListaProductosComponent {
   }
 
   saveSelectedRows() {
-    //console.log(this.selectedRows);
+    console.log(this.selectedRows);
     this.dialog.open(DialogoAgregarProductosWebsComponent, {
       data: this.selectedRows,
     })

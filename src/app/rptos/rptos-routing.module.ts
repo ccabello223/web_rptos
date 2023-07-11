@@ -8,8 +8,12 @@ const routes: Routes = [
     component: RptosComponent,
     children: [
       {
+        path:'inicio',
+        loadChildren: () => import('./seccion-inicio/seccion-inicio.module').then(m=>m.SeccionInicioModule)
+      },
+      {
         path:'productos',
-        loadChildren: () => import('./productos/productos.module').then(m=>m.ProductosModule)
+        loadChildren: () => import('./seccion-productos/seccion-productos.module').then(m=>m.SeccionProductosModule)
       },
       {
         path:'**', redirectTo: 'productos',

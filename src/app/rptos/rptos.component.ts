@@ -12,16 +12,15 @@ import { Usuario } from '../auth/interfaces';
 export class RptosComponent {
 
   private authService = inject(AuthService)
-  private _isLogout = false;
+  // private _isLogout = false;
 
-  public sidebarItems = [
-    { label: 'Productos', icon: 'receipt_long', url: '/rptos/productos' },
-  ]
+  // public sidebarItems = [
+  //   { label: 'Productos', icon: 'receipt_long', url: '/rptos/productos' },
+  // ]
 
   public user = computed(() => this.authService.usuarioActual());
 
-  constructor(
-    private router: Router) {
+  constructor() {
   }
 
   onLogout() {

@@ -31,6 +31,9 @@ import { DialogoAgregarProductosWebsComponent } from './components/dialogo-agreg
     ProductosRoutingModule,
     MaterialModule,
     ReactiveFormsModule
+  ],
+  exports:[
+    DialogoNotasMlComponent,
   ]
 })
 export class ProductosModule { }

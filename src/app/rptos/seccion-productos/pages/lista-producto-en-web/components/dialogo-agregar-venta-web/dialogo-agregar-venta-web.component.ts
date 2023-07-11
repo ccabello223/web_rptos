@@ -1,15 +1,14 @@
 import { Component, Inject, inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ProductoService } from 'src/app/rptos/productos/services/producto.service';
 import Swal from 'sweetalert2';
-import { ProductoService } from '../../services/producto.service';
 
 @Component({
-  selector: 'app-dialogo-agregar-venta',
-  templateUrl: './dialogo-agregar-venta.component.html',
-  styleUrls: ['./dialogo-agregar-venta.component.css']
+  selector: 'app-dialogo-agregar-venta-web',
+  templateUrl: './dialogo-agregar-venta-web.component.html',
+  styleUrls: ['./dialogo-agregar-venta-web.component.css']
 })
-export class DialogoAgregarVentaComponent {
-
+export class DialogoAgregarVentaWebComponent {
   private productoService = inject(ProductoService)
 
   contador: number = 0;

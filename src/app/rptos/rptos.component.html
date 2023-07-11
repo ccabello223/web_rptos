@@ -1,4 +1,4 @@
-<mat-sidenav-container fullscreen>
+<!-- <mat-sidenav-container fullscreen>
     <mat-sidenav #sidenav mode="push" [ngStyle]="{width:'250px'}">
         <mat-toolbar>
             <span>Menú</span>
@@ -32,4 +32,27 @@
     <div class="container">
         <router-outlet></router-outlet>
     </div>
-</mat-sidenav-container>
+</mat-sidenav-container> -->
+
+<mat-toolbar color="primary">
+    <button class="m-1 pl-2 pr-2" mat-button routerLink="/rptos/inicio">
+      Inicio
+    </button>
+    <button class="m-1 pl-2 pr-2" mat-button routerLink="/rptos/productos">
+      Productos
+    </button>
+    <button class="m-1 pl-2 pr-2" mat-button>
+      Clientes
+    </button>
+  
+    <span class="spacer"></span>
+  
+    <span class="mr-3">{{user()?.email_user}}</span>
+  
+    <button mat-button (click)="onLogout()">
+        Cerrar Sesion
+    </button>
+  
+  </mat-toolbar>
+  
+  <router-outlet></router-outlet>
