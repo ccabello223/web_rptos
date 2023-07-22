@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { DialogoNotaProductoComponent } from '../../../lista-producto/components/dialogo-nota-producto/dialogo-nota-producto.component';
 import { Productosml } from 'src/app/rptos/productos/interface';
 import { DialogoAgregarVentaWebComponent } from '../../components/dialogo-agregar-venta-web/dialogo-agregar-venta-web.component';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-control-productos-web',
@@ -31,12 +32,17 @@ export class ControlProductosWebComponent {
   dataSource!: MatTableDataSource<Usuario>;
   dataSourceTemp!: MatTableDataSource<ProductoWebsTable>;
 
+  //checkbox
+  selection = new SelectionModel<ProductoWebsTable>(true, []);
+  selectedRows: ProductoWebsTable[] = [];
+  showButton: boolean = false;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild("MatProductosTempPaginator") productosTempPaginator!: MatPaginator;
 
 
   usersML: string[] = ['id', 'nombre', 'correo'];
-  productsML: string[] = ['id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc', 'notas', 'ventas', 'eliminar']
+  productsML: string[] = ['checkbox', 'id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc', 'notas', 'eliminar']
   productsMLTemp: string[] = ['id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc']
   public user = computed(() => this.authService.usuarioActual());
   
@@ -216,14 +222,25 @@ export class ControlProductosWebComponent {
     })
   }
 
-    openDialogVentas(element:ProductoWebsTable){
-      const usuario_ml_id = this.id_usuario_ml;
-      const producto_id = element.id_producto;
-      const tipoProducto = element.nombre;
-      const body = {usuario_ml_id, producto_id, tipoProducto};
-      console.log(body);
+  onRowSelect(event:any, row:any) {
+    if (event.checked) {
+      this.selectedRows.push(row);
+    } else {
+      const index = this.selectedRows.indexOf(row);
+      if (index > -1) {
+        this.selectedRows.splice(index, 1);
+      }
+    }
+    this.showButton = this.selectedRows.length > 0;
+  }
+
+  crearVenta() {
+    const usuario_ml_id = this.id_usuario_ml;
     this.dialog.open(DialogoAgregarVentaWebComponent, {
-      data: body
+      data: { 
+        usuario_ml_id, 
+        items: this.selectedRows 
+      },
     })
   }
 }

@@ -2,12 +2,14 @@ import { Component, ViewChild, computed, inject } from '@angular/core';
 import { DialogoNotasVentasComponent } from '../../components/dialogo-notas-ventas/dialogo-notas-ventas.component';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { ProductoService } from 'src/app/rptos/productos/services/producto.service';
+// import { ProductoService } from 'src/app/rptos/productos/services/producto.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { ProductoTablaVentas} from 'src/app/rptos/seccion-productos/interfaces';
-import { Venta } from 'src/app/rptos/productos/interface/ventas-web-response';
+import { ProductoTablaVentas, Venta} from 'src/app/rptos/seccion-productos/interfaces';
+// import { Venta } from 'src/app/rptos/productos/interface/ventas-web-response';
+import { ListaProductoWebService } from '../../services/lista-producto-web.service';
+import { DialogoDetalleVentaComponent } from '../../components/dialogo-detalle-venta/dialogo-detalle-venta.component';
 
 @Component({
   selector: 'app-control-ventas-en-web',
@@ -16,13 +18,13 @@ import { Venta } from 'src/app/rptos/productos/interface/ventas-web-response';
 })
 export class ControlVentasEnWebComponent {
   private authService = inject(AuthService)
-  public productoService = inject(ProductoService)
+  public productoService = inject(ListaProductoWebService)
   public dialog = inject(MatDialog);
 
   isLoading = false;
   message: string = '';
   ventas: Venta[] = [];
-  displayedColumns: string[] = ['id', 'codigo', 'descripción', 'marca', 'precio1', 'precio2', 'vendedor', 'cliente', 'cantidad', 'fecha', 'notas', 'eliminar'];
+  displayedColumns: string[] = ['id', 'vendedor', 'cliente', 'red', 'pago', 'fecha', 'notas', 'detalle', 'eliminar'];
   dataSource!: MatTableDataSource<ProductoTablaVentas>;
   public user = computed(() => this.authService.usuarioActual());
 
@@ -37,34 +39,40 @@ export class ControlVentasEnWebComponent {
     if(this.user()?.rol == 1 || this.user()?.rol == 6 || (this.user()?.rol == 2 && this.user()?.usuario == 30)){
       this.productoService.getVentas().subscribe(resp => {
         this.ventas = resp.ventas
-        const users = Array.from({ length: this.ventas.length }, (_, k) => this.createNewVentas(k));
+        const users = Array.from({ length: this.ventas.length }, (_, k) => this.creaInformacionDeVentas(k));
         this.dataSource = new MatTableDataSource(users);
         this.dataSource.paginator = this.paginator;
       })
     }else if(this.user()?.rol != 3){
       this.productoService.getVentas(this.user()?.usuario).subscribe(resp => {
         this.ventas = resp.ventas
-        const users = Array.from({ length: this.ventas.length }, (_, k) => this.createNewVentas(k));
+        const users = Array.from({ length: this.ventas.length }, (_, k) => this.creaInformacionDeVentas(k));
         this.dataSource = new MatTableDataSource(users);
         this.dataSource.paginator = this.paginator;
       })
     }
   }
 
-  /** Builds and returns a new Products. */
-  createNewVentas(i: number): ProductoTablaVentas {
+  creaInformacionDeVentas(i: number): ProductoTablaVentas {
     return {
       id: this.ventas[i].id,
-      codigo: this.ventas[i].producto.codigo,
-      descripcion: this.ventas[i].producto.nombre,
-      marca: this.ventas[i].producto.marca.nombre,
-      precio1: this.ventas[i].producto.precio1,
-      precio2: this.ventas[i].producto.precio2,
       vendedor: this.ventas[i].usuarios_mercadolibre.correo,
       cliente: this.ventas[i].nombre_cliente,
-      cantidad: this.ventas[i].cantidad_vendida.toString(),
+      forma_de_pago: this.ventas[i].formas_de_pago.nombre,
+      red: this.ventas[i].tiendas_web.nombre,
       fecha: this.ventas[i].fecha_venta.toString()
     }
+  }
+
+  openDialogDetalles(element:ProductoTablaVentas){
+    console.log(element);
+      // const usuario_ml_id = this.id_usuario_ml;
+      // const producto_id = element.id_producto;
+      // const tipoProducto = element.nombre;
+      // const body = {usuario_ml_id, producto_id, tipoProducto};
+    this.dialog.open(DialogoDetalleVentaComponent, {
+      data: element.id
+    })
   }
 
   borrarProducto(id:number){

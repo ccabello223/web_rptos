@@ -18,6 +18,7 @@ export class ProductoService {
   private baseUrl: string = environment.baseUrl;
   private _producto!: Producto[];
   private authService = inject(AuthService)
+  
 
 
   public user = computed(() => this.authService.usuarioActual());

@@ -1,22 +1,18 @@
-import { Producto } from "./producto";
+import { FormasDePago } from "./models/formas_de_pago";
+import { TiendasEnWeb } from "./models/tiendas_web";
+import { UsuariosWeb } from "./models/usuarios_web";
 
-export interface VentasWebs {
+export interface VentasWebResponse {
     ok:     boolean;
     ventas: Venta[];
 }
 
 export interface Venta {
     id:                    number;
-    cantidad_vendida:      number;
-    nombre_cliente:        string;
     fecha_venta:           Date;
-    producto:              Producto;
-    usuarios_mercadolibre: UsuariosMercadolibre;
+    nombre_cliente:        string;
+    usuarios_mercadolibre: UsuariosWeb;
+    tiendas_web:           TiendasEnWeb;
+    formas_de_pago:        FormasDePago;
 }
 
-export interface UsuariosMercadolibre {
-    id:          number;
-    correo:      string;
-    estado:      boolean;
-    id_empleado: number;
-}

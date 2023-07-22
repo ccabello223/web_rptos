@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Detalle de venta</h2>
+<div mat-dialog-content>
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+      
+          <ng-container matColumnDef="idproducto">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID del producto </th>
+            <td mat-cell *matCellDef="let row"> {{row.idproducto}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="codigo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> codigo </th>
+            <td mat-cell *matCellDef="let row"> {{row.codigo}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="descripción">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> descripción </th>
+            <td mat-cell *matCellDef="let row"> {{row.descripcion}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="marca">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> marca </th>
+            <td mat-cell *matCellDef="let row"> {{row.marca}} </td>
+          </ng-container>
+    
+          <ng-container matColumnDef="cantidad">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> cantidad </th>
+            <td mat-cell *matCellDef="let row"> {{row.cantidad}} </td>
+          </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+        </table>
+      
+      </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close="true" color="warn">Cerrar</button>
+</div>

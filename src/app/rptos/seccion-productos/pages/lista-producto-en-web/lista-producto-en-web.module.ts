@@ -10,6 +10,7 @@ import { ListaProductoModule } from '../lista-producto/lista-producto.module';
 import { DialogoAgregarVentaWebComponent } from './components/dialogo-agregar-venta-web/dialogo-agregar-venta-web.component';
 import { DialogoNotasVentasComponent } from './components/dialogo-notas-ventas/dialogo-notas-ventas.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DialogoDetalleVentaComponent } from './components/dialogo-detalle-venta/dialogo-detalle-venta.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ControlProductosWebComponent,
     ControlVentasEnWebComponent,
     DialogoAgregarVentaWebComponent,
-    DialogoNotasVentasComponent
+    DialogoNotasVentasComponent,
+    DialogoDetalleVentaComponent
   ],
   imports: [
     CommonModule,
