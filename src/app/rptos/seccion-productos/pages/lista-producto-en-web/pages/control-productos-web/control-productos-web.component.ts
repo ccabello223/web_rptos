@@ -155,6 +155,7 @@ export class ControlProductosWebComponent {
 
   selectUserAgain(): void {
     this.id_usuario_ml = 0;
+    this.selectedRows = [];
     this.dataSource = new MatTableDataSource(this.users);
   }
 

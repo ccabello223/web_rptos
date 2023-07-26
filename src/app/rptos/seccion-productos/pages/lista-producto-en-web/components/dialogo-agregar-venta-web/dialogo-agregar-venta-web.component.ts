@@ -8,6 +8,7 @@ import { ListaProductoWebService } from '../../services/lista-producto-web.servi
 import { FormasDePago } from 'src/app/rptos/seccion-productos/interfaces/models/formas_de_pago';
 import { TiendasEnWeb } from 'src/app/rptos/seccion-productos/interfaces/models/tiendas_web';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ProductoWebsTable } from 'src/app/rptos/seccion-productos/interfaces';
 
 interface FormControls {
   [key: string]: FormControl;
@@ -25,39 +26,63 @@ export class DialogoAgregarVentaWebComponent{
   
   
   pagoSeleccionado: string = '';
+  usuario_ml_id: number;
   tiendaSeleccionada: string = '';
+  nombreProducto: string = '';
   formasDePago:FormasDePago[] = []
   tiendasWeb:TiendasEnWeb[] = []
-  items: Productosml[] = [];
+  items: ProductoWebsTable[] = [];
   
   notasFormulario: FormGroup = this.fb.group({
-    pago: ['', [Validators.maxLength(255)]],
-    tienda: ['', [Validators.maxLength(255)]],
-    nombre_cliente: ['', [Validators.maxLength(255)]],
+    pago: ['', [Validators.required, Validators.maxLength(255)]],
+    tienda: ['', [Validators.required, Validators.maxLength(255)]],
+    nombre_cliente: ['', [Validators.required, Validators.maxLength(255)]],
   });
 
-  formControls: FormControls = {};
-  formGroup: FormGroup;
+  //formGroup: FormGroup;
   
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { usuario_ml_id: number; items: Productosml[] }) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { usuario_ml_id: number; items: ProductoWebsTable[] }) {
     this.items = data.items;
-    this.formGroup = this.createForm();
+    this.usuario_ml_id = data.usuario_ml_id;
+    //this.formGroup = this.createForm();
     this.productoService.getFormaDePagos().subscribe(resp => {
         this.formasDePago = resp;
       });
       this.productoService.getRedesSociales().subscribe(resp => {
         this.tiendasWeb = resp;
       });
+
+      // Crea el FormGroup dinámicamente utilizando el FormBuilder
+      //this.formGroup = this.fb2.group({});
+      
+      // Agrega los mat-form-fields al FormGroup según el arreglo de items
+      for (let index = 0; index < this.items.length; index++) {
+        this.notasFormulario.addControl(`cantidad${index}`, this.fb.control('', [Validators.required, Validators.maxLength(255)])); 
+      }
   }
 
   guardarNota(): void {
-    // const id_producto = this.data
+    let itemsArrglo: any[] = [];
     const { pago, tienda, nombre_cliente } = this.notasFormulario.value;
-    console.log(this.notasFormulario.value);
+    for (let index = 0; index < this.items.length; index++) {
+      const producto = {
+        producto_id: this.items[index].id_producto,
+        cantidad: this.notasFormulario.value[`cantidad${index}`],
+      }
+      itemsArrglo.push(producto)
+    }
+    const body = {
+      usuario_ml_id: this.usuario_ml_id,
+      items: itemsArrglo,
+      nombre_cliente,
+      pago,
+      tienda
+    }
+    console.log(body);
+    //console.log(this.formGroup.value);
 
 
-    // const body = {id_producto, peso, alto, ancho, largo, precioEstimado, nota}
     // this.productoService.postNotasProducto(body)
     // .subscribe(resp => {
     //   if(resp["ok"] === true){
@@ -69,13 +94,4 @@ export class DialogoAgregarVentaWebComponent{
     // })
   }
 
-  createForm():FormGroup {
-    console.log(this.items);
-    // Agregar un control para cada elemento en el arreglo
-    this.items.forEach(item => {
-      this.formControls[item.producto.codigo] = new FormControl('', [Validators.maxLength(255)]);   
-    });
-
-    return this.fb2.group(this.formControls);
-  }
 }

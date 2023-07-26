@@ -24,15 +24,19 @@ export class LoginComponent {
 
     login():void{
       const {email_user, password} = this.authFormulario.value;
-      this.authService.login(email_user, password)
-      .subscribe(ok => {
-        if(ok === true){
-            this.router.navigateByUrl('/rptos/productos')
-        }
-        else{
-          Swal.fire('Error', ok.toString(), 'error')
-        }
-      })
+      if(!this.authFormulario.invalid){
+        this.authService.login(email_user, password)
+        .subscribe(ok => {
+          if(ok === true){
+              this.router.navigateByUrl('/rptos/productos')
+          }
+          else{
+            Swal.fire('Error', ok.toString(), 'error')
+          }
+        })
+      }else{
+        Swal.fire('Error', "Todos los parametros deben estar llenos", 'error')
+      }
   }
 
   // login():void {
