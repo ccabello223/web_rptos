@@ -24,6 +24,11 @@ export class ListaProductoWebService extends ProductoService {
     }
   }
 
+  postVentas(body:any): Observable<any>{
+    const url = `${this.baseUrl}/ventas_web/postVentas`;
+    return this.http.post<any>(url, body);
+  }
+
   deleteVenta(id:number): Observable<any>{
     const url = `${this.baseUrl}/ventas_web/deleteVenta?id=${id}`;
     return this.http.delete<any>(url);

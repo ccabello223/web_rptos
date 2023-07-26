@@ -79,19 +79,16 @@ export class DialogoAgregarVentaWebComponent{
       pago,
       tienda
     }
-    console.log(body);
-    //console.log(this.formGroup.value);
 
-
-    // this.productoService.postNotasProducto(body)
-    // .subscribe(resp => {
-    //   if(resp["ok"] === true){
-    //     Swal.fire('Excelente', resp["msg"], 'success')
-    //   }
-    //   else{
-    //     Swal.fire('Error', "Error. hablar con el administrador", 'error')
-    //   }
-    // })
+    this.productoService.postVentas(body)
+    .subscribe(resp => {
+      if(resp["ok"] === true){
+        Swal.fire('Excelente', resp["msg"], 'success')
+      }
+      else{
+        Swal.fire('Error', "Error. hablar con el administrador", 'error')
+      }
+    })
   }
 
 }
