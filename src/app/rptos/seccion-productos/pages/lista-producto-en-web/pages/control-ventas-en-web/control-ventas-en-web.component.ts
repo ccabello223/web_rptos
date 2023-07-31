@@ -71,7 +71,7 @@ export class ControlVentasEnWebComponent {
       // const tipoProducto = element.nombre;
       // const body = {usuario_ml_id, producto_id, tipoProducto};
     this.dialog.open(DialogoDetalleVentaComponent, {
-      data: element.id
+      data: element.id 
     })
   }
 

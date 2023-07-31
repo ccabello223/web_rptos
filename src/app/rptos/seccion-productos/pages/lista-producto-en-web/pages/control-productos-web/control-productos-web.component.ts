@@ -42,8 +42,8 @@ export class ControlProductosWebComponent {
 
 
   usersML: string[] = ['id', 'nombre', 'correo'];
-  productsML: string[] = ['checkbox', 'id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc', 'notas', 'eliminar']
-  productsMLTemp: string[] = ['id', 'nombre', 'codigo', 'marca', 'precio1', 'precio2', 'precio1_porc', 'precio2_porc']
+  productsML: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'notas', 'eliminar']
+  productsMLTemp: string[] = ['id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc']
   public user = computed(() => this.authService.usuarioActual());
   
   constructor() { }

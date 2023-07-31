@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductoService } from 'src/app/rptos/productos/services/producto.service';
 import { Productosml } from 'src/app/rptos/seccion-productos/interfaces/producto-webs-response';
 import Swal from 'sweetalert2';
@@ -22,7 +22,7 @@ interface FormControls {
 export class DialogoAgregarVentaWebComponent{
   private productoService = inject(ListaProductoWebService)
   private fb = inject(FormBuilder)
-  private fb2 = inject(FormBuilder)
+  private dialofRef = inject(MatDialogRef<DialogoAgregarVentaWebComponent>)
   
   
   pagoSeleccionado: string = '';
@@ -69,6 +69,9 @@ export class DialogoAgregarVentaWebComponent{
       const producto = {
         producto_id: this.items[index].id_producto,
         cantidad: this.notasFormulario.value[`cantidad${index}`],
+        precio2: this.items[index].precio2,
+        precio_porc: this.items[index].precio1_porc,
+        precio2_porc: this.items[index].precio2_porc
       }
       itemsArrglo.push(producto)
     }
@@ -89,6 +92,7 @@ export class DialogoAgregarVentaWebComponent{
         Swal.fire('Error', "Error. hablar con el administrador", 'error')
       }
     })
+    this.dialofRef.close()
   }
 
 }

@@ -1,6 +1,6 @@
 import { Component, Inject, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductoService } from 'src/app/rptos/productos/services/producto.service';
 import Swal from 'sweetalert2';
 
@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 export class DialogoNotasVentasComponent {
   private fb = inject(FormBuilder)
   private productoService = inject(ProductoService)
+  //private dialofRef = inject(MatDialogRef<DialogoNotasVentasComponent>)
 
   notasFormulario: FormGroup = this.fb.group({
     nota2: ['', [Validators.maxLength(255)]],
@@ -35,7 +36,7 @@ export class DialogoNotasVentasComponent {
     const id_ventas_web = this.id_venta
     const { nota2, nota3 } = this.notasFormulario.value;
     const body = { id_ventas_web, nota2, nota3 }
-    // console.log(body);
+    console.log(body);
     this.productoService.postNotasVentasWeb(body)
       .subscribe(resp => {
         if (resp["ok"] === true) {
@@ -45,5 +46,6 @@ export class DialogoNotasVentasComponent {
           Swal.fire('Error', "Error. hablar con el administrador", 'error')
         }
       })
+    //this.dialofRef.close()
   }
 }

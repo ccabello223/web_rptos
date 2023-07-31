@@ -1,12 +1,12 @@
 <div mat-dialog-content>
     <h2>Escoja Un Usuario</h2>
-    <mat-selection-list *ngIf="escogioUsuario == false" #selectionList [multiple]="false" (selectionChange)="onSelectionChange($event)">
+    <mat-selection-list #selectionList [multiple]="false" (selectionChange)="onSelectionChange()">
         <mat-list-option *ngFor="let usuario of usuariosML" [value]="usuario.id">
           {{usuario.correo}}
         </mat-list-option>
       </mat-selection-list>
 
-    <ng-container *ngIf="escogioUsuario == true">
+    <!-- <ng-container *ngIf="escogioUsuario == true">
         <ng-container  *ngFor="let field of data">
             <h2>{{field.descripcion}}</h2>
             <h3>Diga el precio del producto. Recuerde que este precio es el que usted tiene en mercadolibre quitandole el 9% o 11%, 
@@ -36,6 +36,6 @@
             Cerrar
           </button>
         </div>
-    </ng-container>
+    </ng-container> -->
     
   </div>

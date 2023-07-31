@@ -1,6 +1,6 @@
 import { Component, Inject, QueryList, ViewChild, ViewChildren, computed, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
 import { MatSelectionList } from '@angular/material/list';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -21,18 +21,18 @@ interface ProductosEnVentasWeb {
   styleUrls: ['./dialogo-agregar-productos-webs.component.css']
 })
 export class DialogoAgregarProductosWebsComponent {
-  private fb = inject(FormBuilder)
   private productoService = inject(ProductoService)
   private authService = inject(AuthService)
+  private dialofRef = inject(MatDialogRef<DialogoAgregarProductosWebsComponent>)
   public user = computed(() => this.authService.usuarioActual());
 
 
   productosAlaBBDD: ProductosEnVentasWeb[] = [];
   usuariosML: Usuario[] = []
   id_usuario_ml: number = 0;
-  escogioUsuario: boolean = false;
+  //escogioUsuario: boolean = false;
 
-  @ViewChildren(MatFormField) formFields?: QueryList<MatFormField>;
+  //@ViewChildren(MatFormField) formFields?: QueryList<MatFormField>;
   @ViewChild('selectionList') selectionList?: MatSelectionList;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: ProductoTabla[]) {
@@ -47,52 +47,57 @@ export class DialogoAgregarProductosWebsComponent {
     }
   }
 
-  onSelectionChange(event: any) {
-    const selectedOption = this.selectionList?.selectedOptions.selected[0];
-    this.id_usuario_ml = selectedOption?.value;
-    this.productosAlaBBDD = []
-    this.escogioUsuario = true;
-  }
-
-  onSubmit() {
-    let esCampoVacio: boolean = false
-    this.formFields?.forEach((formField: any) => {
-      if (formField._control.value.length == 0) {
-        Swal.fire('Error', "Tiene que colocar el precio a todos los productos", 'error')
-        esCampoVacio = true;
+  private sendInfoToBBDD(): void {
+    this.productoService.postDesdeListaProducto(this.productosAlaBBDD).subscribe(resp => {
+      if (resp["ok"] === true) {
+        this.productosAlaBBDD = [];
+        Swal.fire('Excelente', resp["msg"], 'success')
       }
-      return;
-    });
-    if (!esCampoVacio) {
-      this.formFields?.forEach((formField: any) => {
-        this.productosAlaBBDD.push(this.productOfUserById(formField));
-      });
-
-      this.productoService.postDesdeListaProducto(this.productosAlaBBDD).subscribe(resp => {
-        if (resp["ok"] === true) {
-          this.productosAlaBBDD = [];
-          Swal.fire('Excelente', resp["msg"], 'success')
-        }
-        else {
-          this.productosAlaBBDD = [];
-          Swal.fire('Error', "Error. hablar con el administrador", 'error')
-        }
-      })
-    }
+      else {
+        this.productosAlaBBDD = [];
+        Swal.fire('Error', "Error. hablar con el administrador", 'error')
+      }
+    })
+    this.productosAlaBBDD = []
   }
 
-  productOfUserById(value: any): ProductosEnVentasWeb {
+  private pushProductToList(): void {
     let cargar: ProductosEnVentasWeb;
     this.data.forEach(element => {
-      if (element.codigo == value._control.name) {
         cargar = {
           id_producto: element.id,
           precio1: '0.00',
-          precio2: value._control.value,
+          precio2: element.precio2,
           id_usuario_ml: this.id_usuario_ml
         }
-      }
+        this.productosAlaBBDD.push(cargar);
     });
-    return cargar!;
   }
+
+  onSelectionChange() {
+    const selectedOption = this.selectionList?.selectedOptions.selected[0];
+    this.id_usuario_ml = selectedOption?.value;
+    this.pushProductToList();
+    this.sendInfoToBBDD();
+    this.dialofRef.close()
+    //this.productosAlaBBDD = []
+    //this.escogioUsuario = true;
+  }
+
+  // onSubmit() {
+  //   let esCampoVacio: boolean = false
+  //   this.formFields?.forEach((formField: any) => {
+  //     if (formField._control.value.length == 0) {
+  //       Swal.fire('Error', "Tiene que colocar el precio a todos los productos", 'error')
+  //       esCampoVacio = true;
+  //     }
+  //     return;
+  //   });
+  //   if (!esCampoVacio) {
+  //     this.formFields?.forEach((formField: any) => {
+  //       this.productosAlaBBDD.push(this.productOfUserById(formField));
+  //     });
+
+  //   }
+  // }
 }

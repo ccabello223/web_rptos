@@ -34,7 +34,7 @@ export class ListaProductoComponent {
   showButton: boolean = false;
 
 
-  displayedColumns: string[] = ['checkbox', 'id', 'codigo', 'descripción', 'marca', 'precio1', 'precio2', 'notas'];
+  displayedColumns: string[] = ['checkbox', 'id', 'codigo', 'descripción', 'marca', 'precio2', 'notas'];
   dataSource!: MatTableDataSource<ProductoTabla>;
 
   @ViewChild(MatPaginator)
