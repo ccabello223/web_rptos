@@ -95,4 +95,41 @@ export class DialogoAgregarVentaWebComponent{
     this.dialofRef.close()
   }
 
+  selectedFiles: File[] = [];
+
+  onFileSelected(event: any) {
+    this.selectedFiles = event.target.files;
+  }
+
+  uploadImages() {
+    // Aquí puedes realizar la lógica para enviar las imágenes al backend.
+    // Puedes usar una librería como 'HttpClient' para realizar una petición HTTP al backend y enviar los archivos.
+    // Ejemplo con HttpClient (requiere HttpClientModule importado en el módulo):
+    // const formData = new FormData();
+    // for (const file of this.selectedFiles) {
+    //   formData.append('images', file, file.name);
+    // }
+    // this.http.post('ruta_del_backend', formData).subscribe(response => {
+    //   console.log('Imágenes subidas correctamente');
+    // });
+
+    console.log(this.selectedFiles);
+  }
+
+  clearSelectedFiles(): void{
+    this.selectedFiles = [];
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    const dataTransfer = event.dataTransfer;
+    if (dataTransfer?.files) {
+      this.selectedFiles = Array.from(dataTransfer.files);
+    }
+  }
+
 }

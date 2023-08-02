@@ -1,5 +1,5 @@
 <!-- <h1 mat-dialog-title>Notas de: {{data.nota}}</h1> -->
-<div mat-dialog-content>
+<div mat-dialog-content class="flex">
     <form class="flex flex-column" [formGroup]="notasFormulario" (ngSubmit)="guardarNota()">
         <mat-form-field>
             <mat-label>Forma de Pago</mat-label>
@@ -10,7 +10,7 @@
             </mat-select>
         </mat-form-field>
         <mat-form-field>
-            <mat-label>Favorite car</mat-label>
+            <mat-label>Red Donde se Realizó la Venta</mat-label>
             <mat-select matNativeControl formControlName="tienda">
                 <mat-option *ngFor="let tienda of tiendasWeb" [value]="tienda.id">
                     {{tienda.nombre}}
@@ -36,13 +36,31 @@
                 <mat-icon>save</mat-icon>
                 Ingresar
             </button>
-
             <span class="spacer"></span>
-
             <button class="m-3 pl-4 pr-4" mat-button mat-flat-button color="warn" mat-dialog-close="true">
                 <mat-icon>close</mat-icon>
                 Cerrar
             </button>
         </div>
     </form>
+
+    <div class="flex flex-column ml-5">
+        <div class="file-upload" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+            <label for="fileInput" class="file-upload-label">
+                <span>Seleccione la(s) foto(s) del comprobante del pago</span>
+                <input type="file" id="fileInput" (change)="onFileSelected($event)" multiple>
+            </label>
+            <button (click)="uploadImages()">Subir imágenes</button>
+            <!-- Botón para limpiar los archivos cargados -->
+            <button class="ml-3" *ngIf="selectedFiles.length > 0" (click)="clearSelectedFiles()">Limpiar archivos</button>
+
+            <!-- Agregar el mensaje de archivos cargados -->
+            <div *ngIf="selectedFiles.length > 0" class="file-list">
+                <p>Archivos cargados:</p>
+                <ul>
+                    <li *ngFor="let file of selectedFiles">{{ file.name }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
