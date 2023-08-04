@@ -48,4 +48,14 @@ export class ListaProductoWebService extends ProductoService {
     const url = `${this.baseUrl}/tiendas_web`;
     return this.http.get<TiendasEnWeb[]>(url);
   }
+
+  postFotosComprobante(body:any, idVenta: number): string{
+    const url = `${this.baseUrl}/ventas_web/postImagenVenta/${idVenta}`;
+    this.http.post<any>(url, body)
+    .subscribe( resp => {
+      return resp["message"];
+    });
+
+    return 'No se ha podido subir nada';
+  }
 }
