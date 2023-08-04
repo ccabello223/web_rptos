@@ -32,6 +32,7 @@ export class DialogoAgregarVentaWebComponent{
   formasDePago:FormasDePago[] = []
   tiendasWeb:TiendasEnWeb[] = []
   items: ProductoWebsTable[] = [];
+  selectedFiles: File[] = [];
   
   notasFormulario: FormGroup = this.fb.group({
     pago: ['', [Validators.required, Validators.maxLength(255)]],
@@ -86,6 +87,9 @@ export class DialogoAgregarVentaWebComponent{
     this.productoService.postVentas(body)
     .subscribe(resp => {
       if(resp["ok"] === true){
+
+        if(this.selectedFiles.length > 0) this.uploadImages();
+
         Swal.fire('Excelente', resp["msg"], 'success')
       }
       else{
@@ -94,8 +98,6 @@ export class DialogoAgregarVentaWebComponent{
     })
     this.dialofRef.close()
   }
-
-  selectedFiles: File[] = [];
 
   onFileSelected(event: any) {
     this.selectedFiles = event.target.files;
@@ -109,8 +111,7 @@ export class DialogoAgregarVentaWebComponent{
     for (const file of this.selectedFiles) {
       formData.append('images', file, file.name);
     }
-    const mensaje = this.productoService.postFotosComprobante(formData,this.data.usuario_ml_id)
-    Swal.fire('Excelente', mensaje, 'success')
+    this.productoService.postFotosComprobante(formData, this.data.usuario_ml_id)
     //console.log(this.selectedFiles);
   }
 
