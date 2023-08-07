@@ -1,8 +1,8 @@
 import { Component, Inject, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ProductoService } from 'src/app/rptos/productos/services/producto.service';
 import Swal from 'sweetalert2';
+import { ListaProductoWebService } from '../../services/lista-producto-web.service';
 
 @Component({
   selector: 'app-dialogo-notas-ventas',
@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 })
 export class DialogoNotasVentasComponent {
   private fb = inject(FormBuilder)
-  private productoService = inject(ProductoService)
+  private productoService = inject(ListaProductoWebService)
   //private dialofRef = inject(MatDialogRef<DialogoNotasVentasComponent>)
 
   notasFormulario: FormGroup = this.fb.group({

@@ -6,12 +6,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { ProductoTabla } from 'src/app/rptos/productos/interface';
-import { Producto } from 'src/app/rptos/productos/interface/producto';
-import { ProductoService } from 'src/app/rptos/productos/services/producto.service';
 import Swal from 'sweetalert2';
 import { DialogoAgregarProductosWebsComponent } from './components/dialogo-agregar-productos-webs/dialogo-agregar-productos-webs.component';
 import { DialogoNotaProductoComponent } from './components/dialogo-nota-producto/dialogo-nota-producto.component';
+import { ListaProductoService } from './services/lista-producto.service';
+import { Producto, ProductoTabla } from '../../interfaces';
 
 @Component({
   selector: 'app-lista-producto',
@@ -19,9 +18,10 @@ import { DialogoNotaProductoComponent } from './components/dialogo-nota-producto
   styleUrls: ['./lista-producto.component.css']
 })
 export class ListaProductoComponent {
-  public dialog = inject(MatDialog)
-  public router = inject(Router);
-  public authService = inject(AuthService)
+  private dialog = inject(MatDialog)
+  private router = inject(Router);
+  private authService = inject(AuthService)
+  private productoService = inject(ListaProductoService);
 
   producto!: Producto[];
 
@@ -44,7 +44,7 @@ export class ListaProductoComponent {
 
   public user = computed(() => this.authService.usuarioActual());
 
-  constructor(private productoService: ProductoService) {
+  constructor() {
 
   }
   ngOnInit(): void {

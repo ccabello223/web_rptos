@@ -5,3 +5,6 @@ export * from './producto-webs-table';
 export * from './producto-tabla-ventas';
 export * from './ventas-web-response';
 export * from './items-ventas-web-response'
+export * from './producto-response'
+export * from './nota-response'
+export * from './notas-ventas-web-response'

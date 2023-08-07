@@ -3,13 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { ProductoService } from 'src/app/rptos/productos/services/producto.service';
 import { Producto, ProductoWebsTable, Usuario } from 'src/app/rptos/seccion-productos/interfaces';
 import Swal from 'sweetalert2';
 import { DialogoNotaProductoComponent } from '../../../lista-producto/components/dialogo-nota-producto/dialogo-nota-producto.component';
-import { Productosml } from 'src/app/rptos/productos/interface';
 import { DialogoAgregarVentaWebComponent } from '../../components/dialogo-agregar-venta-web/dialogo-agregar-venta-web.component';
 import { SelectionModel } from '@angular/cdk/collections';
+import { ListaProductoWebService } from '../../services/lista-producto-web.service';
+import { Productosml } from 'src/app/rptos/seccion-productos/interfaces/producto-webs-response';
 
 @Component({
   selector: 'app-control-productos-web',
@@ -18,7 +18,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 })
 export class ControlProductosWebComponent {
   private authService = inject(AuthService)
-  private productoService = inject(ProductoService)
+  private productoService = inject(ListaProductoWebService)
   public dialog = inject(MatDialog)
 
   //id del la tabla usuarios_mercadolibre

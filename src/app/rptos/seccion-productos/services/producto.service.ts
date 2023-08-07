@@ -6,7 +6,7 @@ import { HttpClient } from "@angular/common/http";
 
 export class ProductoService{
     protected baseUrl: string = environment.baseUrl;
-    protected _producto!: Producto[];
+    protected _producto: Producto[] = [];
     protected authService = inject(AuthService);
     protected http = inject(HttpClient);
   

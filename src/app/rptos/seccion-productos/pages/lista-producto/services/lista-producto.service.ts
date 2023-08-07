@@ -2,30 +2,31 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject } from '@angular/core';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { environment } from 'src/environments/environments';
-import { Producto } from '../../../interfaces';
+import { NotaReponse, NotasVentasWebResponse, Producto, Productos, VentasWebResponse } from '../../../interfaces';
+import { ProductoService } from '../../../services/producto.service';
+import { Observable } from 'rxjs/internal/Observable';
+import { of } from 'rxjs/internal/observable/of';
+import { UsuariosWebs } from '../../../interfaces/usuario-webs-response';
+import { ProductosMercadolibreResponse } from '../../../interfaces/producto-webs-response';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ListaProductoService {
+export class ListaProductoService extends ProductoService {
 
-  private baseUrl: string = environment.baseUrl;
-  private _producto!: Producto[];
-  private authService = inject(AuthService)
-
-
-  public user = computed(() => this.authService.usuarioActual());
-
-  get producto(){
-    return {...this._producto};
+  getProducto(): Observable<Productos>{
+    const url = `${this.baseUrl}/productos`;
+    return this.http.get<Productos>(url)
   }
 
-  get getBaseUrl(){
-    return this.baseUrl;
-  }
+  postExcelProduct(selectedFile?: File):Observable<any>{
 
-
-  constructor(private http: HttpClient) {
-
+    if(selectedFile != null){
+      const formData = new FormData();
+      formData.append('files', selectedFile, selectedFile.name);
+      const url = `${this.baseUrl}/productos/actualizar_producto`;
+      return this.http.post<any>(url, formData);
+    }
+    return of("El archivo esta vacio"); 
   }
 }

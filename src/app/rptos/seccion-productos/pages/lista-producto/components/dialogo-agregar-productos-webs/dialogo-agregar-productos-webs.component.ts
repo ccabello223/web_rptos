@@ -4,9 +4,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
 import { MatSelectionList } from '@angular/material/list';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { ProductoService } from 'src/app/rptos/productos/services/producto.service';
+
 import { ProductoTabla, Usuario } from 'src/app/rptos/seccion-productos/interfaces';
 import Swal from 'sweetalert2';
+import { ListaProductoWebService } from '../../../lista-producto-en-web/services/lista-producto-web.service';
 
 interface ProductosEnVentasWeb {
   id_producto: number;
@@ -21,7 +22,7 @@ interface ProductosEnVentasWeb {
   styleUrls: ['./dialogo-agregar-productos-webs.component.css']
 })
 export class DialogoAgregarProductosWebsComponent {
-  private productoService = inject(ProductoService)
+  private productoService = inject(ListaProductoWebService)
   private authService = inject(AuthService)
   private dialofRef = inject(MatDialogRef<DialogoAgregarProductosWebsComponent>)
   public user = computed(() => this.authService.usuarioActual());

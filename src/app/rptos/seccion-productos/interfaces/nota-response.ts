@@ -1,9 +1,9 @@
 export interface NotaReponse {
     ok:       boolean;
-    detalles: Detalles;
+    detalles: DetallesNota;
 }
 
-export interface Detalles {
+export interface DetallesNota {
     peso:           string;
     alto:           string;
     ancho:          string;

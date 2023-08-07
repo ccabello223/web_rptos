@@ -1,9 +1,6 @@
-import { Component, Inject, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ProductoService } from 'src/app/rptos/productos/services/producto.service';
-import { Productosml } from 'src/app/rptos/seccion-productos/interfaces/producto-webs-response';
 import Swal from 'sweetalert2';
-import { ListaProductoService } from '../../../lista-producto/services/lista-producto.service';
 import { ListaProductoWebService } from '../../services/lista-producto-web.service';
 import { FormasDePago } from 'src/app/rptos/seccion-productos/interfaces/models/formas_de_pago';
 import { TiendasEnWeb } from 'src/app/rptos/seccion-productos/interfaces/models/tiendas_web';
