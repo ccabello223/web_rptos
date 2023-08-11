@@ -4,12 +4,8 @@ import Swal from 'sweetalert2';
 import { ListaProductoWebService } from '../../services/lista-producto-web.service';
 import { FormasDePago } from 'src/app/rptos/seccion-productos/interfaces/models/formas_de_pago';
 import { TiendasEnWeb } from 'src/app/rptos/seccion-productos/interfaces/models/tiendas_web';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductoWebsTable } from 'src/app/rptos/seccion-productos/interfaces';
-
-interface FormControls {
-  [key: string]: FormControl;
-}
 
 @Component({
   selector: 'app-dialogo-agregar-venta-web',

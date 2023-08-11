@@ -99,6 +99,11 @@ export class ListaProductoWebService extends ProductoService {
     }
   }
 
+  getVentasPorFecha(mes: number, anio: number):Observable<VentasWebResponse>{
+    const url = `${this.baseUrl}/ventas_web/getventasPorFecha?mes=${mes}&anio=${anio}`;
+    return this.http.get<VentasWebResponse>(url);
+  }
+
   postVentas(body:any): Observable<any>{
     const url = `${this.baseUrl}/ventas_web/postVentas`;
     return this.http.post<any>(url, body);

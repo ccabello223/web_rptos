@@ -85,4 +85,8 @@ export class DialogoDetalleVentaComponent {
       this.selectedFiles = Array.from(dataTransfer.files);
     }
   }
+
+  prueba():void{
+    console.log("Hola Mundo");
+  }
 }
