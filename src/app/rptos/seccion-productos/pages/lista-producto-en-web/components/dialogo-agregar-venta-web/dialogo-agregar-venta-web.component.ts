@@ -81,8 +81,6 @@ export class DialogoAgregarVentaWebComponent{
     .subscribe(resp => {
       if(resp["ok"] === true){
 
-        if(this.selectedFiles.length > 0) this.uploadImages();
-
         Swal.fire('Excelente', resp["msg"], 'success')
       }
       else{
@@ -94,18 +92,6 @@ export class DialogoAgregarVentaWebComponent{
 
   onFileSelected(event: any) {
     this.selectedFiles = event.target.files;
-  }
-
-  uploadImages() {
-    // Aquí puedes realizar la lógica para enviar las imágenes al backend.
-    // Puedes usar una librería como 'HttpClient' para realizar una petición HTTP al backend y enviar los archivos.
-    // Ejemplo con HttpClient (requiere HttpClientModule importado en el módulo):
-    const formData = new FormData();
-    for (const file of this.selectedFiles) {
-      formData.append('images', file, file.name);
-    }
-    this.productoService.postFotosComprobante(formData, this.data.usuario_ml_id)
-    //console.log(this.selectedFiles);
   }
 
   clearSelectedFiles(): void{

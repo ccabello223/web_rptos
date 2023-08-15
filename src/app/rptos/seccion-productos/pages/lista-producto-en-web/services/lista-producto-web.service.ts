@@ -7,6 +7,7 @@ import { TiendasEnWeb } from '../../../interfaces/models/tiendas_web';
 import { of } from 'rxjs/internal/observable/of';
 import { UsuariosWebs } from '../../../interfaces/usuario-webs-response';
 import { ProductosMercadolibreResponse } from '../../../interfaces/producto-webs-response';
+import { FotoComprobante } from '../../../interfaces/models/foto_comprobante_pago';
 
 @Injectable({
   providedIn: 'root'
@@ -129,8 +130,13 @@ export class ListaProductoWebService extends ProductoService {
     return this.http.get<TiendasEnWeb[]>(url);
   }
 
+  getFotosComprobante(idVenta: number): Observable<FotoComprobante[]>{
+    const url = `${this.baseUrl}/foto_comprobante/${idVenta}`;
+    return this.http.get<FotoComprobante[]>(url);
+  }
+
   postFotosComprobante(body:any, idVenta: number): Observable<any>{
-    const url = `${this.baseUrl}/ventas_web/postImagenVenta/${idVenta}`;
+    const url = `${this.baseUrl}/foto_comprobante/postImagenVenta/${idVenta}`;
     return this.http.post<any>(url, body);
   }
 }

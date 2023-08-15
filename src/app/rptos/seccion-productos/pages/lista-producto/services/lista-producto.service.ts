@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { UsuariosWebs } from '../../../interfaces/usuario-webs-response';
 import { ProductosMercadolibreResponse } from '../../../interfaces/producto-webs-response';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,11 @@ export class ListaProductoService extends ProductoService {
   getProducto(): Observable<Productos>{
     const url = `${this.baseUrl}/productos`;
     return this.http.get<Productos>(url)
+    // .pipe(
+    //   tap (resp => {
+    //     this.producto = resp.productos
+    //   })
+    // )
   }
 
   postExcelProduct(selectedFile?: File):Observable<any>{

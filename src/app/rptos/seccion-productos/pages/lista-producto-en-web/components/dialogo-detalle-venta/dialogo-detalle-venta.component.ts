@@ -4,6 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { ListaProductoWebService } from '../../services/lista-producto-web.service';
 import { ItemsVenta } from 'src/app/rptos/seccion-productos/interfaces';
+import { FotoComprobante } from 'src/app/rptos/seccion-productos/interfaces/models/foto_comprobante_pago';
+import { Router } from '@angular/router';
 
 interface ItemVentaWeb{
   idproducto:number;
@@ -19,9 +21,11 @@ interface ItemVentaWeb{
   styleUrls: ['./dialogo-detalle-venta.component.css']
 })
 export class DialogoDetalleVentaComponent {
-  private productoService = inject(ListaProductoWebService)
+  private productoService = inject(ListaProductoWebService);
+  private router = inject(Router);
 
   itemsVentaWeb: ItemsVenta[] = [];
+  fotosComprobante: FotoComprobante[] = [];
   selectedFiles: File[] = [];
   displayedColumns: string[] = ['idproducto', 'codigo', 'descripción', 'marca', 'cantidad'];
 
@@ -34,6 +38,10 @@ export class DialogoDetalleVentaComponent {
       this.dataSource = new MatTableDataSource(items)
     });
 
+    this.productoService.getFotosComprobante(data)
+      .subscribe( resp => {
+        this.fotosComprobante = resp;
+      });
   }
   /** Construye y retorna los items de las ventas. */
   crearItemsVentas(i: number): ItemVentaWeb {
@@ -50,12 +58,9 @@ export class DialogoDetalleVentaComponent {
     this.selectedFiles = event.target.files;
   }
 
-  uploadImages() {
+  uploadImagenesComprobante() {
     if(this.selectedFiles.length === 0) return;
 
-    // Aquí puedes realizar la lógica para enviar las imágenes al backend.
-    // Puedes usar una librería como 'HttpClient' para realizar una petición HTTP al backend y enviar los archivos.
-    // Ejemplo con HttpClient (requiere HttpClientModule importado en el módulo):
     const formData = new FormData();
     for (const file of this.selectedFiles) {
       formData.append('images', file, file.name);
@@ -86,7 +91,7 @@ export class DialogoDetalleVentaComponent {
     }
   }
 
-  prueba():void{
-    console.log("Hola Mundo");
+  goingToImagen(term: string):void{
+    window.open(`https://coreanosrptos.com/api/foto_comprobante/uploads/${term}`, '_blank');
   }
 }

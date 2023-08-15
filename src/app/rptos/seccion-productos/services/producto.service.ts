@@ -6,15 +6,21 @@ import { HttpClient } from "@angular/common/http";
 
 export class ProductoService{
     protected baseUrl: string = environment.baseUrl;
-    protected _producto: Producto[] = [];
+    protected _producto: Producto[] = []
     protected authService = inject(AuthService);
     protected http = inject(HttpClient);
   
     public user = computed(() => this.authService.usuarioActual());
   
-    get producto(){
-      return {...this._producto};
+    get producto(): Producto[]{
+      return [...this._producto];
     }
+
+    
+    public set producto(v : Producto[]) {
+      this._producto = v;
+    }
+    
   
     get getBaseUrl(){
       return this.baseUrl;

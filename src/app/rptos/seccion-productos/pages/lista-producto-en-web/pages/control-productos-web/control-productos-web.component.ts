@@ -64,11 +64,6 @@ export class ControlProductosWebComponent {
     }
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSourceTemp.paginator = this.productosTempPaginator;
-  }
-
   //Cuando el usuario selecciona un empleado entonces se cargar los productos
   selectedUser(id_usuario_ml:number) {
     this.id_usuario_ml = id_usuario_ml;

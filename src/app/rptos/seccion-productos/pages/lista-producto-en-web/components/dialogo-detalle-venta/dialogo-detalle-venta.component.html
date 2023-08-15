@@ -41,7 +41,7 @@
           <span>Seleccione la(s) foto(s) del comprobante del pago</span>
           <input type="file" id="fileInput" (change)="onFileSelected($event)" multiple>
         </label>
-        <button mat-raised-button color="primary" (click)="uploadImages()">Subir imágenes</button>
+        <button mat-raised-button color="primary" (click)="uploadImagenesComprobante()">Subir imágenes</button>
         <!-- Botón para limpiar los archivos cargados -->
         <button mat-raised-button color="primary" class="ml-3" *ngIf="selectedFiles.length > 0"
           (click)="clearSelectedFiles()">Limpiar archivos</button>
@@ -55,10 +55,13 @@
         </div>
       </div>
     </div>
-    <div class="m-5"></div>
-    <div class="flex flex-column card-container">
-      <img class="mt-2" (click)="prueba()" src="https://coreanosrptos.com/api/ventas_web/uploads/comprobante_72_394472.jpeg" alt="nucita">
-      <img class="mt-2" src="https://coreanosrptos.com/api/ventas_web/uploads/comprobante_72_939872.jpeg" alt="nicuta">
+
+    <div *ngIf="fotosComprobante.length > 0" class="m-5"></div>
+    
+    <div class="flex flex-column">
+      <mat-card *ngFor="let foto of fotosComprobante">
+        <mat-card-content><img mat-card-xl-image (click)="goingToImagen(foto.img)" [src]="'https://coreanosrptos.com/api/foto_comprobante/uploads/' + foto.img" [alt]="foto.img"></mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>

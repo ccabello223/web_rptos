@@ -79,7 +79,6 @@ export class ControlVentasEnWebComponent {
   }
 
   openDialogDetalles(element: ProductoTablaVentas) {
-    console.log(element);
     // const usuario_ml_id = this.id_usuario_ml;
     // const producto_id = element.id_producto;
     // const tipoProducto = element.nombre;

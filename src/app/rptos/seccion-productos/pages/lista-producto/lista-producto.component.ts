@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, ViewChild, computed, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, computed, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -17,13 +17,12 @@ import { Producto, ProductoTabla } from '../../interfaces';
   templateUrl: './lista-producto.component.html',
   styleUrls: ['./lista-producto.component.css']
 })
-export class ListaProductoComponent {
+export class ListaProductoComponent implements OnInit, OnDestroy {
   private dialog = inject(MatDialog)
-  private router = inject(Router);
   private authService = inject(AuthService)
   private productoService = inject(ListaProductoService);
 
-  producto!: Producto[];
+  producto: Producto[] = [];
 
   isLoading = false;
   message: string = '';
@@ -47,9 +46,19 @@ export class ListaProductoComponent {
   constructor() {
 
   }
+
+  get productos(): Producto[] {
+    return this.productoService.producto;
+  }
+
+
   ngOnInit(): void {
     this.getProductsFromBBDD()
   }
+
+  ngOnDestroy(): void {
+  }
+
 
   getProductsFromBBDD() {
     this.productoService.getProducto().subscribe(resp => {
@@ -128,7 +137,7 @@ export class ListaProductoComponent {
     // console.log(`${this.selection.isSelected(row) ? 'select' : 'deselect'} row ${row.id}`);
   }
 
-  onRowSelect(event:any, row:any) {
+  onRowSelect(event: any, row: any) {
     if (event.checked) {
       this.selectedRows.push(row);
     } else {

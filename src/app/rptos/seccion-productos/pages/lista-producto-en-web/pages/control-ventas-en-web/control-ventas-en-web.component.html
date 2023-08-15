@@ -8,25 +8,25 @@
 
 <div *ngIf="!isLoading">
 
-  <form class="flex" [formGroup]="fechaVentaFormulario" (ngSubmit)="buscarPorFecha()" 
-  *ngIf="this.user()?.rol == 1 || this.user()?.rol == 6 || (this.user()?.rol == 2 && this.user()?.usuario == 30)">
+  <form class="flex" [formGroup]="fechaVentaFormulario" (ngSubmit)="buscarPorFecha()"
+    *ngIf="this.user()?.rol == 1 || this.user()?.rol == 6 || (this.user()?.rol == 2 && this.user()?.usuario == 30)">
     <mat-form-field class="m-3">
       <mat-label>Año</mat-label>
       <mat-select matNativeControl formControlName="anio">
-          <mat-option *ngFor="let anio of anios" [value]="anio">
-              {{anio}}
-          </mat-option>
+        <mat-option *ngFor="let anio of anios" [value]="anio">
+          {{anio}}
+        </mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="m-3">
       <mat-label>Mes</mat-label>
       <mat-select matNativeControl formControlName="mes">
-          <mat-option *ngFor="let mes of meses" [value]="mes.value">
-              {{mes.nombre}}
-          </mat-option>
+        <mat-option *ngFor="let mes of meses" [value]="mes.value">
+          {{mes.nombre}}
+        </mat-option>
       </mat-select>
-  </mat-form-field>
+    </mat-form-field>
 
     <button mat-button mat-flat-button color="primary" class="m-3" type="submit">
       Ver ventas
