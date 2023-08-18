@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
   templateUrl: './lista-producto-en-web.component.html',
   styleUrls: ['./lista-producto-en-web.component.css']
 })
-export class ListaProductoEnWebComponent {
+export class ListaProductoEnWebComponent implements OnInit, OnDestroy {
+
   title = 'angular-material-tab-router';
   navLinks: any[];
   activeLinkIndex = -1;
@@ -29,4 +30,8 @@ export class ListaProductoEnWebComponent {
       this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url));
     });
   }
+
+  ngOnDestroy(): void {
+  }
+
 }
