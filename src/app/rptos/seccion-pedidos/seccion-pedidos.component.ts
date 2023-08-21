@@ -1,9 +1,11 @@
-import { Component, Inject, inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, inject } from '@angular/core';
 import Swal from 'sweetalert2';
-import { ListaProductoWebService } from '../seccion-productos/pages/lista-producto-en-web/services/lista-producto-web.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeccionPedidosService } from './services/seccion-pedidos.service';
+import { PedidoAlmacen } from './interfaces/models/pedido_almacen';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogoMostrarFotoComponent } from './components/dialogo-mostrar-foto/dialogo-mostrar-foto.component';
 
 @Component({
   selector: 'app-seccion-pedidos',
@@ -11,30 +13,70 @@ import { SeccionPedidosService } from './services/seccion-pedidos.service';
   styleUrls: ['./seccion-pedidos.component.css']
 })
 export class SeccionPedidosComponent {
-  private fb = inject(FormBuilder)
-  private pedidoAlmacenService = inject(SeccionPedidosService)
+  private fb = inject(FormBuilder);
+  private pedidoAlmacenService = inject(SeccionPedidosService);
+  private dialog = inject(MatDialog)
 
   selectedFiles: File[] = [];
+  isLoading = false;
 
   pedidoFormulario: FormGroup = this.fb.group({
     nombre: ['', [Validators.maxLength(255)]],
     pedido: ['', [Validators.maxLength(255)]],
     descripcion: ['', [Validators.maxLength(255)]],
   });
-
-  items: any = [{name:"Nombre",dist:"nombre"}, {name:"Numero Pedido",dist:"pedido"}, {name:"Descripción",dist:"descripcion"},
+  items: any = [{ name: "Nombre", dist: "nombre" }, { name: "Numero Pedido", dist: "pedido" }, { name: "Descripción", dist: "descripcion" },
   ]
 
+  // Otra pagina la tabla
+  pedidosAlmacen: PedidoAlmacen[] = [];
+
+  dataSource!: MatTableDataSource<PedidoAlmacen>;
+  displayedColumns: string[] = ['id', 'nombre', 'pedido', 'descripcion', 'imagen'];
+  clickedRows = new Set<PedidoAlmacen>();
+
+
+  /** Builds and returns a new Products. */
+  createNewProducts(i: number): PedidoAlmacen {
+    return {
+      id: this.pedidosAlmacen[i].id,
+      nombre: this.pedidosAlmacen[i].nombre,
+      pedido: this.pedidosAlmacen[i].pedido,
+      descripcion: this.pedidosAlmacen[i].descripcion,
+      fecha_creacion: this.pedidosAlmacen[i].fecha_creacion
+    }
+  }
+
+  openDialog(element: PedidoAlmacen): void{
+    console.log(element);
+    this.dialog.open(DialogoMostrarFotoComponent, {
+      data: element.id,
+    })
+  }
+
   constructor() {
-      this.pedidoFormulario.setValue({
-        nombre: '',
-        pedido:  '',
-        descripcion:  '',
-      });
+    this.pedidoFormulario.setValue({
+      nombre: '',
+      pedido: '',
+      descripcion: '',
+    });
+    this.pedirDataPedidoAlmacen();
+  }
+
+  private pedirDataPedidoAlmacen(){
+    this.pedidoAlmacenService.getPedidoAlmacen()
+    .subscribe(resp => {
+      this.pedidosAlmacen = resp;
+      console.log(resp);
+      const pedido = Array.from({ length: this.pedidosAlmacen.length }, (_, k) => this.createNewProducts(k));
+      this.dataSource = new MatTableDataSource(pedido);
+    })
   }
 
   guardarNota(): void {
-    if(this.selectedFiles.length === 0) return;
+    if (this.selectedFiles.length === 0) return;
+
+    this.isLoading = true;
 
     const formData = new FormData();
     for (const file of this.selectedFiles) {
@@ -43,37 +85,39 @@ export class SeccionPedidosComponent {
     formData.append('nombre', this.pedidoFormulario.value.nombre);
     formData.append('pedido', this.pedidoFormulario.value.pedido);
     formData.append('descripcion', this.pedidoFormulario.value.descripcion);
-    
+
     this.pedidoAlmacenService.postPedidoAlmacen(formData)
-    .subscribe(resp => {
-      if(resp["ok"] === true){
-        Swal.fire('Excelente', resp["msg"], 'success')
-        this.selectedFiles = [];
-        this.pedidoFormulario.reset()
-      }
-      else{
-        Swal.fire('Error', "Error. hablar con el administrador", 'error')
-      }
-    })
+      .subscribe(resp => {
+        if (resp["ok"] === true) {
+          Swal.fire('Excelente', resp["msg"], 'success')
+          this.selectedFiles = [];
+          this.pedidoFormulario.reset();
+          this.pedirDataPedidoAlmacen();
+          this.isLoading = false;
+        }
+        else {
+          Swal.fire('Error', `hablar con el administrador. Error: ${resp["msg"]}`, 'error')
+          this.isLoading = false;
+        }
+      });
   }
 
   onFileSelected(event: any) {
     this.selectedFiles = event.target.files;
   }
 
-  uploadImagenesComprobante() {
-    if(this.selectedFiles.length === 0) return;
+  // uploadImagenesComprobante() {
+  //   if (this.selectedFiles.length === 0) return;
 
-    const formData = new FormData();
-    for (const file of this.selectedFiles) {
-      formData.append('images', file, file.name);
-    }
+  //   const formData = new FormData();
+  //   for (const file of this.selectedFiles) {
+  //     formData.append('images', file, file.name);
+  //   }
 
+  //   this.selectedFiles = [];
+  // }
 
-    this.selectedFiles = [];
-  }
-
-  clearSelectedFiles(): void{
+  clearSelectedFiles(): void {
     this.selectedFiles = [];
   }
 
@@ -88,33 +132,4 @@ export class SeccionPedidosComponent {
       this.selectedFiles = Array.from(dataTransfer.files);
     }
   }
-
-  /*----------------------*/
-  
-  ELEMENT_DATA: PeriodicElement[] = [
-    {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-    {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-    {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-    {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-    {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-    {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-    {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-    {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-    {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-    {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-  ];
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'notas'];
-  dataSource = this.ELEMENT_DATA;
-  clickedRows = new Set<PeriodicElement>();
-
-  openDialog(element: any): void{
-    console.log(element);
-  }
-}
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
 }

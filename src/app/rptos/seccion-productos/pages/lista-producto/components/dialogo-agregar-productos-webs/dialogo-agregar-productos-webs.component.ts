@@ -1,7 +1,5 @@
-import { Component, Inject, QueryList, ViewChild, ViewChildren, computed, inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, Inject, ViewChild, computed, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatFormField } from '@angular/material/form-field';
 import { MatSelectionList } from '@angular/material/list';
 import { AuthService } from 'src/app/auth/services/auth.service';
 

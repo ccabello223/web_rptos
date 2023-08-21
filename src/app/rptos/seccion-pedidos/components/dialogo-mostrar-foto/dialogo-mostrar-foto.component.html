@@ -1,0 +1,9 @@
+<div mat-dialog-content>
+    <h2>Fotos del Pedido</h2>
+    <div class="flex flex-column">
+        <mat-card *ngFor="let foto of fotoPedidoAlmacen">
+          <mat-card-content><img mat-card-xl-image (click)="goingToImagen(foto.img)" [src]="'https://coreanosrptos.com/api/foto_pedido_almacen/uploads/' + foto.img" [alt]="foto.img"></mat-card-content>
+          <!-- <mat-card-content><img mat-card-xl-image (click)="goingToImagen(foto.img)" [src]="'http://localhost:8000/api/foto_pedido_almacen/uploads/' + foto.img" [alt]="foto.img"></mat-card-content> -->
+        </mat-card>
+      </div>
+  </div>

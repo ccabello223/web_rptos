@@ -150,7 +150,6 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
   }
 
   saveSelectedRows() {
-    console.log(this.selectedRows);
     this.dialog.open(DialogoAgregarProductosWebsComponent, {
       data: this.selectedRows,
     })
