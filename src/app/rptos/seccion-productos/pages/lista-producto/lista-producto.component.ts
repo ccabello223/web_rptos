@@ -11,6 +11,7 @@ import { DialogoAgregarProductosWebsComponent } from './components/dialogo-agreg
 import { DialogoNotaProductoComponent } from './components/dialogo-nota-producto/dialogo-nota-producto.component';
 import { ListaProductoService } from './services/lista-producto.service';
 import { Producto, ProductoTabla } from '../../interfaces';
+import { DialogoUbicacionesComponent } from './components/dialogo-ubicaciones/dialogo-ubicaciones.component';
 
 @Component({
   selector: 'app-lista-producto',
@@ -33,7 +34,7 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
   showButton: boolean = false;
 
 
-  displayedColumns: string[] = ['checkbox', 'id', 'codigo', 'descripción', 'marca', 'precio2', 'notas'];
+  displayedColumns: string[] = ['checkbox', 'id', 'codigo', 'descripción', 'marca', 'precio2', 'notas', 'ubicaciones'];
   dataSource!: MatTableDataSource<ProductoTabla>;
 
   @ViewChild(MatPaginator)
@@ -44,7 +45,7 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
   public user = computed(() => this.authService.usuarioActual());
 
   constructor() {
-
+    //console.log(this.user()?.distid);
   }
 
   get productos(): Producto[] {
@@ -94,6 +95,15 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
   openDialog(element: any) {
     this.dialog.open(DialogoNotaProductoComponent, {
       data: element.id,
+    })
+  }
+
+  openDialogUbicaciones(element: any) {
+    this.dialog.open(DialogoUbicacionesComponent, {
+      data: { 
+        productoid: element.id, 
+        distid: this.user()?.distid
+      },
     })
   }
 

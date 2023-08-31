@@ -111,7 +111,7 @@ export class ControlProductosWebComponent {
           }
         })
       }
-    })
+    });
   }
 
   selectedProductTemp(id:number){

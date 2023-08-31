@@ -1,0 +1,18 @@
+<!-- <h1 mat-dialog-title>Notas de: {{data.nota}}</h1> -->
+<div mat-dialog-content>
+    <h2>Ubicaciones</h2>
+    
+    <div class="flex flex-column">
+        <mat-form-field>
+            <mat-label>Agregar Ubicación</mat-label>
+            <input matInput #txtTagInput>
+        </mat-form-field>
+        <button mat-button color="primary" (click)="valueOfInput()">Agregar Ubicacion</button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-action-list>
+        <button *ngFor="let item of ubicaciones" mat-list-item (dblclick)="borrarUbicacion(item.id)">{{item.ubicacion}}</button>
+    </mat-action-list>
+</div>

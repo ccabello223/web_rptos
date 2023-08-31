@@ -36,7 +36,6 @@ export class DialogoNotasVentasComponent {
     const id_ventas_web = this.id_venta
     const { nota2, nota3 } = this.notasFormulario.value;
     const body = { id_ventas_web, nota2, nota3 }
-    console.log(body);
     this.productoService.postNotasVentasWeb(body)
       .subscribe(resp => {
         if (resp["ok"] === true) {

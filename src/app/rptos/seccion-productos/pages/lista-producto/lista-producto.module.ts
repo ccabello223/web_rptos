@@ -7,6 +7,7 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { DialogoAgregarProductosWebsComponent } from './components/dialogo-agregar-productos-webs/dialogo-agregar-productos-webs.component';
 import { DialogoNotaProductoComponent } from './components/dialogo-nota-producto/dialogo-nota-producto.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DialogoUbicacionesComponent } from './components/dialogo-ubicaciones/dialogo-ubicaciones.component';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ListaProductoComponent,
     DialogoAgregarProductosWebsComponent,
     DialogoNotaProductoComponent,
+    DialogoUbicacionesComponent,
   ],
   imports: [
     CommonModule,

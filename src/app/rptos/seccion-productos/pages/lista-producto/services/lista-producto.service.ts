@@ -9,6 +9,7 @@ import { of } from 'rxjs/internal/observable/of';
 import { UsuariosWebs } from '../../../interfaces/usuario-webs-response';
 import { ProductosMercadolibreResponse } from '../../../interfaces/producto-webs-response';
 import { tap } from 'rxjs/operators';
+import { UbicacionesResponse } from '../../../interfaces/ubicaciones-response';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +35,20 @@ export class ListaProductoService extends ProductoService {
       return this.http.post<any>(url, formData);
     }
     return of("El archivo esta vacio"); 
+  }
+
+  getUbicaciones(productoid:number, distid:string):Observable<UbicacionesResponse>{
+    const url = `${this.baseUrl}/ubicaciones/${productoid}/${distid}`;
+    return this.http.get<UbicacionesResponse>(url)
+  }
+
+  postUbicaciones(body: any):Observable<any>{
+    const url = `${this.baseUrl}/ubicaciones/postUbicacion`;
+    return this.http.post<any>(url, body);
+  }
+
+  deleteUbicacion(id: number):Observable<any>{
+    const url = `${this.baseUrl}/ubicaciones/deleteUbicacion/${id}`;
+    return this.http.delete<any>(url);
   }
 }
