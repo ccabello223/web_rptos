@@ -22,11 +22,9 @@ interface ItemVentaWeb{
 })
 export class DialogoDetalleVentaComponent {
   private productoService = inject(ListaProductoWebService);
-  private router = inject(Router);
 
   itemsVentaWeb: ItemsVenta[] = [];
   fotosComprobante: FotoComprobante[] = [];
-  selectedFiles: File[] = [];
   displayedColumns: string[] = ['idproducto', 'codigo', 'descripción', 'marca', 'cantidad'];
 
   dataSource!: MatTableDataSource<ItemVentaWeb>;
@@ -54,15 +52,10 @@ export class DialogoDetalleVentaComponent {
     }
   }
 
-  onFileSelected(event: any) {
-    this.selectedFiles = event.target.files;
-  }
-
-  uploadImagenesComprobante() {
-    if(this.selectedFiles.length === 0) return;
+  cargarArchivos(images: File[]){
 
     const formData = new FormData();
-    for (const file of this.selectedFiles) {
+    for (const file of images) {
       formData.append('images', file, file.name);
     }
 
@@ -71,24 +64,6 @@ export class DialogoDetalleVentaComponent {
       Swal.fire('Excelente', resp["message"], ( resp["ok"] ) ? 'success' : 'error')
     });
 
-
-    this.selectedFiles = [];
-  }
-
-  clearSelectedFiles(): void{
-    this.selectedFiles = [];
-  }
-
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-  }
-
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    const dataTransfer = event.dataTransfer;
-    if (dataTransfer?.files) {
-      this.selectedFiles = Array.from(dataTransfer.files);
-    }
   }
 
   goingToImagen(term: string):void{

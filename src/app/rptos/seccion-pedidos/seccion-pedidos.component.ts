@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeccionPedidosService } from './services/seccion-pedidos.service';
@@ -6,6 +6,7 @@ import { PedidoAlmacen } from './interfaces/models/pedido_almacen';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogoMostrarFotoComponent } from './components/dialogo-mostrar-foto/dialogo-mostrar-foto.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-seccion-pedidos',
@@ -16,6 +17,9 @@ export class SeccionPedidosComponent {
   private fb = inject(FormBuilder);
   private pedidoAlmacenService = inject(SeccionPedidosService);
   private dialog = inject(MatDialog)
+
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
 
   selectedFiles: File[] = [];
   isLoading = false;
@@ -70,6 +74,7 @@ export class SeccionPedidosComponent {
       console.log(resp);
       const pedido = Array.from({ length: this.pedidosAlmacen.length }, (_, k) => this.createNewProducts(k));
       this.dataSource = new MatTableDataSource(pedido);
+      this.dataSource.paginator = this.paginator;
     })
   }
 

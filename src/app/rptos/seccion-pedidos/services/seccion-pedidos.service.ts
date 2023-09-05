@@ -37,4 +37,20 @@ export class SeccionPedidosService {
       catchError( () => of([])),
     );
   }
+
+  postFotosPedidosAlmacen(body:any, idPedido: number): Observable<any>{
+    const url = `${this.baseUrl}/foto_pedido_almacen/postImagenPedido/${idPedido}`;
+    return this.http.post<any>(url, body)
+    .pipe(
+      catchError( (error: Error) => of({ok: false, msg: error.message})),
+    );
+  }
+
+  borrarFotoPedido(id:number): Observable<any>{
+    const url = `${this.baseUrl}/foto_pedido_almacen/deleteFoto/${id}`;
+    return this.http.delete<any>(url)
+    .pipe(
+      catchError( (error: Error) => of({ok: false, msg: error.message})),
+    );;
+  }
 }

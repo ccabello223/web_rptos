@@ -11,6 +11,7 @@ import { DialogoAgregarVentaWebComponent } from './components/dialogo-agregar-ve
 import { DialogoNotasVentasComponent } from './components/dialogo-notas-ventas/dialogo-notas-ventas.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogoDetalleVentaComponent } from './components/dialogo-detalle-venta/dialogo-detalle-venta.component';
+import { SharedModule } from '../../../../shared/shared.module';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { DialogoDetalleVentaComponent } from './components/dialogo-detalle-venta
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
-    ListaProductoEnWebRoutingModule
+    ListaProductoEnWebRoutingModule,
+    SharedModule
   ]
 })
 export class ListaProductoEnWebModule { }

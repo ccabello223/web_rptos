@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'shared-uploads-files',
@@ -7,20 +7,23 @@ import { Component } from '@angular/core';
 })
 export class UploadsFilesComponent {
 
+  @Output() sendImageFiles: EventEmitter<File[]> = new EventEmitter();
 
   selectedFiles: File[] = [];
 
+  constructor() { }
+
+
   onFileSelected(event: any) {
     this.selectedFiles = event.target.files;
+    //this.sendImageFiles.emit(this.selectedFiles)
   }
 
   uploadImagenesComprobante() {
-    if(this.selectedFiles.length === 0) return;
+    if (this.selectedFiles.length === 0) return;
 
-    const formData = new FormData();
-    for (const file of this.selectedFiles) {
-      formData.append('images', file, file.name);
-    }
+
+    this.sendImageFiles.emit(this.selectedFiles)
 
     // this.productoService.postFotosComprobante(formData, this.data)
     // .subscribe( resp => {
@@ -28,10 +31,10 @@ export class UploadsFilesComponent {
     // });
 
 
-    this.selectedFiles = [];
+    //this.selectedFiles = [];
   }
 
-  clearSelectedFiles(): void{
+  clearSelectedFiles(): void {
     this.selectedFiles = [];
   }
 
