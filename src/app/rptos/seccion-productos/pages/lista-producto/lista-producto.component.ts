@@ -12,6 +12,7 @@ import { DialogoNotaProductoComponent } from './components/dialogo-nota-producto
 import { ListaProductoService } from './services/lista-producto.service';
 import { Producto, ProductoTabla } from '../../interfaces';
 import { DialogoUbicacionesComponent } from './components/dialogo-ubicaciones/dialogo-ubicaciones.component';
+import { DialogoVerImagenComponent } from './components/dialogo-ver-imagen/dialogo-ver-imagen.component';
 
 @Component({
   selector: 'app-lista-producto',
@@ -34,7 +35,7 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
   showButton: boolean = false;
 
 
-  displayedColumns: string[] = ['checkbox', 'id', 'codigo', 'descripción', 'marca', 'precio2', 'notas', 'ubicaciones'];
+  displayedColumns: string[] = ['checkbox', 'id', 'codigo', 'descripción', 'marca', 'precio2', 'notas', 'ubicaciones', 'imagenes'];
   dataSource!: MatTableDataSource<ProductoTabla>;
 
   @ViewChild(MatPaginator)
@@ -104,6 +105,12 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
         productoid: element.id, 
         distid: this.user()?.distid
       },
+    })
+  }
+
+  openDialogoVerFoto(element: any){
+    this.dialog.open(DialogoVerImagenComponent, {
+      data: element.id,
     })
   }
 

@@ -8,6 +8,8 @@ import { DialogoAgregarProductosWebsComponent } from './components/dialogo-agreg
 import { DialogoNotaProductoComponent } from './components/dialogo-nota-producto/dialogo-nota-producto.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogoUbicacionesComponent } from './components/dialogo-ubicaciones/dialogo-ubicaciones.component';
+import { DialogoVerImagenComponent } from './components/dialogo-ver-imagen/dialogo-ver-imagen.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -16,15 +18,17 @@ import { DialogoUbicacionesComponent } from './components/dialogo-ubicaciones/di
     DialogoAgregarProductosWebsComponent,
     DialogoNotaProductoComponent,
     DialogoUbicacionesComponent,
+    DialogoVerImagenComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MaterialModule,
     ListaProductoRoutingModule,
+    SharedModule
   ],
   exports: [
-    DialogoNotaProductoComponent
+    DialogoNotaProductoComponent,
   ]
 })
 export class ListaProductoModule { }
