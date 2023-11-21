@@ -4,6 +4,7 @@ import { SeccionPedidosService } from '../../services/seccion-pedidos.service';
 import { FotoPedidoAlmacen } from '../../interfaces/models/foto_pedido_almacen';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environments';
+import { carouselImage } from 'src/app/shared/utils/carousel_image.interface';
 
 @Component({
   selector: 'app-dialogo-mostrar-foto',
@@ -12,7 +13,7 @@ import { environment } from 'src/environments/environments';
 })
 export class DialogoMostrarFotoComponent {
   private pedidoAlmacenService = inject(SeccionPedidosService);
-  public fotoPedidoAlmacen: FotoPedidoAlmacen[] = [];
+  public fotoPedidoAlmacen: carouselImage[] = [];
   private baseUrl: string = environment.baseUrl;
   isLoading = false;
   selectedFiles: File[] = [];
@@ -20,37 +21,40 @@ export class DialogoMostrarFotoComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: number) {
     this.pedidoAlmacenService.getFotosPedidoAlmacen(data)
     .subscribe(resp => {
-      this.fotoPedidoAlmacen = resp;
+      resp.map(e => {
+        this.fotoPedidoAlmacen.push(
+          {
+            idImage: e.id,
+            imageSrc:  `https://coreanosrptos.com/api/foto_pedido_almacen/uploads/${e.img}`,
+            imageAlt: e.img
+          }
+        );
+      });
     })
   }
 
-  goingToImagen(term: FotoPedidoAlmacen):void{
-    Swal.fire({
-      title: '¿Qué quieres hacer con esta imagen?',
-      showDenyButton: true,
+  borrarImagen(id: number){
+      Swal.fire({
+      title: '¿Estás seguro de borrar esta imagen?',
       showCancelButton: true,
-      confirmButtonText: 'Ver foto',
-      denyButtonText: `Borrar`,
+      confirmButtonText: 'Borrar Imagen',
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-          window.open(`https://coreanosrptos.com/api/foto_pedido_almacen/uploads/${term.img}`, '_blank');
-      } else if (result.isDenied) {
-        this.pedidoAlmacenService.borrarFotoPedido(term.id).subscribe(resp => {
+        this.pedidoAlmacenService.borrarFotoPedido(id).subscribe(resp => {
           if(resp["ok"]){
             Swal.fire('Excelente', resp["msg"], 'success')
           }else{
             Swal.fire('Error', resp["msg"], 'error')
           }
         });
+      } else if (result.isDenied) {
+        
       }
     })
-    // // window.open(`http://localhost:8000/api/foto_pedido_almacen/uploads/${term}`, '_blank');
   }
 
-  cargarArchivos(images: File[]){
 
-    //console.log(images);
+  cargarArchivos(images: File[]){
 
     this.isLoading = true;
 

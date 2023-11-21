@@ -6,6 +6,7 @@ import { ListaProductoWebService } from '../../services/lista-producto-web.servi
 import { ItemsVenta } from 'src/app/rptos/seccion-productos/interfaces';
 import { FotoComprobante } from 'src/app/rptos/seccion-productos/interfaces/models/foto_comprobante_pago';
 import { Router } from '@angular/router';
+import { carouselImage } from 'src/app/shared/utils/carousel_image.interface';
 
 interface ItemVentaWeb{
   idproducto:number;
@@ -24,7 +25,8 @@ export class DialogoDetalleVentaComponent {
   private productoService = inject(ListaProductoWebService);
 
   itemsVentaWeb: ItemsVenta[] = [];
-  fotosComprobante: FotoComprobante[] = [];
+  fotosComprobante: carouselImage[] = [];
+  fotosProductoVenta: carouselImage[] = [];
   displayedColumns: string[] = ['idproducto', 'codigo', 'descripción', 'marca', 'cantidad'];
 
   dataSource!: MatTableDataSource<ItemVentaWeb>;
@@ -38,8 +40,29 @@ export class DialogoDetalleVentaComponent {
 
     this.productoService.getFotosComprobante(data)
       .subscribe( resp => {
-        this.fotosComprobante = resp;
+          resp.map(e => {
+            this.fotosComprobante.push(
+              {
+                idImage: e.id,
+                imageSrc: `https://coreanosrptos.com/api/foto_comprobante/uploads/${e.img}`,
+                imageAlt: e.img
+              }
+            )
+          });
       });
+
+      this.productoService.getFotosProductosVentas(data)
+      .subscribe( resp => {
+        resp.map( e => {
+          this.fotosProductoVenta.push(
+            {
+              idImage: e.id,
+              imageSrc: `https://coreanosrptos.com/api/foto_producto_venta/uploads/${e.img}`,
+              imageAlt: e.img
+            }
+          )
+        })
+      })
   }
   /** Construye y retorna los items de las ventas. */
   crearItemsVentas(i: number): ItemVentaWeb {
@@ -52,7 +75,7 @@ export class DialogoDetalleVentaComponent {
     }
   }
 
-  cargarArchivos(images: File[]){
+  cargarFotoComprobante(images: File[]){
 
     const formData = new FormData();
     for (const file of images) {
@@ -63,7 +86,18 @@ export class DialogoDetalleVentaComponent {
     .subscribe( resp => {
       Swal.fire('Excelente', resp["message"], ( resp["ok"] ) ? 'success' : 'error')
     });
+  }
 
+  cargarFotoProductoVente(images: File[]){
+    const formData = new FormData();
+    for (const file of images) {
+      formData.append('images', file, file.name);
+    }
+
+    this.productoService.postFotosProductosVentas(formData, this.data)
+    .subscribe( resp => {
+      Swal.fire('Excelente', resp["message"], ( resp["ok"] ) ? 'success' : 'error')
+    });
   }
 
   goingToImagen(term: string):void{

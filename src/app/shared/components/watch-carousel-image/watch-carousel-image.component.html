@@ -3,9 +3,10 @@
         [src]="image.imageSrc" 
         [alt]="image.imageAlt"
         [ngClass]="{'image-active': selectedIndex === i}"
+        (click)="click(image.imageSrc)"
+        (dblclick)="DoubleClick(image.idImage)"
         class="fade"
     >
-
     <div *ngIf="indicators" class="carousel-dot-container">
         <span *ngFor="let dot of images; let i = index" class="dot" [ngClass]="{'active':selectedIndex === i}" (click)="selectedImagen(i)">
 

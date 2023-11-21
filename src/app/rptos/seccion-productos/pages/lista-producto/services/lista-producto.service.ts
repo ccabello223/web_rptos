@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { UsuariosWebs } from '../../../interfaces/usuario-webs-response';
 import { ProductosMercadolibreResponse } from '../../../interfaces/producto-webs-response';
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { UbicacionesResponse } from '../../../interfaces/ubicaciones-response';
 
 @Injectable({
@@ -32,7 +32,10 @@ export class ListaProductoService extends ProductoService {
       const formData = new FormData();
       formData.append('files', selectedFile, selectedFile.name);
       const url = `${this.baseUrl}/productos/actualizar_producto`;
-      return this.http.post<any>(url, formData);
+      return this.http.post<any>(url, formData)
+      .pipe(
+        catchError( (error: Error) => of({ok: false, msg: error.message})),
+      );;
     }
     return of("El archivo esta vacio"); 
   }

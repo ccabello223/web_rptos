@@ -1,3 +1,5 @@
+import { FotoProducto } from "./models/foto_producto";
+
 export interface ProductoTabla {
     id: number;
     codigo: string;
@@ -5,4 +7,5 @@ export interface ProductoTabla {
     marca: string;
     precio1: string;
     precio2: string;
+    foto_producto?: FotoProducto[];
   }

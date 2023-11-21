@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import Swal from 'sweetalert2';
 import { DialogoAgregarProductosWebsComponent } from './components/dialogo-agregar-productos-webs/dialogo-agregar-productos-webs.component';
@@ -89,7 +88,8 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
       descripcion: this.producto[i].nombre,
       marca: this.producto[i].marca.nombre,
       precio1: this.producto[i].precio1,
-      precio2: this.producto[i].precio2
+      precio2: this.producto[i].precio2,
+      foto_producto: this.producto[i].foto_productos
     }
   }
 
@@ -108,9 +108,10 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
     })
   }
 
-  openDialogoVerFoto(element: any){
+  openDialogoVerFoto(element: ProductoTabla){
+    //TODO: mandar el arreglo de imagenes al dialogo
     this.dialog.open(DialogoVerImagenComponent, {
-      data: element.id,
+      data: element.foto_producto,
     })
   }
 
@@ -171,4 +172,31 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
       data: this.selectedRows,
     })
   }
+
+    /*---------------
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      this.selectedRows = [];
+      this.showButton = this.selectedRows.length > 0;
+      return;
+    }
+
+    this.selection.select(...this.dataSource.data);
+    this.selection.selected.forEach(element => {
+      this.selectedRows.push(element);
+    });
+    //Habilita el boton para subir el producto
+    this.showButton = this.selectedRows.length > 0;
+  }
 }
+

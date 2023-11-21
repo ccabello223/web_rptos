@@ -20,4 +20,23 @@ export class SeccionProductosComponent {
     this.screenWidth = data.screenWidth;
     this.isSideNavCollapsed = data.collapsed;
   }
+
+  // public sidebarItems = [
+  //   {label: 'Listado', icon: 'label', url: './list'},
+  //   {label: 'Añadir', icon: 'add', url: './new-hero'},
+  //   {label: 'Buscar', icon: 'search', url: './search'},
+  // ]
+
+  public navbarData = [
+    {
+      url:'lista-producto',
+      icon: 'list_alt',
+      label: 'Lista de Producto'
+    },
+    {
+      url:'lista-producto-en-web',
+      icon: 'travel_explore',
+      label: 'Productos en la Web'
+    },
+  ]
 }

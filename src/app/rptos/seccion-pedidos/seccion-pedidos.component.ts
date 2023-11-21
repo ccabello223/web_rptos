@@ -52,7 +52,6 @@ export class SeccionPedidosComponent {
   }
 
   openDialog(element: PedidoAlmacen): void{
-    console.log(element);
     this.dialog.open(DialogoMostrarFotoComponent, {
       data: element.id,
     })
@@ -71,7 +70,6 @@ export class SeccionPedidosComponent {
     this.pedidoAlmacenService.getPedidoAlmacen()
     .subscribe(resp => {
       this.pedidosAlmacen = resp;
-      console.log(resp);
       const pedido = Array.from({ length: this.pedidosAlmacen.length }, (_, k) => this.createNewProducts(k));
       this.dataSource = new MatTableDataSource(pedido);
       this.dataSource.paginator = this.paginator;

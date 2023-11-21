@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'shared-uploads-files',
@@ -6,6 +6,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./uploads-files.component.css']
 })
 export class UploadsFilesComponent {
+
+  @Input() label: string = '';
 
   @Output() sendImageFiles: EventEmitter<File[]> = new EventEmitter();
 
