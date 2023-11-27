@@ -9,7 +9,7 @@
 <div *ngIf="!isLoading">
 
   <form class="flex" [formGroup]="fechaVentaFormulario" (ngSubmit)="buscarPorFecha()"
-    *ngIf="this.user()?.rol == 1 || this.user()?.rol == 6 || (this.user()?.rol == 2 && this.user()?.usuario == 30)">
+    *ngIf="this.user()?.rol == 1 || this.user()?.rol == 6 || (this.user()?.rol == 2 && this.user()?.usuario == 30) ||  (this.user()?.rol == 2 && this.user()?.usuario == 32)">
     <mat-form-field class="m-3">
       <mat-label>Año</mat-label>
       <mat-select matNativeControl formControlName="anio">
