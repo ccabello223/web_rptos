@@ -136,7 +136,7 @@
 
       </table>
 
-      <mat-paginator [pageSizeOptions]="[10, 20, 30, 100]"
+      <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="[10, 20, 30, 100]"
         aria-label="Selecciona una opcion para cargar los resultados"></mat-paginator>
     </div>
 
@@ -154,6 +154,11 @@
     <!--  -->
 
     <h3 class="mt-6 ml-3"><b>Articulos a actualizar precio o subir a mercadolibre</b></h3>
+
+    <mat-form-field class="mt-5">
+      <mat-label>Buscador</mat-label>
+      <input matInput (keyup)="searchFilter2($event)" placeholder="Ex. Mia" #input>
+    </mat-form-field>
 
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSourceTemp" matSort>
@@ -213,7 +218,7 @@
           <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
         </tr>
       </table>
-      <mat-paginator #MatProductosTempPaginator [pageSizeOptions]="[10, 20, 30, 100]"
+      <mat-paginator [showFirstLastButtons]="true" #MatProductosTempPaginator [pageSizeOptions]="[10, 20, 30, 100]"
         aria-label="Selecciona una opcion para cargar los resultados"></mat-paginator>
     </div>
   </ng-template>

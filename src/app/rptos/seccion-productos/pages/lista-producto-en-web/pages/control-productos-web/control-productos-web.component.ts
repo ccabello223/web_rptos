@@ -184,6 +184,15 @@ export class ControlProductosWebComponent {
     }
   }
 
+  searchFilter2(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSourceTemp.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSourceTemp.paginator) {
+      this.dataSourceTemp.paginator.firstPage();
+    }
+  }
+
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
