@@ -6,8 +6,6 @@ import { NotaReponse, NotasVentasWebResponse, Producto, Productos, VentasWebResp
 import { ProductoService } from '../../../services/producto.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
-import { UsuariosWebs } from '../../../interfaces/usuario-webs-response';
-import { ProductosMercadolibreResponse } from '../../../interfaces/producto-webs-response';
 import { catchError, tap } from 'rxjs/operators';
 import { UbicacionesResponse } from '../../../interfaces/ubicaciones-response';
 
@@ -53,5 +51,10 @@ export class ListaProductoService extends ProductoService {
   deleteUbicacion(id: number):Observable<any>{
     const url = `${this.baseUrl}/ubicaciones/deleteUbicacion/${id}`;
     return this.http.delete<any>(url);
+  }
+
+  postFotosProducto(body:any, idProducto: number): Observable<any>{
+    const url = `${this.baseUrl}/foto_producto/postFotoProducto/${idProducto}`;
+    return this.http.post<any>(url, body);
   }
 }

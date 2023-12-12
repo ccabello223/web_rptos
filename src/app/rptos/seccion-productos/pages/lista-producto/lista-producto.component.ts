@@ -111,7 +111,10 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
   openDialogoVerFoto(element: ProductoTabla){
     //TODO: mandar el arreglo de imagenes al dialogo
     this.dialog.open(DialogoVerImagenComponent, {
-      data: element.foto_producto,
+      data: {
+        productoid: element.id,
+        fotosProductos: element.foto_producto
+      }
     })
   }
 

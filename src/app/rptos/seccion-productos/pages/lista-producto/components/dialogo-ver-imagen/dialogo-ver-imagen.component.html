@@ -5,3 +5,5 @@
 </div>
 
 <shared-carousel [images]="fotoProducto"></shared-carousel>
+<shared-uploads-files class="flex flex-column mat-elevation-z8 mt-2"
+(sendImageFiles)="cargarFotoProducto($event)" label="Seleccione la(s) foto(s) del producto"></shared-uploads-files>
