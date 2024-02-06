@@ -12,5 +12,6 @@ export interface Productosml {
     precio2:      string;
     precio1_porc: string;
     precio2_porc: string;
+    precio3_porc: string;
     producto:     Producto;
 }

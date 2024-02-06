@@ -111,8 +111,9 @@
     </div>
 
     <div class="flex align-items-center flex-wrap m-3">
-      <button mat-raised-button color="primary" class="mr-3" (click)="saveSelectedRows()" [disabled]="!showButton">Subir
-        Productos a mercadolibre</button>
+      <button mat-raised-button color="primary" class="mr-3" (click)="saveSelectedRows()" [disabled]="!showButton">Subir productos a mercadolibre</button>
+
+      <button mat-raised-button color="warn" class="mr-3" *ngIf="this.user()?.email_user === 'smithrodriguez123@gmail.com'" (click)="deleteProductSelected()" [disabled]="!showButton">Eliminar producto</button>
 
       <input *ngIf="this.user()?.rol == 6 || this.user()?.rol == 1" type="file" (change)="onFileSelected($event)">
       <span class="spacer"></span>

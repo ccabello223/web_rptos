@@ -66,6 +66,11 @@ export class ListaProductoWebService extends ProductoService {
     return this.http.post<any>(url, body);
   }
 
+  deleteAllProduct(id_usuario_ml:number): Observable<any>{
+    const url = `${this.baseUrl}/productos_ml/deleteAllProducto?id_usuario_ml=${id_usuario_ml}`;
+    return this.http.delete<any>(url);
+  }
+
   deleteProduct(id:number): Observable<any>{
     const url = `${this.baseUrl}/productos_ml/deleteProducto?id=${id}`;
     return this.http.delete<any>(url);

@@ -9,5 +9,6 @@ export interface ProductoWebsTable {
     precio2:      string;
     precio1_porc: string;
     precio2_porc: string;
+    precio3_porc: string;
     marca:        Marca;
 }

@@ -101,14 +101,14 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
 
   openDialogUbicaciones(element: any) {
     this.dialog.open(DialogoUbicacionesComponent, {
-      data: { 
-        productoid: element.id, 
+      data: {
+        productoid: element.id,
         distid: this.user()?.distid
       },
     })
   }
 
-  openDialogoVerFoto(element: ProductoTabla){
+  openDialogoVerFoto(element: ProductoTabla) {
     //TODO: mandar el arreglo de imagenes al dialogo
     this.dialog.open(DialogoVerImagenComponent, {
       data: {
@@ -176,9 +176,45 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
     })
   }
 
-    /*---------------
+  deleteProductSelected() {
+    let productosABorrar: number[] = [];
+    this.selectedRows.forEach(element => {
+      productosABorrar.push(element.id);
+    })
+    Swal.fire({
+      title: '¿Estás seguro de borrar este artículo?',
+      text: "¡Este cambio no podrá ser revertido!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, borrar'
+    }).then((result:any) => {
+      if (result.isConfirmed) {
+        this.productoService.deleteProducts(productosABorrar).subscribe(resp => {
+          if(resp["ok"] == true){
+            Swal.fire(
+              'Borrado!',
+              resp["msg"],
+              'success'
+            );
+            this.getProductsFromBBDD();
+          }else{
+            Swal.fire(
+              'Error!',
+              resp["errorMsg"],
+              'error'
+            );
+          }
+        })
+      }
+    });
+    
+  }
 
-  /** Whether the number of selected elements matches the total number of rows. */
+  /*---------------
+
+/** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
