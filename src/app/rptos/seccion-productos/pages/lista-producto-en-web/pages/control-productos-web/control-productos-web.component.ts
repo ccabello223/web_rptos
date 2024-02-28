@@ -10,6 +10,7 @@ import { DialogoAgregarVentaWebComponent } from '../../components/dialogo-agrega
 import { SelectionModel } from '@angular/cdk/collections';
 import { ListaProductoWebService } from '../../services/lista-producto-web.service';
 import { Productosml } from 'src/app/rptos/seccion-productos/interfaces/producto-webs-response';
+import { DialogoPorcentajeComponent } from '../../components/dialogo-porcentaje/dialogo-porcentaje.component';
 
 @Component({
   selector: 'app-control-productos-web',
@@ -42,8 +43,8 @@ export class ControlProductosWebComponent {
 
 
   usersML: string[] = ['id', 'nombre', 'correo'];
-  productsML: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'precio3_porc', 'notas', 'eliminar']
-  productsMLTemp: string[] = ['id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'precio3_porc']
+  productsML: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'notas', 'eliminar']
+  productsMLTemp: string[] = ['id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc']
   public user = computed(() => this.authService.usuarioActual());
   
   constructor() { }
@@ -277,6 +278,12 @@ export class ControlProductosWebComponent {
         usuario_ml_id, 
         items: this.selectedRows 
       },
+    })
+  }
+
+  openDialogPercent(event:any){
+    this.dialog.open(DialogoPorcentajeComponent, {
+      data: event.precio2 
     })
   }
 }

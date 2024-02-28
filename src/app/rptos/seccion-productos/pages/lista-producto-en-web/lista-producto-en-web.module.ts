@@ -12,6 +12,7 @@ import { DialogoNotasVentasComponent } from './components/dialogo-notas-ventas/d
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogoDetalleVentaComponent } from './components/dialogo-detalle-venta/dialogo-detalle-venta.component';
 import { SharedModule } from '../../../../shared/shared.module';
+import { DialogoPorcentajeComponent } from './components/dialogo-porcentaje/dialogo-porcentaje.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { SharedModule } from '../../../../shared/shared.module';
     ControlVentasEnWebComponent,
     DialogoAgregarVentaWebComponent,
     DialogoNotasVentasComponent,
-    DialogoDetalleVentaComponent
+    DialogoDetalleVentaComponent,
+    DialogoPorcentajeComponent
   ],
   imports: [
     CommonModule,
