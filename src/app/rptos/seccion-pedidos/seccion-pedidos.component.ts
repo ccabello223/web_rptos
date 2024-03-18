@@ -7,6 +7,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogoMostrarFotoComponent } from './components/dialogo-mostrar-foto/dialogo-mostrar-foto.component';
 import { MatPaginator } from '@angular/material/paginator';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-seccion-pedidos',
@@ -29,7 +32,18 @@ export class SeccionPedidosComponent {
     pedido: ['', [Validators.maxLength(255)]],
     descripcion: ['', [Validators.maxLength(255)]],
   });
+
+  habladorFormulario: FormGroup = this.fb.group({
+    nombre: ['', [Validators.maxLength(255)]],
+    rif: ['', [Validators.maxLength(255)]],
+    direccion: ['', [Validators.maxLength(255)]],
+    medio: ['', [Validators.maxLength(255)]],
+  });
+
   items: any = [{ name: "Nombre", dist: "nombre" }, { name: "Numero Pedido", dist: "pedido" }, { name: "Descripción", dist: "descripcion" },
+  ]
+
+  habladorItems: any = [{ name: "Nombre", dist: "nombre" }, { name: "RIF", dist: "rif" }, { name: "Dirección", dist: "direccion" }, { name: "¿Se va por?", dist: "medio" },
   ]
 
   // Otra pagina la tabla
@@ -99,7 +113,7 @@ export class SeccionPedidosComponent {
           this.isLoading = false;
         }
         else {
-          Swal.fire('Error', `hablar con el administrador. Error: ${resp["msg"]}`, 'error')
+          Swal.fire('Error', `hablar con el administrador.' Error: ${resp["msg"]}`, 'error')
           this.isLoading = false;
         }
       });
@@ -134,5 +148,46 @@ export class SeccionPedidosComponent {
     if (dataTransfer?.files) {
       this.selectedFiles = Array.from(dataTransfer.files);
     }
+  }
+
+  createPdf(){
+
+    const { nombre,  rif, direccion, medio} = this.habladorFormulario.value
+
+    const pdfDefinition: any = {
+      content: [
+        {
+          text: `CLIENTE: ${nombre}`,
+          style: 'header',
+          alignment: 'center'
+        },
+        {
+          text: `DIRECCION: ${direccion}`,
+          style: 'header',
+          alignment: 'center'
+        },
+        {
+          text: `RIF: ${rif}`,
+          style: 'header',
+          alignment: 'center'
+        },
+        {
+          text: medio,
+          style: 'header',
+          alignment: 'center'
+        },
+      ],
+      styles: {
+        header: {
+          fontSize: 30,
+          bold: true,
+          alignment: 'justify'
+        }
+      }
+    }
+
+    const pdf = pdfMake.createPdf(pdfDefinition);
+    pdf.download();
+
   }
 }
