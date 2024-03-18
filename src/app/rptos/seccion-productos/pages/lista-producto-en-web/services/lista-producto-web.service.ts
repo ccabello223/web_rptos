@@ -71,6 +71,11 @@ export class ListaProductoWebService extends ProductoService {
     return this.http.delete<any>(url);
   }
 
+  deleteProductTempById(id:number): Observable<any>{
+    const url = `${this.baseUrl}/productos_ml/deleteProductobyId/${id}`;
+    return this.http.delete<any>(url);
+  }
+
   deleteProduct(id:number): Observable<any>{
     const url = `${this.baseUrl}/productos_ml/deleteProducto?id=${id}`;
     return this.http.delete<any>(url);

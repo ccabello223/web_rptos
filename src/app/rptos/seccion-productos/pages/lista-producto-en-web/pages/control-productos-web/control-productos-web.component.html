@@ -226,10 +226,29 @@
           </td>
         </ng-container>
 
+        <ng-container matColumnDef="subir">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Subir</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="selectedProductTemp(element.id_producto)">
+              <mat-icon>keyboard_double_arrow_up</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="borrar">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Borrar</th>
+          <td mat-cell *matCellDef="let element" mat-icon-button (click)="deleteProductTempById(element.id)">
+            <button mat-icon-button>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
 
         <tr mat-header-row *matHeaderRowDef="productsMLTemp"></tr>
 
-        <tr mat-row (click)="selectedProductTemp(row.id_producto)" *matRowDef="let row; columns: productsMLTemp;"></tr>
+        <!-- <tr mat-row (click)="selectedProductTemp(row.id_producto)" *matRowDef="let row; columns: productsMLTemp;"></tr> -->
+        <tr mat-row *matRowDef="let row; columns: productsMLTemp;"></tr>
 
         <!-- Row shown when there is no matching data. -->
         <tr mat-row *matNoDataRow>

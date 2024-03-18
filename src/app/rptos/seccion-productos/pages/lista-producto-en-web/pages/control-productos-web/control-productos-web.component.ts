@@ -44,7 +44,7 @@ export class ControlProductosWebComponent {
 
   usersML: string[] = ['id', 'nombre', 'correo'];
   productsML: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'notas', 'eliminar']
-  productsMLTemp: string[] = ['id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc']
+  productsMLTemp: string[] = ['id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'subir', 'borrar']
   public user = computed(() => this.authService.usuarioActual());
   
   constructor() { }
@@ -127,6 +127,37 @@ export class ControlProductosWebComponent {
     }).then((result:any) => {
       if (result.isConfirmed) {
         this.productoService.deleteAllProduct(this.id_usuario_ml).subscribe(resp => {
+          if(resp["ok"] == true){
+            Swal.fire(
+              'Borrado!',
+              resp["msg"],
+              'success'
+            );
+            this.selectedUser(this.id_usuario_ml);
+          }else{
+            Swal.fire(
+              'Error!',
+              resp["errorMsg"],
+              'error'
+            );
+          }
+        })
+      }
+    });
+  }
+
+  deleteProductTempById(id:number){
+    Swal.fire({
+      title: '¿Estás seguro de borrar este artículo?',
+      text: "¡Este cambio no podrá ser revertido!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, borrar'
+    }).then((result:any) => {
+      if (result.isConfirmed) {
+        this.productoService.deleteProductTempById(id).subscribe(resp => {
           if(resp["ok"] == true){
             Swal.fire(
               'Borrado!',
