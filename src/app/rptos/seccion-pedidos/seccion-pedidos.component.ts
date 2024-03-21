@@ -9,6 +9,7 @@ import { DialogoMostrarFotoComponent } from './components/dialogo-mostrar-foto/d
 import { MatPaginator } from '@angular/material/paginator';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { Hablador } from './interfaces/models/hablador_pedido_info';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -25,6 +26,7 @@ export class SeccionPedidosComponent {
   paginator!: MatPaginator;
 
   selectedFiles: File[] = [];
+  habladoresInfo: Hablador[] = [];
   isLoading = false;
 
   pedidoFormulario: FormGroup = this.fb.group({
@@ -78,6 +80,7 @@ export class SeccionPedidosComponent {
       descripcion: '',
     });
     this.pedirDataPedidoAlmacen();
+    this.pedirClientesParaHabladores()
   }
 
   private pedirDataPedidoAlmacen(){
@@ -87,7 +90,14 @@ export class SeccionPedidosComponent {
       const pedido = Array.from({ length: this.pedidosAlmacen.length }, (_, k) => this.createNewProducts(k));
       this.dataSource = new MatTableDataSource(pedido);
       this.dataSource.paginator = this.paginator;
-    })
+    });
+  }
+
+  private pedirClientesParaHabladores(){
+    this.pedidoAlmacenService.getHabladorInfo()
+      .subscribe(resp => {
+        this.habladoresInfo = resp.habladores;
+      })
   }
 
   guardarNota(): void {

@@ -100,9 +100,26 @@
     <mat-tab label="Crear Hablador">
       <form class="flex flex-column" [formGroup]="habladorFormulario" (ngSubmit)=" createPdf()">
 
-        <mat-form-field class="m-1" *ngFor="let item of habladorItems">
-          <mat-label>{{item.name}}</mat-label>
-          <input type="text" matInput placeholder="{{item.name}}" formControlName="{{item.dist}}" required>
+        <mat-form-field class="ml-3 mr-3 mb-1">
+          <mat-label>cliente</mat-label>
+          <mat-select formControlName="nombre">
+            <mat-option *ngFor="let cliente of habladoresInfo" [value]="cliente.cliente"> {{ cliente.cliente }} </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="m-1">
+          <mat-label>Dirección</mat-label>
+          <input type="text" matInput placeholder="direccion" formControlName="direccion" required>
+        </mat-form-field>
+
+        <mat-form-field class="m-1">
+          <mat-label>RIF</mat-label>
+          <input type="text" matInput placeholder="rif" formControlName="rif" required>
+        </mat-form-field>
+
+        <mat-form-field class="m-1">
+          <mat-label>¿Se va por?</mat-label>
+          <input type="text" matInput placeholder="medio" formControlName="medio" required>
         </mat-form-field>
 
         <button mat-button mat-flat-button color="primary" class="m-3" type="submit">

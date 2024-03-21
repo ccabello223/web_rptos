@@ -4,6 +4,7 @@ import { Observable, catchError, of } from 'rxjs';
 import { environment } from 'src/environments/environments';
 import { PedidoAlmacen } from '../interfaces/models/pedido_almacen';
 import { FotoPedidoAlmacen } from '../interfaces/models/foto_pedido_almacen';
+import { Hablador, HabladorInfo } from '../interfaces/models/hablador_pedido_info';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,10 @@ export class SeccionPedidosService {
     return this.http.get<PedidoAlmacen[]>(url);
   }
 
+  getHabladorInfo(): Observable<HabladorInfo>{
+    const url = `${this.baseUrl}/hablador_pedido_info`;
+    return this.http.get<HabladorInfo>(url);
+  }
 
   postPedidoAlmacen(body:any): Observable<any>{
     const url = `${this.baseUrl}/pedido_almacen/postPedidoAlmacen`;
