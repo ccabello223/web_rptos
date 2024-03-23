@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environments';
 import { PedidoAlmacen } from '../interfaces/models/pedido_almacen';
 import { FotoPedidoAlmacen } from '../interfaces/models/foto_pedido_almacen';
 import { Hablador, HabladorInfo } from '../interfaces/models/hablador_pedido_info';
+import { DireccionHabladorResponse } from '../interfaces/response/direccion_hablador_response';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,28 @@ export class SeccionPedidosService {
   getHabladorInfo(): Observable<HabladorInfo>{
     const url = `${this.baseUrl}/hablador_pedido_info`;
     return this.http.get<HabladorInfo>(url);
+  }
+
+  getDireccionHablador(cliente:string): Observable<DireccionHabladorResponse>{
+    const url = `${this.baseUrl}/direccion_hablador_pedido?cliente=${cliente}`;
+    return this.http.get<DireccionHabladorResponse>(url);
+  }
+
+  postHabladorInfo(body:any):Observable<any>{
+    const url = `${this.baseUrl}/hablador_pedido_info/postHabladorInfo`;
+    return this.http.post<any>(url, body)
+    .pipe(
+      // catchError( (error: Error) => of({ok: false, msg: error.message})),
+      catchError(err => of({ok:false, msg: err.error.msg}))
+    );
+  }
+
+  postDireccionHablador(body:any):Observable<any>{
+    const url = `${this.baseUrl}/direccion_hablador_pedido/postDireccionHablador`;
+    return this.http.post<any>(url, body)
+    .pipe(
+      catchError(err => of({ok:false, msg: err.error.msg}))
+    );
   }
 
   postPedidoAlmacen(body:any): Observable<any>{

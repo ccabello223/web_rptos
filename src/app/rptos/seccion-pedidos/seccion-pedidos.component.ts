@@ -7,10 +7,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogoMostrarFotoComponent } from './components/dialogo-mostrar-foto/dialogo-mostrar-foto.component';
 import { MatPaginator } from '@angular/material/paginator';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Hablador } from './interfaces/models/hablador_pedido_info';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import { DialogoCrearHabladorPdfComponent } from './components/dialogo-crear-hablador-pdf/dialogo-crear-hablador-pdf.component';
+import { DialogoCrearInfoHabladorComponent } from './components/dialogo-crear-info-hablador/dialogo-crear-info-hablador.component';
+
 
 @Component({
   selector: 'app-seccion-pedidos',
@@ -27,7 +27,9 @@ export class SeccionPedidosComponent {
 
   selectedFiles: File[] = [];
   habladoresInfo: Hablador[] = [];
+
   isLoading = false;
+  clienteParaHablador: string;
 
   pedidoFormulario: FormGroup = this.fb.group({
     nombre: ['', [Validators.maxLength(255)]],
@@ -37,9 +39,6 @@ export class SeccionPedidosComponent {
 
   habladorFormulario: FormGroup = this.fb.group({
     nombre: ['', [Validators.maxLength(255)]],
-    rif: ['', [Validators.maxLength(255)]],
-    direccion: ['', [Validators.maxLength(255)]],
-    medio: ['', [Validators.maxLength(255)]],
   });
 
   items: any = [{ name: "Nombre", dist: "nombre" }, { name: "Numero Pedido", dist: "pedido" }, { name: "Descripción", dist: "descripcion" },
@@ -160,44 +159,21 @@ export class SeccionPedidosComponent {
     }
   }
 
-  createPdf(){
+  pedirInfoParaHablador(){
+    const { nombre } = this.habladorFormulario.value
+    this.clienteParaHablador = nombre
 
-    const { nombre,  rif, direccion, medio} = this.habladorFormulario.value
+    if (!this.clienteParaHablador) return;
 
-    const pdfDefinition: any = {
-      content: [
-        {
-          text: `CLIENTE: ${nombre}`,
-          style: 'header',
-          alignment: 'center'
-        },
-        {
-          text: `DIRECCION: ${direccion}`,
-          style: 'header',
-          alignment: 'center'
-        },
-        {
-          text: `RIF: ${rif}`,
-          style: 'header',
-          alignment: 'center'
-        },
-        {
-          text: medio,
-          style: 'header',
-          alignment: 'center'
-        },
-      ],
-      styles: {
-        header: {
-          fontSize: 30,
-          bold: true,
-          alignment: 'justify'
-        }
-      }
-    }
-
-    const pdf = pdfMake.createPdf(pdfDefinition);
-    pdf.download();
-
+    this.dialog.open(DialogoCrearHabladorPdfComponent, {
+      data: this.clienteParaHablador
+    })
   }
+
+  crearClienteHablador(){
+    this.dialog.open(DialogoCrearInfoHabladorComponent, {
+      data: 'hola',
+    })
+  }
+
 }

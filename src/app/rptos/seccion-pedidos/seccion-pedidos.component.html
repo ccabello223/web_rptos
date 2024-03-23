@@ -78,9 +78,9 @@
         <tr mat-row (click)="clickedRows.add(row)" [class.demo-row-is-clicked]="clickedRows.has(row)"
           *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-      
+
       <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="[10, 20, 30, 100]"
-      aria-label="Selecciona una opcion para cargar los resultados"></mat-paginator>
+        aria-label="Selecciona una opcion para cargar los resultados"></mat-paginator>
       <!-- <div>
             <h3>
               Click Log
@@ -98,36 +98,25 @@
           </ul> -->
     </mat-tab>
     <mat-tab label="Crear Hablador">
-      <form class="flex flex-column" [formGroup]="habladorFormulario" (ngSubmit)=" createPdf()">
+      <form class="flex flex-column" [formGroup]="habladorFormulario" (ngSubmit)="pedirInfoParaHablador()">
 
-        <mat-form-field class="ml-3 mr-3 mb-1">
+        <mat-form-field class="mt-3 ml-3 mr-3 mb-1">
           <mat-label>cliente</mat-label>
           <mat-select formControlName="nombre">
-            <mat-option *ngFor="let cliente of habladoresInfo" [value]="cliente.cliente"> {{ cliente.cliente }} </mat-option>
+            <mat-option *ngFor="let cliente of habladoresInfo" [value]="cliente.cliente"> {{ cliente.cliente }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field class="m-1">
-          <mat-label>Dirección</mat-label>
-          <input type="text" matInput placeholder="direccion" formControlName="direccion" required>
-        </mat-form-field>
-
-        <mat-form-field class="m-1">
-          <mat-label>RIF</mat-label>
-          <input type="text" matInput placeholder="rif" formControlName="rif" required>
-        </mat-form-field>
-
-        <mat-form-field class="m-1">
-          <mat-label>¿Se va por?</mat-label>
-          <input type="text" matInput placeholder="medio" formControlName="medio" required>
-        </mat-form-field>
-
         <button mat-button mat-flat-button color="primary" class="m-3" type="submit">
-          <mat-icon>save</mat-icon>
-          Ingresar
+          <mat-icon>voice_selection</mat-icon>
+          Escoger este cliente
         </button>
-
       </form>
+      <button mat-button mat-flat-button color="primary" class="flex m-3" (click)="crearClienteHablador()">
+        <mat-icon>picture_in_picture_large</mat-icon>
+        Agregar Cliente
+      </button>
     </mat-tab>
   </mat-tab-group>
 </div>
