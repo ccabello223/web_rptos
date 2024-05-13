@@ -1,12 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, computed, inject } from '@angular/core';
-import { AuthService } from 'src/app/auth/services/auth.service';
-import { environment } from 'src/environments/environments';
-import { NotaReponse, NotasVentasWebResponse, Producto, Productos, VentasWebResponse } from '../../../interfaces';
+import { Injectable } from '@angular/core';
+import { Productos,  } from '../../../interfaces';
 import { ProductoService } from '../../../services/producto.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { UbicacionesResponse } from '../../../interfaces/ubicaciones-response';
 
 @Injectable({

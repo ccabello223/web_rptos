@@ -1,1 +1,36 @@
-<h2>¿Estás aburrido?</h2>
+<h2 *ngIf="this.user().email_user !== 'smithrodriguez123@gmail.com'">¿Estás aburrido?</h2>
+
+  <mat-tab-group *ngIf="this.user().email_user === 'smithrodriguez123@gmail.com'">
+    <mat-tab label="Crear empleado">
+      <form class="flex flex-column" [formGroup]="empleadoFormulario" (ngSubmit)="generarEmpleado()">
+
+        <mat-form-field class="ml-3 mr-3 mb-1">
+          <mat-label>Nombre empleado</mat-label>
+          <input type="text" matInput placeholder="Nombre empleado" formControlName="nombre" required>
+        </mat-form-field>
+
+        <mat-form-field class="ml-3 mr-3 mb-1">
+          <mat-label>Cedula</mat-label>
+          <input type="text" matInput placeholder="Cedula" formControlName="cedula" maxlength="8" required>
+        </mat-form-field>
+
+        <mat-form-field class="ml-3 mr-3 mb-1">
+          <mat-label>Correo</mat-label>
+          <input type="text" matInput placeholder="Correo" formControlName="correo" required>
+        </mat-form-field>
+
+        <mat-form-field class="ml-3 mr-3 mb-1">
+          <mat-label>Permisos de usuario</mat-label>
+          <mat-select formControlName="id_rol">
+            <mat-option *ngFor="let permiso of permisos" [value]="permiso.value"> {{ permiso.nombre }} </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-button mat-flat-button color="primary" class="m-3" type="submit">
+          <mat-icon>save</mat-icon>
+          Registrar Usuario
+        </button>
+
+      </form>
+    </mat-tab>
+  </mat-tab-group>
