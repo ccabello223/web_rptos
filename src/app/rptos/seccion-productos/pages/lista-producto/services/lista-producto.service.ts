@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/operators';
 import { UbicacionesResponse } from '../../../interfaces/ubicaciones-response';
+import { ProductoHistorialPrecio } from '../../../interfaces/models/producto_historial_precio';
 
 @Injectable({
   providedIn: 'root'
@@ -58,5 +59,10 @@ export class ListaProductoService extends ProductoService {
   deleteProducts(body:any): Observable<any>{
     const url = `${this.baseUrl}/productos/deleteProducto`;
     return this.http.put<any>(url, body);
+  }
+
+  getProductosHistorialPrecio(idProducto:number):Observable<ProductoHistorialPrecio[]>{
+    const url = `${this.baseUrl}/producto_historial_precio?id_producto=${idProducto}`;
+    return this.http.get<ProductoHistorialPrecio[]>(url)
   }
 }

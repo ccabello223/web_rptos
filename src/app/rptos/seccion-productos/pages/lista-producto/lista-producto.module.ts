@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DialogoUbicacionesComponent } from './components/dialogo-ubicaciones/dialogo-ubicaciones.component';
 import { DialogoVerImagenComponent } from './components/dialogo-ver-imagen/dialogo-ver-imagen.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { DialogoProductoHistorialPrecioComponent } from './components/dialogo-producto-historial-precio/dialogo-producto-historial-precio.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     DialogoNotaProductoComponent,
     DialogoUbicacionesComponent,
     DialogoVerImagenComponent,
+    DialogoProductoHistorialPrecioComponent
   ],
   imports: [
     CommonModule,

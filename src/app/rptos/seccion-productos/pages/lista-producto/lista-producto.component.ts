@@ -12,6 +12,7 @@ import { ListaProductoService } from './services/lista-producto.service';
 import { Producto, ProductoTabla } from '../../interfaces';
 import { DialogoUbicacionesComponent } from './components/dialogo-ubicaciones/dialogo-ubicaciones.component';
 import { DialogoVerImagenComponent } from './components/dialogo-ver-imagen/dialogo-ver-imagen.component';
+import { DialogoProductoHistorialPrecioComponent } from './components/dialogo-producto-historial-precio/dialogo-producto-historial-precio.component';
 
 @Component({
   selector: 'app-lista-producto',
@@ -34,7 +35,8 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
   showButton: boolean = false;
 
 
-  displayedColumns: string[] = ['checkbox', 'id', 'codigo', 'descripción', 'marca', 'precio2', 'notas', 'ubicaciones', 'imagenes'];
+  displayedColumns: string[] = ['checkbox', 'id', 'codigo', 'descripción', 'marca', 'precio2',
+                                   'notas', 'ubicaciones', 'imagenes', 'precios_antiguos'];
   dataSource!: MatTableDataSource<ProductoTabla>;
 
   @ViewChild(MatPaginator)
@@ -117,6 +119,14 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+  openDialogoHistorialPrecio(element: ProductoTabla) {
+    //TODO: mandar el arreglo de imagenes al dialogo
+    this.dialog.open(DialogoProductoHistorialPrecioComponent, {
+      data: element.id,
+    })
+  }
+
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];

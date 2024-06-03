@@ -1,0 +1,7 @@
+<h2 mat-dialog-title>Historial de precios ANTIGUOS sobre los productos</h2>
+<mat-dialog-content>
+  <mat-list>
+    <mat-list-item *ngFor="let producto of productos">{{producto.precio_viejo}} - {{producto.fecha_cambio | date}}</mat-list-item>
+
+  </mat-list>
+</mat-dialog-content>
