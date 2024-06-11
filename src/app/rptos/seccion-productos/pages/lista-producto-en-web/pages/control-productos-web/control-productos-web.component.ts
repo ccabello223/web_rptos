@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { Producto, ProductoWebsTable, Usuario } from 'src/app/rptos/seccion-productos/interfaces';
+import { Producto, ProductoTabla, ProductoWebsTable, Usuario } from 'src/app/rptos/seccion-productos/interfaces';
 import Swal from 'sweetalert2';
 import { DialogoNotaProductoComponent } from '../../../lista-producto/components/dialogo-nota-producto/dialogo-nota-producto.component';
 import { DialogoAgregarVentaWebComponent } from '../../components/dialogo-agregar-venta-web/dialogo-agregar-venta-web.component';
@@ -11,6 +11,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { ListaProductoWebService } from '../../services/lista-producto-web.service';
 import { Productosml } from 'src/app/rptos/seccion-productos/interfaces/producto-webs-response';
 import { DialogoPorcentajeComponent } from '../../components/dialogo-porcentaje/dialogo-porcentaje.component';
+import { DialogoVerImagenComponent } from '../../../lista-producto/components/dialogo-ver-imagen/dialogo-ver-imagen.component';
 
 @Component({
   selector: 'app-control-productos-web',
@@ -43,8 +44,8 @@ export class ControlProductosWebComponent {
 
 
   usersML: string[] = ['id', 'nombre', 'correo'];
-  productsML: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'notas', 'eliminar']
-  productsMLTemp: string[] = ['id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'subir', 'borrar']
+  productsML: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'notas', 'eliminar', 'imagenes']
+  productsMLTemp: string[] = ['id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'subir', 'borrar', 'imagenes']
   public user = computed(() => this.authService.usuarioActual());
   
   constructor() { }
@@ -177,6 +178,15 @@ export class ControlProductosWebComponent {
     });
   }
 
+  openDialogoVerFoto(element: ProductoWebsTable) {
+    //TODO: mandar el arreglo de imagenes al dialogo
+    this.dialog.open(DialogoVerImagenComponent, {
+      data: {
+        productoid: element.id_producto,
+        fotosProductos: element.foto_producto
+      }
+    })
+  }
   selectedProductTemp(id:number){
     Swal.fire({
       title: '¿Estás seguro de montar este artículo?',
@@ -281,6 +291,7 @@ export class ControlProductosWebComponent {
       precio1_porc: products[i].precio1_porc,
       precio2_porc: products[i].precio2_porc,
       marca: products[i].producto.marca.nombre,
+      //TODO: COLOCAR EL ARRAY DE FOTO
     }
   }
 

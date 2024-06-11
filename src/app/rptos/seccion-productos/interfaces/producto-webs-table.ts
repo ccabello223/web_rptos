@@ -1,4 +1,5 @@
 import { Marca } from "./marca";
+import { FotoProducto } from "./models/foto_producto";
 
 export interface ProductoWebsTable {
     id:           number;
@@ -11,4 +12,5 @@ export interface ProductoWebsTable {
     precio2_porc: string;
     precio3_porc: string;
     marca:        Marca;
+    foto_producto?: FotoProducto[];
 }
