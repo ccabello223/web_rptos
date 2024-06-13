@@ -179,7 +179,9 @@ export class ControlProductosWebComponent {
   }
 
   openDialogoVerFoto(element: ProductoWebsTable) {
-    //TODO: mandar el arreglo de imagenes al dialogo
+
+    console.log(element.id_producto);
+    console.log(element.foto_producto);
     this.dialog.open(DialogoVerImagenComponent, {
       data: {
         productoid: element.id_producto,
@@ -187,6 +189,7 @@ export class ControlProductosWebComponent {
       }
     })
   }
+
   selectedProductTemp(id:number){
     Swal.fire({
       title: '¿Estás seguro de montar este artículo?',
@@ -291,7 +294,7 @@ export class ControlProductosWebComponent {
       precio1_porc: products[i].precio1_porc,
       precio2_porc: products[i].precio2_porc,
       marca: products[i].producto.marca.nombre,
-      //TODO: COLOCAR EL ARRAY DE FOTO
+      foto_producto: products[i].foto_productos
     }
   }
 
