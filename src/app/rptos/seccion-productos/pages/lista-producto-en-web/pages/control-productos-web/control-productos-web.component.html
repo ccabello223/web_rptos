@@ -55,7 +55,7 @@
         <ng-container matColumnDef="checkbox">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Selector </th>
           <td mat-cell *matCellDef="let row">
-            <mat-checkbox (click)="$event.stopPropagation()" (change)="onRowSelect($event, row)"
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="onRowSelectProdML($event, row)"
               [checked]="selection.isSelected(row)">
             </mat-checkbox>
           </td>
@@ -181,6 +181,15 @@
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSourceTemp" matSort>
 
+        <ng-container matColumnDef="checkbox">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Selector </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="onRowSelectProdMLTemp($event, row)"
+              [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="id_producto">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> ID del producto </th>
           <td mat-cell *matCellDef="let row"> {{row.id_producto}} </td>
@@ -235,14 +244,14 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="subir">
+        <!-- <ng-container matColumnDef="subir">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Subir</th>
           <td mat-cell *matCellDef="let element">
             <button mat-icon-button (click)="selectedProductTemp(element.id_producto)">
               <mat-icon>keyboard_double_arrow_up</mat-icon>
             </button>
           </td>
-        </ng-container>
+        </ng-container> -->
 
         <ng-container matColumnDef="borrar">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Borrar</th>
@@ -276,8 +285,9 @@
       <mat-paginator [showFirstLastButtons]="true" #MatProductosTempPaginator [pageSizeOptions]="[10, 20, 30, 100]"
         aria-label="Selecciona una opcion para cargar los resultados"></mat-paginator>
     </div>
-    <div class="flex align-items-center flex-wrap m-3" *ngIf="this.user()?.email_user === 'smithrodriguez123@gmail.com'">
-      <button mat-raised-button color="warn" (click)="DeleteAllProducts()">Borrar todos los productos</button>
+    <div class="flex align-items-center flex-wrap m-3">
+      <button mat-raised-button color="warn" (click)="DeleteAllProducts()" *ngIf="this.user()?.email_user === 'smithrodriguez123@gmail.com'">Borrar todos los productos</button>
+      <button mat-raised-button class="ml-2" (click)="subirProductoTemp()" [disabled]="!showButton2">Subir productos</button>
     </div>
   </ng-template>
 </div>

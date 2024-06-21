@@ -9,6 +9,7 @@ import { UsuariosWebs } from '../../../interfaces/usuario-webs-response';
 import { ProductosMercadolibreResponse } from '../../../interfaces/producto-webs-response';
 import { FotoComprobante } from '../../../interfaces/models/foto_comprobante_pago';
 import { FotoProductoVenta } from '../../../interfaces/models/foto_producto_venta';
+import { FotoProducto } from '../../../interfaces/models/foto_producto';
 
 @Injectable({
   providedIn: 'root'
@@ -39,9 +40,9 @@ export class ListaProductoWebService extends ProductoService {
     return this.http.get<ProductosMercadolibreResponse>(url);
   }
 
-  getProductoML(id_producto:number, id_usuario_ml:number): Observable<any>{
-    const url = `${this.baseUrl}/productos_ml/getProductoML?id_producto=${id_producto}&usuario_ml=${id_usuario_ml}`;
-    return this.http.get<any>(url)
+  getProductoML(id_usuario_ml:number, body:any): Observable<any>{
+    const url = `${this.baseUrl}/productos_ml/getProductoML?usuario_ml=${id_usuario_ml}`;
+    return this.http.post<any>(url, body);
   }
 
   postExcelProductMl(id:number, selectedFile?: File, rol:number = 0):Observable<any>{
@@ -159,5 +160,10 @@ export class ListaProductoWebService extends ProductoService {
   postFotosProductosVentas(body:any, idVenta: number): Observable<any>{
     const url = `${this.baseUrl}/foto_producto_venta/postImagenProductoVenta/${idVenta}`;
     return this.http.post<any>(url, body);
+  }
+
+  getFotosProductoById(producto_id:number): Observable<any>{
+    const url = `${this.baseUrl}/foto_producto/getFotoById?producto_id=${producto_id}`;
+    return this.http.get<any>(url);
   }
 }

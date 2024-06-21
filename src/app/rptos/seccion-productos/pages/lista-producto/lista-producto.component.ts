@@ -115,7 +115,8 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
     this.dialog.open(DialogoVerImagenComponent, {
       data: {
         productoid: element.id,
-        fotosProductos: element.foto_producto
+        fotosProductos: element.foto_producto,
+        tieneFoto: true
       }
     })
   }
