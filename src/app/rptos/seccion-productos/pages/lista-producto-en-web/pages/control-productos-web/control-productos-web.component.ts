@@ -35,6 +35,7 @@ export class ControlProductosWebComponent {
   message: string = '';
   selectedFile?: File;
   dataSource!: MatTableDataSource<Usuario>;
+  dataSourceProd!: MatTableDataSource<ProductoWebsTable>;
   dataSourceTemp!: MatTableDataSource<ProductoWebsTable>;
 
   //checkbox
@@ -48,13 +49,13 @@ export class ControlProductosWebComponent {
   //Boton Productos mercado libre temporal
   showButton2: boolean = false;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  // @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild("MatProductosProdPaginator") paginatorProd!: MatPaginator;
   @ViewChild("MatProductosTempPaginator") productosTempPaginator!: MatPaginator;
-
 
   usersML: string[] = ['id', 'nombre', 'correo'];
   productsML: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'notas', 'eliminar', 'imagenes']
-  productsMLTemp: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'borrar', 'imagenes']
+  productsMLTemp: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'notas', 'borrar', 'imagenes']
   public user = computed(() => this.authService.usuarioActual());
 
   constructor() { }
@@ -77,16 +78,17 @@ export class ControlProductosWebComponent {
 
   //Cuando el usuario selecciona un empleado entonces se cargar los productos
   selectedUser(id_usuario_ml: number) {
+    
+    // this.isLoading = true;
     this.id_usuario_ml = id_usuario_ml;
-    this.dataSource = new MatTableDataSource(this.products);
+    this.dataSourceProd = new MatTableDataSource(this.products);
     this.dataSourceTemp = new MatTableDataSource(this.productsTemp);
 
-    // this.isLoading = true;
-
+    
     this.productoService.getProductosML(this.id_usuario_ml).subscribe(resp => {
       this.products = Array.from({ length: resp.productosml.length }, (_, k) => this.productOfUserById(k, resp.productosml));
-      this.dataSource.data = this.products;
-      this.dataSource.paginator = this.paginator;
+      this.dataSourceProd.data = this.products;
+      this.dataSourceProd.paginator = this.paginatorProd;
     });
 
 
@@ -239,10 +241,10 @@ export class ControlProductosWebComponent {
 
   searchFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSourceProd.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    if (this.dataSourceProd.paginator) {
+      this.dataSourceProd.paginator.firstPage();
     }
   }
 

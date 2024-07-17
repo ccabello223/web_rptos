@@ -5,52 +5,49 @@
   </div>
 </div>
 
-<div *ngIf="!isLoading">
-  <mat-form-field class="mt-5">
-    <mat-label>Buscador</mat-label>
-    <input matInput (keyup)="searchFilter($event)" placeholder="Ex. Mia" #input>
-  </mat-form-field>
+<div class="mat-elevation-z8" *ngIf="id_usuario_ml === 0 else elseblock">
+  <table mat-table [dataSource]="dataSource" matSort>
 
-  <div class="mat-elevation-z8" *ngIf="id_usuario_ml === 0 else elseblock">
-    <table mat-table [dataSource]="dataSource" matSort>
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+    </ng-container>
 
-      <!-- ID Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
-      </ng-container>
+    <!-- Progress Column -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> codigo </th>
+      <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
+    </ng-container>
 
-      <!-- Progress Column -->
-      <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> codigo </th>
-        <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
-      </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="correo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> descripción </th>
+      <td mat-cell *matCellDef="let row"> {{row.correo}} </td>
+    </ng-container>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="correo">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> descripción </th>
-        <td mat-cell *matCellDef="let row"> {{row.correo}} </td>
-      </ng-container>
+    <tr mat-header-row *matHeaderRowDef="usersML"></tr>
+    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
 
-      <tr mat-header-row *matHeaderRowDef="usersML"></tr>
-      <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+    <tr mat-row (click)="selectedUser(row.id)" *matRowDef="let row; columns: usersML;"></tr>
 
-      <tr mat-row (click)="selectedUser(row.id)" *matRowDef="let row; columns: usersML;"></tr>
+  </table>
+</div>
 
 
-      <!-- Row shown when there is no matching data. -->
-      <tr mat-row *matNoDataRow>
-        <td class="mat-cell" colspan="4">No se encontró nada de: "{{input.value}}"</td>
-      </tr>
+<!-- Cuando se escoge un usuario aparece esta pantalla que es la de productos -->
+<ng-template #elseblock>
 
-    </table>
-  </div>
+  <div *ngIf="!isLoading">
 
-
-  <!-- Cuando se escoge un usuario aparece esta pantalla que es la de productos -->
-  <ng-template #elseblock>
     <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="dataSource" matSort>
+
+      <mat-form-field class="mt-5">
+        <mat-label>Buscador</mat-label>
+        <input matInput (keyup)="searchFilter($event)" placeholder="Producto" #input>
+      </mat-form-field>
+
+      <table mat-table [dataSource]="dataSourceProd" matSort>
 
         <ng-container matColumnDef="checkbox">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Selector </th>
@@ -85,9 +82,9 @@
 
 
         <!-- <ng-container matColumnDef="precio1">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio1 </th>
-            <td mat-cell *matCellDef="let row"> {{row.precio1}} </td>
-          </ng-container> -->
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio1 </th>
+              <td mat-cell *matCellDef="let row"> {{row.precio1}} </td>
+            </ng-container> -->
 
 
         <ng-container matColumnDef="precio2">
@@ -154,8 +151,15 @@
 
       </table>
 
-      <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="[10, 20, 30, 100]"
-        aria-label="Selecciona una opcion para cargar los resultados"></mat-paginator>
+      <mat-paginator [showFirstLastButtons]="true" #MatProductosProdPaginator [pageSizeOptions]="[10, 20, 30, 100]"
+        aria-label="Selecciona una opcion para cargar los resultados">
+      </mat-paginator>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr mat-row *matNoDataRow>
+        <td class="mat-cell" colspan="4">No se encontró nada de: "{{input.value}}"</td>
+      </tr>
+
     </div>
 
     <div class="flex align-items-center flex-wrap m-3">
@@ -167,84 +171,87 @@
       <button mat-raised-button color="primary" (click)="selectUserAgain()">Escoger otro usuario</button>
     </div>
 
-    <!--  -->
-    <!-- Segunda tabla de producto que no estan en mercado libre -->
-    <!--  -->
-
-    <h3 class="mt-6 ml-3"><b>Articulos a actualizar precio o subir a mercadolibre</b></h3>
-
-    <mat-form-field class="mt-5">
-      <mat-label>Buscador</mat-label>
-      <input matInput (keyup)="searchFilter2($event)" placeholder="Ex. Mia" #input>
-    </mat-form-field>
-
-    <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="dataSourceTemp" matSort>
-
-        <ng-container matColumnDef="checkbox">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Selector </th>
-          <td mat-cell *matCellDef="let row">
-            <mat-checkbox (click)="$event.stopPropagation()" (change)="onRowSelectProdMLTemp($event, row)"
-              [checked]="selection.isSelected(row)">
-            </mat-checkbox>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="id_producto">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID del producto </th>
-          <td mat-cell *matCellDef="let row"> {{row.id_producto}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="nombre">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
-          <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
-        </ng-container>
+  </div>
 
 
-        <ng-container matColumnDef="codigo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Codigo </th>
-          <td mat-cell *matCellDef="let row"> {{row.codigo}} </td>
-        </ng-container>
+  <!--  -->
+  <!-- Segunda tabla de producto que no estan en mercado libre -->
+  <!--  -->
+
+  <h3 class="mt-6 ml-3"><b>Articulos a actualizar precio o subir a mercadolibre</b></h3>
+
+  <mat-form-field class="mt-5">
+    <mat-label>Buscador</mat-label>
+    <input matInput (keyup)="searchFilter2($event)" placeholder="Ex. Mia" #input>
+  </mat-form-field>
+
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSourceTemp" matSort>
+
+      <ng-container matColumnDef="checkbox">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Selector </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()" (change)="onRowSelectProdMLTemp($event, row)"
+            [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="id_producto">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID del producto </th>
+        <td mat-cell *matCellDef="let row"> {{row.id_producto}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
+        <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
+      </ng-container>
 
 
-        <ng-container matColumnDef="marca">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
-          <td mat-cell *matCellDef="let row"> {{row.marca}} </td>
-        </ng-container>
+      <ng-container matColumnDef="codigo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Codigo </th>
+        <td mat-cell *matCellDef="let row"> {{row.codigo}} </td>
+      </ng-container>
 
 
-        <ng-container matColumnDef="precio1">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio1 </th>
-          <td mat-cell *matCellDef="let row"> {{row.precio1}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="precio2">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio2 </th>
-          <td mat-cell *matCellDef="let row"> {{row.precio2}} </td>
-        </ng-container>
+      <ng-container matColumnDef="marca">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
+        <td mat-cell *matCellDef="let row"> {{row.marca}} </td>
+      </ng-container>
 
 
-        <ng-container matColumnDef="precio1_porc">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> 9% </th>
-          <td mat-cell *matCellDef="let row"> {{row.precio1_porc}} </td>
-        </ng-container>
+      <ng-container matColumnDef="precio1">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio1 </th>
+        <td mat-cell *matCellDef="let row"> {{row.precio1}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="precio2">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio2 </th>
+        <td mat-cell *matCellDef="let row"> {{row.precio2}} </td>
+      </ng-container>
 
 
-        <ng-container matColumnDef="precio2_porc">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> 11% </th>
-          <td mat-cell *matCellDef="let row"> {{row.precio2_porc}} </td>
-        </ng-container>
+      <ng-container matColumnDef="precio1_porc">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> 9% </th>
+        <td mat-cell *matCellDef="let row"> {{row.precio1_porc}} </td>
+      </ng-container>
 
-        <ng-container matColumnDef="perc">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Porcentaje</th>
-          <td mat-cell *matCellDef="let element">
-            <button mat-icon-button (click)="openDialogPercent(element)">
-              <mat-icon>percent</mat-icon>
-            </button>
-          </td>
-        </ng-container>
 
-        <!-- <ng-container matColumnDef="subir">
+      <ng-container matColumnDef="precio2_porc">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> 11% </th>
+        <td mat-cell *matCellDef="let row"> {{row.precio2_porc}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="perc">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Porcentaje</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="openDialogPercent(element)">
+            <mat-icon>percent</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="subir">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Subir</th>
           <td mat-cell *matCellDef="let element">
             <button mat-icon-button (click)="selectedProductTemp(element.id_producto)">
@@ -253,41 +260,51 @@
           </td>
         </ng-container> -->
 
-        <ng-container matColumnDef="borrar">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Borrar</th>
-          <td mat-cell *matCellDef="let element" mat-icon-button (click)="deleteProductTempById(element.id)">
-            <button mat-icon-button>
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="imagenes">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Imagenes</th>
+        <ng-container matColumnDef="notas">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Notas</th>
           <td mat-cell *matCellDef="let element">
-            <button mat-icon-button (click)="openDialogoVerFoto(element)">
-              <mat-icon>image</mat-icon>
+            <button mat-icon-button (click)="openDialogNotas(element)">
+              <mat-icon>edit</mat-icon>
             </button>
           </td>
         </ng-container>
 
+      <ng-container matColumnDef="borrar">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Borrar</th>
+        <td mat-cell *matCellDef="let element" mat-icon-button (click)="deleteProductTempById(element.id)">
+          <button mat-icon-button>
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="productsMLTemp"></tr>
+      <ng-container matColumnDef="imagenes">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Imagenes</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="openDialogoVerFoto(element)">
+            <mat-icon>image</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-        <!-- <tr mat-row (click)="selectedProductTemp(row.id_producto)" *matRowDef="let row; columns: productsMLTemp;"></tr> -->
-        <tr mat-row *matRowDef="let row; columns: productsMLTemp;"></tr>
 
-        <!-- Row shown when there is no matching data. -->
-        <tr mat-row *matNoDataRow>
-          <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-        </tr>
-      </table>
-      <mat-paginator [showFirstLastButtons]="true" #MatProductosTempPaginator [pageSizeOptions]="[10, 20, 30, 100]"
-        aria-label="Selecciona una opcion para cargar los resultados"></mat-paginator>
-    </div>
-    <div class="flex align-items-center flex-wrap m-3">
-      <button mat-raised-button color="warn" (click)="DeleteAllProducts()" *ngIf="this.user()?.email_user === 'smithrodriguez123@gmail.com'">Borrar todos los productos</button>
-      <button mat-raised-button class="ml-2" (click)="subirProductoTemp()" [disabled]="!showButton2">Subir productos</button>
-    </div>
-  </ng-template>
-</div>
+      <tr mat-header-row *matHeaderRowDef="productsMLTemp"></tr>
+
+      <!-- <tr mat-row (click)="selectedProductTemp(row.id_producto)" *matRowDef="let row; columns: productsMLTemp;"></tr> -->
+      <tr mat-row *matRowDef="let row; columns: productsMLTemp;"></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr mat-row *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      </tr>
+    </table>
+    <mat-paginator [showFirstLastButtons]="true" #MatProductosTempPaginator [pageSizeOptions]="[10, 20, 30, 100]"
+      aria-label="Selecciona una opcion para cargar los resultados"></mat-paginator>
+  </div>
+  <div class="flex align-items-center flex-wrap m-3">
+    <button mat-raised-button color="warn" (click)="DeleteAllProducts()"
+      *ngIf="this.user()?.email_user === 'smithrodriguez123@gmail.com'">Borrar todos los productos</button>
+    <button mat-raised-button class="ml-2" (click)="subirProductoTemp()" [disabled]="!showButton2">Subir
+      productos</button>
+  </div>
+</ng-template>

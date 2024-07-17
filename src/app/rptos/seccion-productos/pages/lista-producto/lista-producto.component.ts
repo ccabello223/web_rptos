@@ -13,6 +13,7 @@ import { Producto, ProductoTabla } from '../../interfaces';
 import { DialogoUbicacionesComponent } from './components/dialogo-ubicaciones/dialogo-ubicaciones.component';
 import { DialogoVerImagenComponent } from './components/dialogo-ver-imagen/dialogo-ver-imagen.component';
 import { DialogoProductoHistorialPrecioComponent } from './components/dialogo-producto-historial-precio/dialogo-producto-historial-precio.component';
+import { DialogoEditarProductoComponent } from './components/dialogo-editar-producto/dialogo-editar-producto.component';
 
 @Component({
   selector: 'app-lista-producto',
@@ -36,7 +37,7 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
 
 
   displayedColumns: string[] = ['checkbox', 'id', 'codigo', 'descripción', 'marca', 'precio2',
-                                   'notas', 'ubicaciones', 'imagenes', 'precios_antiguos'];
+                                   'notas', 'imagenes', 'menu'];
   dataSource!: MatTableDataSource<ProductoTabla>;
 
   @ViewChild(MatPaginator)
@@ -124,6 +125,13 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
   openDialogoHistorialPrecio(element: ProductoTabla) {
     //TODO: mandar el arreglo de imagenes al dialogo
     this.dialog.open(DialogoProductoHistorialPrecioComponent, {
+      data: element.id,
+    })
+  }
+
+  openDialogEditaProducto(element:ProductoTabla){
+    //TODO: mandar el arreglo de imagenes al dialogo
+    this.dialog.open(DialogoEditarProductoComponent, {
       data: element.id,
     })
   }

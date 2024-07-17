@@ -11,6 +11,7 @@ import { DialogoUbicacionesComponent } from './components/dialogo-ubicaciones/di
 import { DialogoVerImagenComponent } from './components/dialogo-ver-imagen/dialogo-ver-imagen.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DialogoProductoHistorialPrecioComponent } from './components/dialogo-producto-historial-precio/dialogo-producto-historial-precio.component';
+import { DialogoEditarProductoComponent } from './components/dialogo-editar-producto/dialogo-editar-producto.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { DialogoProductoHistorialPrecioComponent } from './components/dialogo-pr
     DialogoNotaProductoComponent,
     DialogoUbicacionesComponent,
     DialogoVerImagenComponent,
-    DialogoProductoHistorialPrecioComponent
+    DialogoProductoHistorialPrecioComponent,
+    DialogoEditarProductoComponent
   ],
   imports: [
     CommonModule,
