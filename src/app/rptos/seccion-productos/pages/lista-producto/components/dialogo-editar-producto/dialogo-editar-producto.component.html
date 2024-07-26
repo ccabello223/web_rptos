@@ -1,6 +1,6 @@
 <!-- <h1 mat-dialog-title>Notas de: {{data.nota}}</h1> -->
 <div mat-dialog-content>
-    <form class="flex flex-column" [formGroup]="notasFormulario" (ngSubmit)="guardarNota()">
+    <form class="flex flex-column" [formGroup]="ProductoFormulario" (ngSubmit)="guardarNota()">
   
       <mat-form-field class="m-1" *ngFor="let item of items">
         <mat-label>{{item.name}}</mat-label>

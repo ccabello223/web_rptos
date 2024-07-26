@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ProductoService } from '../../../services/producto.service';
 import { Observable } from 'rxjs';
-import { ItemsVentasWebResponse, NotaReponse, NotasVentasWebResponse, VentasWebResponse } from '../../../interfaces';
+import { ItemsVentasWebResponse, NotaReponse, NotasVentasWebResponse, Producto, Productos, VentasWebResponse } from '../../../interfaces';
 import { FormasDePago } from '../../../interfaces/models/formas_de_pago';
 import { TiendasEnWeb } from '../../../interfaces/models/tiendas_web';
 import { of } from 'rxjs/internal/observable/of';
@@ -85,6 +85,16 @@ export class ListaProductoWebService extends ProductoService {
   getNotasProductoById(id_producto:number): Observable<NotaReponse>{
     const url = `${this.baseUrl}/notas?id_producto=${id_producto}`;
     return this.http.get<NotaReponse>(url);
+  }
+
+  getProductoById(producto_id:number): Observable<Productos>{
+    const url = `${this.baseUrl}/productos/${producto_id}`;
+    return this.http.get<Productos>(url);
+  }
+
+  putProductoById(producto_id:number, body: any): Observable<Productos>{
+    const url = `${this.baseUrl}/productos/${producto_id}/actualizar`;
+    return this.http.put<any>(url, body);
   }
 
   postNotasProducto(body:any): Observable<any>{
