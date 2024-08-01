@@ -10,6 +10,7 @@ import { ProductosMercadolibreResponse } from '../../../interfaces/producto-webs
 import { FotoComprobante } from '../../../interfaces/models/foto_comprobante_pago';
 import { FotoProductoVenta } from '../../../interfaces/models/foto_producto_venta';
 import { FotoProducto } from '../../../interfaces/models/foto_producto';
+import { Empleados } from '../../../interfaces/models/empleado_reponse';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,11 @@ export class ListaProductoWebService extends ProductoService {
       const url = `${this.baseUrl}/productos_ml/getUsuariosML?usuario=${usuario}`;
       return this.http.get<UsuariosWebs>(url);
     }
+  }
+
+  getEmpleadosMl(): Observable<Empleados>{
+    const url = `${this.baseUrl}/empleado`;
+    return this.http.get<Empleados>(url);
   }
 
   getProductosML(id:number): Observable<ProductosMercadolibreResponse>{

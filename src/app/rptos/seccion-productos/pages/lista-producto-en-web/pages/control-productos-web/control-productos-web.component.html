@@ -32,6 +32,14 @@
     <tr mat-row (click)="selectedUser(row.id)" *matRowDef="let row; columns: usersML;"></tr>
 
   </table>
+
+  <mat-paginator [showFirstLastButtons]="true" #MatUsuariosPaginator [pageSizeOptions]="[5, 10, 15, 100]"
+    aria-label="Selecciona una opcion para cargar los resultados">
+  </mat-paginator>
+
+  <div class="flex align-items-center flex-wrap m-3">
+    <button mat-raised-button color="primary" class="mb-3" (click)="agregarUsuarioMl()">Crear usuario </button>
+  </div>
 </div>
 
 
@@ -260,14 +268,14 @@
           </td>
         </ng-container> -->
 
-        <ng-container matColumnDef="notas">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Notas</th>
-          <td mat-cell *matCellDef="let element">
-            <button mat-icon-button (click)="openDialogNotas(element)">
-              <mat-icon>edit</mat-icon>
-            </button>
-          </td>
-        </ng-container>
+      <ng-container matColumnDef="notas">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Notas</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="openDialogNotas(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
       <ng-container matColumnDef="borrar">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Borrar</th>

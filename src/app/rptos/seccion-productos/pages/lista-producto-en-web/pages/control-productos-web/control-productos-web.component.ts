@@ -13,6 +13,7 @@ import { Productosml } from 'src/app/rptos/seccion-productos/interfaces/producto
 import { DialogoPorcentajeComponent } from '../../components/dialogo-porcentaje/dialogo-porcentaje.component';
 import { DialogoVerImagenComponent } from '../../../lista-producto/components/dialogo-ver-imagen/dialogo-ver-imagen.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DialogoAgregarUsuarioMlComponent } from '../../components/dialogo-agregar-usuario-ml/dialogo-agregar-usuario-ml.component';
 
 @Component({
   selector: 'app-control-productos-web',
@@ -52,6 +53,7 @@ export class ControlProductosWebComponent {
   // @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild("MatProductosProdPaginator") paginatorProd!: MatPaginator;
   @ViewChild("MatProductosTempPaginator") productosTempPaginator!: MatPaginator;
+  @ViewChild("MatUsuariosPaginator") UsuariosPaginator!: MatPaginator;
 
   usersML: string[] = ['id', 'nombre', 'correo'];
   productsML: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'notas', 'eliminar', 'imagenes']
@@ -66,12 +68,14 @@ export class ControlProductosWebComponent {
       this.productoService.getUsuariosML().subscribe(resp => {
         this.users = Array.from({ length: resp.usuarios.length }, (_, k) => this.createNewUser(k, resp.usuarios));
         this.dataSource = new MatTableDataSource(this.users);
+        this.dataSource.paginator = this.UsuariosPaginator;
       })
     } else if (this.user()?.rol != 3) {
       this.dataSource = new MatTableDataSource(this.products);
       this.productoService.getUsuariosML(this.user()?.usuario).subscribe(resp => {
         this.users = Array.from({ length: resp.usuarios.length }, (_, k) => this.createNewUser(k, resp.usuarios));
         this.dataSource = new MatTableDataSource(this.users);
+        this.dataSource.paginator = this.UsuariosPaginator;
       })
     }
   }
@@ -367,6 +371,12 @@ export class ControlProductosWebComponent {
   openDialogPercent(event: any) {
     this.dialog.open(DialogoPorcentajeComponent, {
       data: event.precio2
+    })
+  }
+
+  agregarUsuarioMl(){
+    this.dialog.open(DialogoAgregarUsuarioMlComponent, {
+      data: 2
     })
   }
 }

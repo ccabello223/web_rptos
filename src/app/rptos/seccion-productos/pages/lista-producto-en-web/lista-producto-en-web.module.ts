@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DialogoDetalleVentaComponent } from './components/dialogo-detalle-venta/dialogo-detalle-venta.component';
 import { SharedModule } from '../../../../shared/shared.module';
 import { DialogoPorcentajeComponent } from './components/dialogo-porcentaje/dialogo-porcentaje.component';
+import { DialogoAgregarUsuarioMlComponent } from './components/dialogo-agregar-usuario-ml/dialogo-agregar-usuario-ml.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { DialogoPorcentajeComponent } from './components/dialogo-porcentaje/dial
     DialogoAgregarVentaWebComponent,
     DialogoNotasVentasComponent,
     DialogoDetalleVentaComponent,
-    DialogoPorcentajeComponent
+    DialogoPorcentajeComponent,
+    DialogoAgregarUsuarioMlComponent
   ],
   imports: [
     CommonModule,

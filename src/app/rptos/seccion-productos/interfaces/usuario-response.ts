@@ -6,5 +6,13 @@ export interface Usuario {
 }
 
 export interface Empleado {
-    nombre: string;
+    idempleado:  number;
+    distid:      string;
+    cedula:      string;
+    nombre:      string;
+    direccion:   null | string;
+    telefono:    null | string;
+    correo:      null | string;
+    comision:    null | string;
+    datecreated: Date | null;
 }
