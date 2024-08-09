@@ -64,5 +64,25 @@ export class DialogoVerImagenComponent {
         Swal.fire('Excelente', resp["message"], (resp["ok"]) ? 'success' : 'error')
       });
   }
+
+  borrarImagen(id:number){
+    Swal.fire({
+      title: '¿Estás seguro de borrar esta imagen?',
+      showCancelButton: true,
+      confirmButtonText: 'Borrar Imagen',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.productoService.deleteBorrarFoto(id).subscribe(resp => {
+          if(resp["ok"]){
+            Swal.fire('Excelente', resp["msg"], 'success')
+          }else{
+            Swal.fire('Error', resp["msg"], 'error')
+          }
+        });
+      } else if (result.isDenied) {
+        
+      }
+    })
+  }
 }
 

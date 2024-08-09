@@ -56,6 +56,14 @@ export class ListaProductoService extends ProductoService {
     return this.http.post<any>(url, body);
   }
 
+  deleteBorrarFoto(id:number): Observable<any>{
+    const url = `${this.baseUrl}/foto_producto/deleteFoto/${id}`;
+    return this.http.delete<any>(url)
+    .pipe(
+      catchError( (error: Error) => of({ok: false, msg: error.message})),
+    );
+  }
+
   deleteProducts(body:any): Observable<any>{
     const url = `${this.baseUrl}/productos/deleteProducto`;
     return this.http.put<any>(url, body);

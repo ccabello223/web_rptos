@@ -6,6 +6,7 @@ import { Empleado, ProductoWebsTable } from 'src/app/rptos/seccion-productos/int
 import { FormasDePago } from 'src/app/rptos/seccion-productos/interfaces/models/formas_de_pago';
 import { TiendasEnWeb } from 'src/app/rptos/seccion-productos/interfaces/models/tiendas_web';
 import { ListaProductoWebService } from '../../services/lista-producto-web.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dialogo-agregar-usuario-ml',
@@ -18,7 +19,7 @@ export class DialogoAgregarUsuarioMlComponent {
   private fb = inject(FormBuilder)
   private dialofRef = inject(MatDialogRef<DialogoAgregarUsuarioMlComponent>)
 
-  notasFormulario: FormGroup = this.fb.group({
+  usuarioFormulario: FormGroup = this.fb.group({
     correo: ['', [Validators.required, Validators.maxLength(255)]],
     empleado: ['', [Validators.required, Validators.maxLength(255)]],
   });
@@ -39,7 +40,19 @@ export class DialogoAgregarUsuarioMlComponent {
   }
   
   guardarUsuario():void{
+    const body = this.usuarioFormulario.value;
 
+    this.productoService.postUsuarioMl(body)
+    .subscribe(resp => {
+      if(resp["ok"] === true){
+
+        Swal.fire('Excelente', resp["msg"], 'success')
+      }
+      else{
+        Swal.fire('Error', "Error. hablar con el administrador", 'error')
+      }
+    })
+    this.dialofRef.close()
   }
 
 }

@@ -37,7 +37,7 @@
     aria-label="Selecciona una opcion para cargar los resultados">
   </mat-paginator>
 
-  <div class="flex align-items-center flex-wrap m-3">
+  <div class="flex align-items-center flex-wrap m-3"  *ngIf="this.user()?.email_user === 'smithrodriguez123@gmail.com'">
     <button mat-raised-button color="primary" class="mb-3" (click)="agregarUsuarioMl()">Crear usuario </button>
   </div>
 </div>

@@ -138,6 +138,11 @@ export class ListaProductoWebService extends ProductoService {
     return this.http.post<any>(url, body);
   }
 
+  postUsuarioMl(body:any): Observable<any>{
+    const url = `${this.baseUrl}/empleado/postNewUsuarioml`;
+    return this.http.post<any>(url, body);
+  }
+
   deleteVenta(id:number): Observable<any>{
     const url = `${this.baseUrl}/ventas_web/deleteVenta?id=${id}`;
     return this.http.delete<any>(url);

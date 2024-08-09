@@ -79,6 +79,6 @@ export class SeccionPedidosService {
     return this.http.delete<any>(url)
     .pipe(
       catchError( (error: Error) => of({ok: false, msg: error.message})),
-    );;
+    );
   }
 }
