@@ -30,11 +30,11 @@ export class DialogoEditarProductoComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: number) {
     this.productoService.getProductoById(data).subscribe(resp => {
-      this.marca = resp.productos[0].marca.nombre
+      this.marca = ( resp.productos[0].marca === null ) ? 'Sin Marca' : resp.productos[0].marca.nombre
       this.ProductoFormulario.setValue({
         codigo: resp.productos[0].codigo || '',
         descrip: resp.productos[0].nombre || '',
-        marca: resp.productos[0].marca.nombre || '',
+        marca: ( resp.productos[0].marca === null ) ? 'Sin Marca' : resp.productos[0].marca.nombre || '',
         precio: resp.productos[0].precio2 || '',
       });
     })

@@ -8,6 +8,6 @@ export interface Producto {
     distid:        string;
     precio1:       string;
     precio2:       string;
-    marca:         Marca;
+    marca:         Marca | null;
     foto_productos: FotoProducto[];
 }

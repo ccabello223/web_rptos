@@ -89,7 +89,7 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
       id: this.producto[i].idproducto,
       codigo: this.producto[i].codigo,
       descripcion: this.producto[i].nombre,
-      marca: this.producto[i].marca.nombre,
+      marca: (this.producto[i].marca === null) ? 'Sin marca' : this.producto[i].marca.nombre,
       precio1: this.producto[i].precio1,
       precio2: this.producto[i].precio2,
       foto_producto: this.producto[i].foto_productos
