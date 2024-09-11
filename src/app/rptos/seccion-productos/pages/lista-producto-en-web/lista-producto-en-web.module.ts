@@ -33,6 +33,9 @@ import { DialogoAgregarUsuarioMlComponent } from './components/dialogo-agregar-u
     ReactiveFormsModule,
     ListaProductoEnWebRoutingModule,
     SharedModule
+  ],
+  exports: [
+    DialogoPorcentajeComponent,
   ]
 })
 export class ListaProductoEnWebModule { }

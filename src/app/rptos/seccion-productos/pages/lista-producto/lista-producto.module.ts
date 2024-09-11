@@ -12,6 +12,7 @@ import { DialogoVerImagenComponent } from './components/dialogo-ver-imagen/dialo
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DialogoProductoHistorialPrecioComponent } from './components/dialogo-producto-historial-precio/dialogo-producto-historial-precio.component';
 import { DialogoEditarProductoComponent } from './components/dialogo-editar-producto/dialogo-editar-producto.component';
+import { DialogoPorcentajeComponent } from '../lista-producto-en-web/components/dialogo-porcentaje/dialogo-porcentaje.component';
 
 
 @NgModule({

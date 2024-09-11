@@ -79,6 +79,15 @@
           </td>
         </ng-container>
 
+        <ng-container matColumnDef="perc">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Porcentaje</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="openDialogPercent(element)">
+              <mat-icon>percent</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="imagenes">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Imagenes</th>
           <td mat-cell *matCellDef="let element">

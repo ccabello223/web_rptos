@@ -14,6 +14,7 @@ import { DialogoUbicacionesComponent } from './components/dialogo-ubicaciones/di
 import { DialogoVerImagenComponent } from './components/dialogo-ver-imagen/dialogo-ver-imagen.component';
 import { DialogoProductoHistorialPrecioComponent } from './components/dialogo-producto-historial-precio/dialogo-producto-historial-precio.component';
 import { DialogoEditarProductoComponent } from './components/dialogo-editar-producto/dialogo-editar-producto.component';
+import { DialogoPorcentajeComponent } from '../lista-producto-en-web/components/dialogo-porcentaje/dialogo-porcentaje.component';
 
 @Component({
   selector: 'app-lista-producto',
@@ -37,7 +38,7 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
 
 
   displayedColumns: string[] = ['checkbox', 'id', 'codigo', 'descripción', 'marca', 'precio2',
-                                   'notas', 'imagenes', 'menu'];
+                                   'perc', 'notas', 'imagenes', 'menu'];
   dataSource!: MatTableDataSource<ProductoTabla>;
 
   @ViewChild(MatPaginator)
@@ -99,6 +100,12 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
   openDialog(element: any) {
     this.dialog.open(DialogoNotaProductoComponent, {
       data: element.id,
+    })
+  }
+
+  openDialogPercent(event: any) {
+    this.dialog.open(DialogoPorcentajeComponent, {
+      data: event.precio2
     })
   }
 
