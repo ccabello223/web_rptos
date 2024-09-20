@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { Producto, ProductoTabla, ProductoWebsTable, Usuario } from 'src/app/rptos/seccion-productos/interfaces';
+import { ProductoWebsTable, Usuario } from 'src/app/rptos/seccion-productos/interfaces';
 import Swal from 'sweetalert2';
 import { DialogoNotaProductoComponent } from '../../../lista-producto/components/dialogo-nota-producto/dialogo-nota-producto.component';
 import { DialogoAgregarVentaWebComponent } from '../../components/dialogo-agregar-venta-web/dialogo-agregar-venta-web.component';
@@ -14,6 +14,8 @@ import { DialogoPorcentajeComponent } from '../../components/dialogo-porcentaje/
 import { DialogoVerImagenComponent } from '../../../lista-producto/components/dialogo-ver-imagen/dialogo-ver-imagen.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogoAgregarUsuarioMlComponent } from '../../components/dialogo-agregar-usuario-ml/dialogo-agregar-usuario-ml.component';
+import { UsuariosWeb } from 'src/app/rptos/seccion-productos/interfaces/models/usuarios_web';
+import { UsuariosmlTable } from 'src/app/rptos/seccion-productos/interfaces/usuariosml-table';
 
 @Component({
   selector: 'app-control-productos-web',
@@ -24,7 +26,7 @@ export class ControlProductosWebComponent {
   private authService = inject(AuthService)
   private productoService = inject(ListaProductoWebService)
   private router = inject(Router)
-  private activatedRoute = inject(ActivatedRoute) 
+  private activatedRoute = inject(ActivatedRoute)
   public dialog = inject(MatDialog)
 
   //id del la tabla usuarios_mercadolibre
@@ -42,6 +44,8 @@ export class ControlProductosWebComponent {
   //checkbox
   selection = new SelectionModel<ProductoWebsTable>(true, []);
   //Producto seleccioando de producto mercado libre 
+  selectedRowsUsers: UsuariosmlTable[] = [];
+  //Producto seleccioando de producto mercado libre 
   selectedRows: ProductoWebsTable[] = [];
   //Producto seleccionado de productos mercado libre temporales
   selectedRows2: ProductoWebsTable[] = [];
@@ -55,7 +59,7 @@ export class ControlProductosWebComponent {
   @ViewChild("MatProductosTempPaginator") productosTempPaginator!: MatPaginator;
   @ViewChild("MatUsuariosPaginator") UsuariosPaginator!: MatPaginator;
 
-  usersML: string[] = ['id', 'nombre', 'correo'];
+  usersML: string[] = ['checkbox', 'id', 'nombre', 'correo'];
   productsML: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'notas', 'eliminar', 'imagenes']
   productsMLTemp: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'notas', 'borrar', 'imagenes']
   public user = computed(() => this.authService.usuarioActual());
@@ -82,13 +86,13 @@ export class ControlProductosWebComponent {
 
   //Cuando el usuario selecciona un empleado entonces se cargar los productos
   selectedUser(id_usuario_ml: number) {
-    
+
     // this.isLoading = true;
     this.id_usuario_ml = id_usuario_ml;
     this.dataSourceProd = new MatTableDataSource(this.products);
     this.dataSourceTemp = new MatTableDataSource(this.productsTemp);
 
-    
+
     this.productoService.getProductosML(this.id_usuario_ml).subscribe(resp => {
       this.products = Array.from({ length: resp.productosml.length }, (_, k) => this.productOfUserById(k, resp.productosml));
       this.dataSourceProd.data = this.products;
@@ -243,6 +247,43 @@ export class ControlProductosWebComponent {
     }
   }
 
+  onUploadUser() {
+    let isSuccessfull: boolean = false;
+
+    if (this.selectedFile == undefined) {
+      Swal.fire('Error', "No ha subido ningún archivo!", 'error')
+    } else {
+      this.selectedRowsUsers.map( async resp => {
+        this.isLoading = true;
+        this.message = "Cargando/Actulizando productos. Espere un momento por favor."
+        this.productoService.postExcelProductMl(resp.id, this.selectedFile, this.user()?.rol)
+          .subscribe( resp => {
+            if (resp["ok"] === true) {
+              isSuccessfull = true;
+            }
+            else {
+              Swal.fire('Error', "Sucedió un error. Notificar a administración", 'error');
+            }
+            this.isLoading = false;
+          })
+      })
+    }
+
+    if (isSuccessfull) {
+      Swal.fire('Todo correcto!!', "Todo Correcto", 'success')
+    }
+  }
+
+  
+
+  executeWithDelay() {
+    console.log('Esperando 1 segundo...');
+    
+    setTimeout(() => {
+      console.log('¡1 segundo ha pasado!');
+    }, 1000); // 1000 milisegundos = 1 segundo
+  }
+
   searchFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSourceProd.filter = filterValue.trim().toLowerCase();
@@ -294,6 +335,17 @@ export class ControlProductosWebComponent {
     this.dialog.open(DialogoNotaProductoComponent, {
       data: element.id_producto,
     })
+  }
+
+  onRowSelectUsers(event: any, row: any) {
+    if (event.checked) {
+      this.selectedRowsUsers.push(row);
+    } else {
+      const index = this.selectedRowsUsers.indexOf(row);
+      if (index > -1) {
+        this.selectedRowsUsers.splice(index, 1);
+      }
+    }
   }
 
   onRowSelectProdML(event: any, row: any) {
@@ -374,7 +426,7 @@ export class ControlProductosWebComponent {
     })
   }
 
-  agregarUsuarioMl(){
+  agregarUsuarioMl() {
     this.dialog.open(DialogoAgregarUsuarioMlComponent, {
       data: 2
     })
