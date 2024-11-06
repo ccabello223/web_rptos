@@ -112,8 +112,12 @@
           <td mat-cell *matCellDef="let row"> {{row.precio2}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="perc30">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> porc: 30% </th>
+          <td mat-cell *matCellDef="let row"> {{row.porcentaje30}} </td>
+        </ng-container>
 
-        <ng-container matColumnDef="precio1_porc">
+        <!-- <ng-container matColumnDef="precio1_porc">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 9% </th>
           <td mat-cell *matCellDef="let row"> {{row.precio1_porc}} </td>
         </ng-container>
@@ -122,7 +126,7 @@
         <ng-container matColumnDef="precio2_porc">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 11% </th>
           <td mat-cell *matCellDef="let row"> {{row.precio2_porc}} </td>
-        </ng-container>
+        </ng-container> -->
 
         <ng-container matColumnDef="perc">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Porcentaje</th>
@@ -250,8 +254,12 @@
         <td mat-cell *matCellDef="let row"> {{row.precio2}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="perc30">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> porc: 30% </th>
+        <td mat-cell *matCellDef="let row"> {{row.porcentaje30}} </td>
+      </ng-container>
 
-      <ng-container matColumnDef="precio1_porc">
+      <!-- <ng-container matColumnDef="precio1_porc">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> 9% </th>
         <td mat-cell *matCellDef="let row"> {{row.precio1_porc}} </td>
       </ng-container>
@@ -260,7 +268,7 @@
       <ng-container matColumnDef="precio2_porc">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> 11% </th>
         <td mat-cell *matCellDef="let row"> {{row.precio2_porc}} </td>
-      </ng-container>
+      </ng-container> -->
 
       <ng-container matColumnDef="perc">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Porcentaje</th>

@@ -60,8 +60,8 @@ export class ControlProductosWebComponent {
   @ViewChild("MatUsuariosPaginator") UsuariosPaginator!: MatPaginator;
 
   usersML: string[] = ['checkbox', 'id', 'nombre', 'correo'];
-  productsML: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'notas', 'eliminar', 'imagenes']
-  productsMLTemp: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'precio1_porc', 'precio2_porc', 'perc', 'notas', 'borrar', 'imagenes']
+  productsML: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'perc30', 'perc', 'notas', 'eliminar', 'imagenes']
+  productsMLTemp: string[] = ['checkbox', 'id_producto', 'nombre', 'codigo', 'marca', 'precio2', 'perc30', 'perc', 'notas', 'borrar', 'imagenes']
   public user = computed(() => this.authService.usuarioActual());
 
   constructor() { }
@@ -248,30 +248,28 @@ export class ControlProductosWebComponent {
   }
 
   onUploadUser() {
-    let isSuccessfull: boolean = false;
+    let cadena: string = '';
 
     if (this.selectedFile == undefined) {
       Swal.fire('Error', "No ha subido ningún archivo!", 'error')
     } else {
-      this.selectedRowsUsers.map( async resp => {
+        this.selectedRowsUsers.map( resp => {
+          cadena =  resp.id + ',' + cadena
+        });
+
         this.isLoading = true;
         this.message = "Cargando/Actulizando productos. Espere un momento por favor."
-        this.productoService.postExcelProductMl(resp.id, this.selectedFile, this.user()?.rol)
+        this.productoService.postExcelProductMlArray(cadena, this.selectedFile, this.user()?.rol)
           .subscribe( resp => {
             if (resp["ok"] === true) {
-              isSuccessfull = true;
             }
             else {
               Swal.fire('Error', "Sucedió un error. Notificar a administración", 'error');
             }
             this.isLoading = false;
           })
-      })
     }
 
-    if (isSuccessfull) {
-      Swal.fire('Todo correcto!!', "Todo Correcto", 'success')
-    }
   }
 
   
@@ -317,6 +315,7 @@ export class ControlProductosWebComponent {
   }
 
   productOfUserById(i: number, products: Productosml[]): any {
+    let porcentaje = Number(products[i].precio2) + (Number(products[i].precio2) * 0.3)
     return {
       id: products[i].id,
       id_producto: products[i].id_producto,
@@ -326,6 +325,7 @@ export class ControlProductosWebComponent {
       precio2: products[i].precio2,
       precio1_porc: products[i].precio1_porc,
       precio2_porc: products[i].precio2_porc,
+      porcentaje30: (parseFloat(porcentaje.toString())).toFixed(4) + '$',
       marca: products[i].producto.marca.nombre,
       foto_producto: products[i].foto_productos
     }

@@ -7,5 +7,6 @@ export interface ProductoTabla {
     marca: string | null;
     precio1: string;
     precio2: string;
+    porcentaje30: string;
     foto_producto?: FotoProducto[];
   }

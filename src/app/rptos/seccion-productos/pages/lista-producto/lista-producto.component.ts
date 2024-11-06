@@ -38,7 +38,7 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
 
 
   displayedColumns: string[] = ['checkbox', 'id', 'codigo', 'descripción', 'marca', 'precio2',
-                                   'perc', 'notas', 'imagenes', 'menu'];
+                                   'perc0', 'perc', 'notas', 'imagenes', 'menu'];
   dataSource!: MatTableDataSource<ProductoTabla>;
 
   @ViewChild(MatPaginator)
@@ -86,6 +86,7 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
 
   /** Builds and returns a new Products. */
   createNewProducts(i: number): ProductoTabla {
+    let porcentaje = Number(this.producto[i].precio2) + (Number(this.producto[i].precio2) * 0.3)
     return {
       id: this.producto[i].idproducto,
       codigo: this.producto[i].codigo,
@@ -93,6 +94,7 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
       marca: (this.producto[i].marca === null) ? 'Sin marca' : this.producto[i].marca.nombre,
       precio1: this.producto[i].precio1,
       precio2: this.producto[i].precio2,
+      porcentaje30: (parseFloat(porcentaje.toString())).toFixed(4) + '$',
       foto_producto: this.producto[i].foto_productos
     }
   }

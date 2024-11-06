@@ -68,6 +68,20 @@ export class ListaProductoWebService extends ProductoService {
     return of("El archivo esta vacio"); 
   }
 
+  postExcelProductMlArray(usersml:string, selectedFile?: File, rol:number = 0):Observable<any>{
+
+    if(selectedFile != null){
+      const formData = new FormData();
+      formData.append('files', selectedFile, selectedFile.name);
+
+      if( rol == 1 || rol == 6){
+        const url = `${this.baseUrl}/productos_ml/postActualizarPrecioArray?usuarios=${usersml}`;
+        return this.http.post<any>(url, formData);
+      }
+    }
+    return of("El archivo esta vacio"); 
+  }
+
   postDesdeListaProducto(body:any): Observable<any>{
     const url = `${this.baseUrl}/productos_ml/insertarDesdeListaProducto`;
     return this.http.post<any>(url, body);
