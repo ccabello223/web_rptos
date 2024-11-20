@@ -3,6 +3,7 @@ export interface ProductoTablaVentas {
     cliente: string;
     vendedor: string;
     red: string;
+    telefono: string;
     forma_de_pago: string;
     fecha:string;
   }

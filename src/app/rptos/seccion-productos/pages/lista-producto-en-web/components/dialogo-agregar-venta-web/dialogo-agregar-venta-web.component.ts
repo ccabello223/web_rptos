@@ -31,6 +31,7 @@ export class DialogoAgregarVentaWebComponent{
     pago: ['', [Validators.required, Validators.maxLength(255)]],
     tienda: ['', [Validators.required, Validators.maxLength(255)]],
     nombre_cliente: ['', [Validators.required, Validators.maxLength(255)]],
+    telefono: ['', [Validators.required, Validators.maxLength(255)]],
   });
 
   //formGroup: FormGroup;
@@ -58,7 +59,7 @@ export class DialogoAgregarVentaWebComponent{
 
   guardarNota(): void {
     let itemsArrglo: any[] = [];
-    const { pago, tienda, nombre_cliente } = this.notasFormulario.value;
+    const { pago, tienda, nombre_cliente, telefono } = this.notasFormulario.value;
     for (let index = 0; index < this.items.length; index++) {
       const producto = {
         producto_id: this.items[index].id_producto,
@@ -73,6 +74,7 @@ export class DialogoAgregarVentaWebComponent{
       usuario_ml_id: this.usuario_ml_id,
       items: itemsArrglo,
       nombre_cliente,
+      telefono,
       pago,
       tienda
     }

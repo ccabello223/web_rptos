@@ -11,6 +11,7 @@ export interface Venta {
     id:                    number;
     fecha_venta:           Date;
     nombre_cliente:        string;
+    telefono: string;
     usuarios_mercadolibre: UsuariosWeb;
     tiendas_web:           TiendasEnWeb;
     formas_de_pago:        FormasDePago;

@@ -38,7 +38,7 @@ export class ControlVentasEnWebComponent {
   isLoading = false;
   message: string = '';
   ventas: Venta[] = [];
-  displayedColumns: string[] = ['id', 'vendedor', 'cliente', 'red', 'pago', 'fecha', 'notas', 'detalle', 'eliminar'];
+  displayedColumns: string[] = ['id', 'vendedor', 'cliente', 'telefono', 'red', 'pago', 'fecha', 'notas', 'detalle', 'eliminar'];
   dataSource!: MatTableDataSource<ProductoTablaVentas>;
   public user = computed(() => this.authService.usuarioActual());
 
@@ -72,6 +72,7 @@ export class ControlVentasEnWebComponent {
       id: this.ventas[i].id,
       vendedor: this.ventas[i].usuarios_mercadolibre.correo,
       cliente: this.ventas[i].nombre_cliente,
+      telefono: this.ventas[i].telefono,
       forma_de_pago: this.ventas[i].formas_de_pago.nombre,
       red: this.ventas[i].tiendas_web.nombre,
       fecha: this.ventas[i].fecha_venta.toString()

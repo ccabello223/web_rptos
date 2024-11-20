@@ -9,5 +9,6 @@ export interface ItemsVenta {
     id:               number;
     cantidad_vendida: number;
     estado:           boolean;
+    estado_venta: string;
     producto:         Producto;
 }

@@ -23,6 +23,11 @@
             <input type="text" matInput placeholder="nombre cliente" formControlName="nombre_cliente" required>
         </mat-form-field>
 
+        <mat-form-field class="m-1">
+            <mat-label>Telefono</mat-label>
+            <input type="text" matInput placeholder="nombre cliente" formControlName="telefono" required>
+        </mat-form-field>
+
         <p>Ingrese la cantidad de productos que compro el cliente</p>
         <ng-container *ngFor="let item of data.items; let i = index">
             <mat-form-field class="m-1">
