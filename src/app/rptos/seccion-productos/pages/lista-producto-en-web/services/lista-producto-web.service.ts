@@ -167,6 +167,11 @@ export class ListaProductoWebService extends ProductoService {
     return this.http.get<ItemsVentasWebResponse>(url);
   }
 
+  updateItemsVentasWeb(id:number, body:any):Observable<ItemsVentasWebResponse>{
+    const url = `${this.baseUrl}/items_ventas_web/upd?id=${id}`;
+    return this.http.put<ItemsVentasWebResponse>(url, body);
+  }
+
   getFormaDePagos():Observable<FormasDePago[]>{
     const url = `${this.baseUrl}/formas_de_pago`;
     return this.http.get<FormasDePago[]>(url);
