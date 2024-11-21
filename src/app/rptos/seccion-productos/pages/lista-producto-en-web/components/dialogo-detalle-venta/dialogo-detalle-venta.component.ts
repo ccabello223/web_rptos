@@ -118,13 +118,13 @@ export class DialogoDetalleVentaComponent {
       console.log(info);
       Swal.fire({
         title: "Digite estado",
-        inputValue: 'Carlos',
+        // inputValue: 'Carlos',
         input: "text",
         inputAttributes: {
           autocapitalize: "off"
         },
         showCancelButton: true,
-        confirmButtonText: "Look up",
+        confirmButtonText: "Actualizar",
         showLoaderOnConfirm: true,
         preConfirm: async (login) => {
           try {
