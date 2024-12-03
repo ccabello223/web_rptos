@@ -11,6 +11,7 @@ import { MatSort } from '@angular/material/sort';
 import { Producto } from 'src/app/rptos/seccion-productos/interfaces/models/producto';
 import { DialogoUbicacionesComponent } from '../../components/dialogo-ubicaciones/dialogo-ubicaciones.component';
 import { DialogoVerImagenComponent } from '../../components/dialogo-ver-imagen/dialogo-ver-imagen.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-control-ubicaciones',
@@ -22,7 +23,7 @@ export class ControlUbicacionesComponent implements OnInit {
   private dialog = inject(MatDialog)
   private authService = inject(AuthService)
   private productoService = inject(ListaProductoService);
-  
+  private fba = inject(FormBuilder);
 
 
   producto: Producto[] = [];
@@ -34,8 +35,12 @@ export class ControlUbicacionesComponent implements OnInit {
   selectedRows: ProductoTabla[] = [];
   showButton: boolean = false;
 
+  zonaFormulario: FormGroup = this.fba.group({
+    mes: ['', [Validators.required, Validators.maxLength(255)]],
+    anio: ['', [Validators.required, Validators.maxLength(255)]],
+  });
 
-  displayedColumns: string[] = ['id', 'codigo', 'descripción', 'marca', 'imagenes', 'ubicaciones'];
+  displayedColumns: string[] = ['checkbox', 'id', 'codigo', 'descripción', 'marca', 'imagenes', 'ubicaciones'];
   dataSource!: MatTableDataSource<ProductoTabla>;
 
   @ViewChild(MatPaginator)
@@ -44,6 +49,7 @@ export class ControlUbicacionesComponent implements OnInit {
   sort!: MatSort;
 
   public user = computed(() => this.authService.usuarioActual());
+  fb: any;
 
   constructor() {
   }
@@ -116,99 +122,64 @@ export class ControlUbicacionesComponent implements OnInit {
     })
   }
 
+  buscarPorZona():void{
+    console.log("Hola");
+  }
 
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: ProductoTabla): string {
+    if (!row) {
+      return '';
+    }
+    if (this.selection.isSelected(row)) {
+      console.log(row);
+      return row.descripcion;
+    }
+    return `${this.selection.isSelected(row) ? 'select' : 'deselect'} row ${row.id}`;
+    // console.log(`${this.selection.isSelected(row) ? 'select' : 'deselect'} row ${row.id}`);
+  }
 
-//   /** The label for the checkbox on the passed row */
-//   checkboxLabel(row?: ProductoTabla): string {
-//     if (!row) {
-//       return '';
-//     }
-//     if (this.selection.isSelected(row)) {
-//       console.log(row);
-//       return row.descripcion;
-//     }
-//     return `${this.selection.isSelected(row) ? 'select' : 'deselect'} row ${row.id}`;
-//     // console.log(`${this.selection.isSelected(row) ? 'select' : 'deselect'} row ${row.id}`);
-//   }
+  onRowSelect(event: any, row: any) {
+    if (event.checked) {
+      this.selectedRows.push(row);
+    } else {
+      const index = this.selectedRows.indexOf(row);
+      if (index > -1) {
+        this.selectedRows.splice(index, 1);
+      }
+    }
+    this.showButton = this.selectedRows.length > 0;
+  }
 
-//   onRowSelect(event: any, row: any) {
-//     if (event.checked) {
-//       this.selectedRows.push(row);
-//     } else {
-//       const index = this.selectedRows.indexOf(row);
-//       if (index > -1) {
-//         this.selectedRows.splice(index, 1);
-//       }
-//     }
-//     this.showButton = this.selectedRows.length > 0;
-//   }
+  saveSelectedRows() {
+    console.log(this.selectedRows);
+    // this.dialog.open(DialogoAgregarProductosWebsComponent, {
+    //   data: this.selectedRows,
+    // })
+  }
 
-//   saveSelectedRows() {
-//     this.dialog.open(DialogoAgregarProductosWebsComponent, {
-//       data: this.selectedRows,
-//     })
-//   }
+/** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
 
-//   deleteProductSelected() {
-//     let productosABorrar: number[] = [];
-//     this.selectedRows.forEach(element => {
-//       productosABorrar.push(element.id);
-//     })
-//     Swal.fire({
-//       title: '¿Estás seguro de borrar este artículo?',
-//       text: "¡Este cambio no podrá ser revertido!",
-//       icon: 'warning',
-//       showCancelButton: true,
-//       confirmButtonColor: '#3085d6',
-//       cancelButtonColor: '#d33',
-//       confirmButtonText: 'Sí, borrar'
-//     }).then((result:any) => {
-//       if (result.isConfirmed) {
-//         this.productoService.deleteProducts(productosABorrar).subscribe(resp => {
-//           if(resp["ok"] == true){
-//             Swal.fire(
-//               'Borrado!',
-//               resp["msg"],
-//               'success'
-//             );
-//             this.getProductsFromBBDD();
-//           }else{
-//             Swal.fire(
-//               'Error!',
-//               resp["errorMsg"],
-//               'error'
-//             );
-//           }
-//         })
-//       }
-//     });
-    
-//   }
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      this.selectedRows = [];
+      this.showButton = this.selectedRows.length > 0;
+      return;
+    }
 
-//   /*---------------
-
-// /** Whether the number of selected elements matches the total number of rows. */
-//   isAllSelected() {
-//     const numSelected = this.selection.selected.length;
-//     const numRows = this.dataSource.data.length;
-//     return numSelected === numRows;
-//   }
-
-//   /** Selects all rows if they are not all selected; otherwise clear selection. */
-//   toggleAllRows() {
-//     if (this.isAllSelected()) {
-//       this.selection.clear();
-//       this.selectedRows = [];
-//       this.showButton = this.selectedRows.length > 0;
-//       return;
-//     }
-
-//     this.selection.select(...this.dataSource.data);
-//     this.selection.selected.forEach(element => {
-//       this.selectedRows.push(element);
-//     });
-//     //Habilita el boton para subir el producto
-//     this.showButton = this.selectedRows.length > 0;
-//   }
+    this.selection.select(...this.dataSource.data);
+    this.selection.selected.forEach(element => {
+      this.selectedRows.push(element);
+    });
+    //Habilita el boton para subir el producto
+    this.showButton = this.selectedRows.length > 0;
+  }
 
 }

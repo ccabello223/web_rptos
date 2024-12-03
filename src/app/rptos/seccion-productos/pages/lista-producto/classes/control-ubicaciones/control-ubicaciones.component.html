@@ -1,14 +1,40 @@
 
+<mat-form-field class="flex flex-column">
+  <mat-label>Buscar Producto</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Buscar producto" #input>
+</mat-form-field>
+
 <div class="p-3 mat-elevation-z8">
-  
-  <mat-form-field>
-    <mat-label>Filtrar</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Buscar producto" #input>
+
+  <form class="flex" [formGroup]="zonaFormulario" (ngSubmit)="buscarPorZona()">
+  <mat-form-field class="m-3">
+    <mat-label>Zona</mat-label>
+    <mat-select matNativeControl formControlName="anio">
+      <mat-option *ngFor="let anio of [1,2,3]" [value]="anio">
+        {{anio}}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
+
+  <mat-form-field class="m-3">
+    <mat-label>Estante</mat-label>
+    <mat-select matNativeControl formControlName="mes">
+      <mat-option *ngFor="let mes of [1,2,3]" [value]="mes">
+        <!-- {{mes.nombre}} -->
+        {{mes}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-button mat-flat-button color="primary" class="m-3" type="submit">
+    Ver Productos
+  </button>
+
+</form>
 
   <table mat-table [dataSource]="dataSource" matSort>
 
-    <!-- <ng-container matColumnDef="checkbox">
+    <ng-container matColumnDef="checkbox">
       <th mat-header-cell *matHeaderCellDef>
         <mat-checkbox (change)="$event ? toggleAllRows() : null"
                       [checked]="selection.hasValue() && isAllSelected()"
@@ -23,7 +49,7 @@
                       [aria-label]="checkboxLabel(row)">
         </mat-checkbox>
       </td>
-    </ng-container> -->
+    </ng-container>
 
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
@@ -74,4 +100,8 @@
 
   <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="[10, 20, 30, 100]"
     aria-label="Select page of users"></mat-paginator>
+
+    <div class="flex align-items-center flex-wrap m-3">
+      <button mat-raised-button color="primary" class="mr-3" (click)="saveSelectedRows()" [disabled]="!showButton">Ubicar Zona</button>
+    </div>
 </div>
