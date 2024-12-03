@@ -11,6 +11,7 @@ import { FotoComprobante } from '../../../interfaces/models/foto_comprobante_pag
 import { FotoProductoVenta } from '../../../interfaces/models/foto_producto_venta';
 import { FotoProducto } from '../../../interfaces/models/foto_producto';
 import { Empleados } from '../../../interfaces/models/empleado_reponse';
+import { Almacenistum } from '../../../interfaces/models/almacenista';
 
 @Injectable({
   providedIn: 'root'

@@ -27,7 +27,6 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
   private productoService = inject(ListaProductoService);
 
   producto: Producto[] = [];
-
   isLoading = false;
   message: string = '';
   distid?: string = '';
@@ -49,6 +48,7 @@ export class ListaProductoComponent implements OnInit, OnDestroy {
   public user = computed(() => this.authService.usuarioActual());
 
   constructor() {
+    // this.ubicaciones = new UbicacionesProducto();
     //console.log(this.user()?.distid);
   }
 

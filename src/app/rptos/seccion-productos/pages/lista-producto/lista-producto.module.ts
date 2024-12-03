@@ -13,17 +13,23 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { DialogoProductoHistorialPrecioComponent } from './components/dialogo-producto-historial-precio/dialogo-producto-historial-precio.component';
 import { DialogoEditarProductoComponent } from './components/dialogo-editar-producto/dialogo-editar-producto.component';
 import { DialogoPorcentajeComponent } from '../lista-producto-en-web/components/dialogo-porcentaje/dialogo-porcentaje.component';
+import { ControlUbicacionesComponent } from './classes/control-ubicaciones/control-ubicaciones.component';
+import { DialogoAgregarUbicacionComponent } from './components/dialogo-agregar-ubicacion/dialogo-agregar-ubicacion.component';
+import { DialogoFotoUbicacionComponent } from './components/dialogo-foto-ubicacion/dialogo-foto-ubicacion.component';
 
 
 @NgModule({
   declarations: [
     ListaProductoComponent,
+    ControlUbicacionesComponent,
     DialogoAgregarProductosWebsComponent,
     DialogoNotaProductoComponent,
     DialogoUbicacionesComponent,
     DialogoVerImagenComponent,
+    DialogoFotoUbicacionComponent,
     DialogoProductoHistorialPrecioComponent,
-    DialogoEditarProductoComponent
+    DialogoEditarProductoComponent, 
+    DialogoAgregarUbicacionComponent
   ],
   imports: [
     CommonModule,

@@ -6,6 +6,7 @@ import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/operators';
 import { UbicacionesResponse } from '../../../interfaces/ubicaciones-response';
 import { ProductoHistorialPrecio } from '../../../interfaces/models/producto_historial_precio';
+import { Almacenistum } from '../../../interfaces/models/almacenista';
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +57,11 @@ export class ListaProductoService extends ProductoService {
     return this.http.post<any>(url, body);
   }
 
+  postFotosUbicacion(body:any, idUbicacion: number): Observable<any>{
+    const url = `${this.baseUrl}/foto_ubicacion/postImagenUbicacion/${idUbicacion}`;
+    return this.http.post<any>(url, body);
+  }
+
   deleteBorrarFoto(id:number): Observable<any>{
     const url = `${this.baseUrl}/foto_producto/deleteFoto/${id}`;
     return this.http.delete<any>(url)
@@ -72,5 +78,10 @@ export class ListaProductoService extends ProductoService {
   getProductosHistorialPrecio(idProducto:number):Observable<ProductoHistorialPrecio[]>{
     const url = `${this.baseUrl}/producto_historial_precio?id_producto=${idProducto}`;
     return this.http.get<ProductoHistorialPrecio[]>(url)
+  }
+
+  getAlmacenistas():Observable<Almacenistum[]>{
+    const url = `${this.baseUrl}/almacenista`;
+    return this.http.get<Almacenistum[]>(url);
   }
 }
