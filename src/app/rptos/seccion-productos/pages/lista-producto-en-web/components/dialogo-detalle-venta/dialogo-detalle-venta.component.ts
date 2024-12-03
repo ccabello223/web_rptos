@@ -10,6 +10,7 @@ import { carouselImage } from 'src/app/shared/utils/carousel_image.interface';
 import { SelectionModel } from '@angular/cdk/collections';
 
 interface ItemVentaWeb{
+  id: number;
   idproducto:number;
   codigo:string;
   descripcion:string;
@@ -73,6 +74,7 @@ export class DialogoDetalleVentaComponent {
   /** Construye y retorna los items de las ventas. */
   crearItemsVentas(i: number): ItemVentaWeb {
   return {
+      id:this.itemsVentaWeb[i].id,
       idproducto:this.itemsVentaWeb[i].producto.idproducto,
       codigo:this.itemsVentaWeb[i].producto.codigo,
       descripcion:this.itemsVentaWeb[i].producto.nombre,
@@ -112,29 +114,29 @@ export class DialogoDetalleVentaComponent {
   }
 
     //Cuando el usuario selecciona un empleado entonces se cargar los productos
-    selectedUser(id_usuario_ml: number) {
+    selectedUser(info: ItemVentaWeb) {
+      console.log(info);
       Swal.fire({
         title: "Digite estado",
-        inputValue: 'Carlos',
+        // inputValue: 'Carlos',
         input: "text",
         inputAttributes: {
           autocapitalize: "off"
         },
         showCancelButton: true,
-        confirmButtonText: "Look up",
+        confirmButtonText: "Actualizar",
         showLoaderOnConfirm: true,
         preConfirm: async (login) => {
           try {
-            const githubUrl = `
-              https://api.github.com/users/${login}
-            `;
-            const response = await fetch(githubUrl);
-            if (!response.ok) {
-              return Swal.showValidationMessage(`
-                ${JSON.stringify(await response.json())}
-              `);
+
+            const body = {
+              estado_venta: login
             }
-            return response.json();
+
+            this.productoService.updateItemsVentasWeb(info.id, body).subscribe(resp => {
+              Swal.fire('Excelente', resp["msg"], ( resp["ok"] ) ? 'success' : 'error')
+            })
+
           } catch (error) {
             Swal.showValidationMessage(`
               Request failed: ${error}
@@ -144,10 +146,9 @@ export class DialogoDetalleVentaComponent {
         allowOutsideClick: () => !Swal.isLoading()
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire({
-            title: `${result.value.login}'s avatar`,
-            imageUrl: result.value.avatar_url
-          });
+          // Swal.fire({
+          //   title: `login's avatar`,
+          // });
         }
       });
     }
